@@ -1,0 +1,41 @@
+v2: 1104 rows, 138 units
+
+=== REPLAY REGIME (control + interventions) [pre-registered test] ===
+  primary: code decodability, re-fit
+    R  n= 945 r=0.383 R2=-0.639 MAE=0.166  (mean obs 0.835, pred 1.000)
+    U1 n= 945 r=0.536 R2=-0.947 MAE=0.305  (mean obs 0.663, pred 0.966)
+    U2 n= 945 r=0.559 R2=-1.125 MAE=0.354  (mean obs 0.603, pred 0.956)
+    S  n= 945 r=0.515 R2=-2.763 MAE=0.437  (mean obs 0.496, pred 0.932)
+  secondary: code decodability, fixed readout
+    R  n= 945 r=0.629 R2=-0.411 MAE=0.155  (mean obs 0.835, pred 0.989)
+    U1 n= 945 r=0.730 R2=0.093 MAE=0.197  (mean obs 0.663, pred 0.852)
+    U2 n= 945 r=0.718 R2=0.045 MAE=0.217  (mean obs 0.603, pred 0.814)
+    S  n= 945 r=0.828 R2=0.236 MAE=0.165  (mean obs 0.496, pred 0.660)
+  tertiary: representation recoverability
+    R  n= 945 r=0.515 R2=-0.412 MAE=0.151  (mean obs 0.835, pred 0.983)
+    U1 n= 945 r=0.607 R2=-0.401 MAE=0.264  (mean obs 0.663, pred 0.899)
+    U2 n= 945 r=0.584 R2=-0.497 MAE=0.298  (mean obs 0.603, pred 0.876)
+    S  n= 945 r=0.603 R2=-1.312 MAE=0.326  (mean obs 0.496, pred 0.820)
+
+=== no replay [reported separately] ===
+  primary: code decodability, re-fit
+    R  n= 135 r=0.603 R2=-1.102 MAE=0.397  (mean obs 0.599, pred 0.995)
+    U1 n= 135 r=0.657 R2=-1.339 MAE=0.504  (mean obs 0.439, pred 0.938)
+    U2 n= 135 r=0.651 R2=-1.382 MAE=0.515  (mean obs 0.406, pred 0.920)
+    S  n= 135 r=0.583 R2=-37.090 MAE=0.720  (mean obs 0.148, pred 0.869)
+  secondary: code decodability, fixed readout
+    R  n= 135 r=0.774 R2=-0.241 MAE=0.314  (mean obs 0.599, pred 0.912)
+    U1 n= 135 r=0.860 R2=0.270 MAE=0.263  (mean obs 0.439, pred 0.695)
+    U2 n= 135 r=0.862 R2=0.328 MAE=0.252  (mean obs 0.406, pred 0.656)
+    S  n= 135 r=0.615 R2=-1.486 MAE=0.133  (mean obs 0.148, pred 0.281)
+  tertiary: representation recoverability
+    R  n= 135 r=0.623 R2=-0.725 MAE=0.351  (mean obs 0.599, pred 0.945)
+    U1 n= 135 r=0.760 R2=-0.647 MAE=0.436  (mean obs 0.439, pred 0.833)
+    U2 n= 135 r=0.707 R2=-0.587 MAE=0.423  (mean obs 0.406, pred 0.797)
+    S  n= 135 r=0.601 R2=-21.787 MAE=0.551  (mean obs 0.148, pred 0.699)
+
+=== PRE-REGISTERED VERDICT ===
+  1. primary q: R2>=0.6 and MAE<=0.08 for R, S, U1, U2 -> FAIL
+  2. synergy MAE 0.437 < v1 0.140 and < additive baseline 0.267 -> FAIL
+  3. synergy inside AND bounds in 0% of runs (need >= 80%; above 0%, below 100%) -> FAIL
+  gate to real data (1-3 and tertiary R2>=0.5 for R and S): CLOSED

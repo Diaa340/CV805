@@ -1,0 +1,44 @@
+=== mmbench: 1083 held-out items (chance 0.266) ===
+  options kept: full 0.891 | text-only 0.442 | image + options (no question) 0.816 | additive recombination 0.832 (weights img 0.57, txt 0.31)
+  MM-1: normalised fusion gap (full - additive) / (full - chance) = 0.095 (<= 0.30) -> PASS
+  by category (full / text-only / image+options):
+                                        full   txt   img
+cat                                                     
+action_recognition                      0.89  0.65  0.94
+attribute_comparison                    0.97  0.61  0.68
+attribute_recognition                   0.99  0.37  0.90
+celebrity_recognition                   0.96  0.35  0.99
+function_reasoning                      0.91  0.56  0.86
+future_prediction                       0.67  0.33  0.60
+identity_reasoning                      1.00  0.45  0.95
+image_emotion                           0.94  0.42  0.90
+image_quality                           0.48  0.30  0.28
+image_scene                             0.99  0.26  0.97
+image_style                             1.00  0.37  1.00
+image_topic                             0.96  0.48  0.96
+nature_relation                         0.81  0.31  0.85
+object_localization                     0.79  0.41  0.57
+ocr                                     0.95  0.44  0.95
+physical_property_reasoning             0.84  0.66  0.67
+physical_relation                       0.67  0.61  0.67
+social_relation                         0.90  0.21  0.90
+spatial_relationship                    0.73  0.61  0.37
+structuralized_imagetext_understanding  0.93  0.62  0.77
+  MM-2 (Xiu et al.'s Gaussian-noise removal): image-side (text noised) 0.257 | language-side (image noised) 0.424 | additive recombination 0.430 | full 0.891
+  MM-3 reproduced decision-level PID (their BATCH): R 0.014 U_vis 0.000 U_lang 0.625 S 1.079 bits (S share 0.63)
+=== mmstar: 374 held-out items (chance 0.250) ===
+  options kept: full 0.602 | text-only 0.267 | image + options (no question) 0.460 | additive recombination 0.457 (weights img 0.39, txt 0.00)
+  MM-1: normalised fusion gap (full - additive) / (full - chance) = 0.411 (<= 0.30) -> FAIL
+  by category (full / text-only / image+options):
+                         full   txt   img
+cat                                      
+coarse perception        0.71  0.27  0.62
+fine-grained perception  0.58  0.32  0.42
+instance reasoning       0.62  0.22  0.57
+logical reasoning        0.68  0.27  0.47
+math                     0.61  0.37  0.44
+science & technology     0.39  0.15  0.23
+  MM-2 (Xiu et al.'s Gaussian-noise removal): image-side (text noised) 0.291 | language-side (image noised) 0.246 | additive recombination 0.267 | full 0.599
+  MM-3 reproduced decision-level PID (their BATCH): R 0.020 U_vis 0.000 U_lang 0.420 S 0.883 bits (S share 0.67)
+
+VERDICTS: MM-1 mmbench PASS | MM-1 mmstar FAIL

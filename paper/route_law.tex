@@ -1,0 +1,108 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=1.6cm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,enumitem}
+\usepackage[most]{tcolorbox}
+\setlist{nosep,leftmargin=1.2em}
+\setlength{\parindent}{0pt}\setlength{\parskip}{3pt}
+\pagestyle{empty}
+\begin{document}
+
+{\large\bfseries The Route Law of Multimodal Forgetting}\\[1pt]
+{\small Two modalities, class- and domain-incremental learning. Working note.}
+
+\textbf{Setup.} A model with two modalities learns task~1, then keeps training on task~2. Each task-1 sample is typed by
+its pointwise information decomposition (PID; $I_{\text{ccs}}$ redundancy): \emph{redundant} (R: either modality alone
+gives the label), \emph{unique} (U$_1$, U$_2$: only that modality does), or \emph{synergistic} (S: only the two
+together do). For each type $\tau$, the \emph{retention} $\rho_\tau$ is the share of correctly learned task-1 test samples
+still correct after task~2 (chance-corrected).
+
+\textbf{Idea.} Each modality is a \emph{route} that carries old knowledge through the new task. Let $p_m$ be the
+probability that route $m$ survives. Unique knowledge needs its own route, redundant knowledge needs \emph{any} route,
+synergistic knowledge needs \emph{all} routes.
+
+\begin{tcolorbox}[colback=gray!6,colframe=black!55,boxrule=0.5pt,left=4pt,right=4pt,top=2pt,bottom=2pt]
+\textbf{Route law} (independent route failure; $p_m$ measured as $\rho_{\text{U}_m}$, no fitted parameters)
+\[
+\rho_{\text{U}_m} = p_m, \qquad
+\rho_{\text{R}} = 1-(1-p_1)(1-p_2), \qquad
+\rho_{\text{S}} = p_1\,p_2 .
+\]
+\textbf{With a shared bottleneck} (the fusion layer, survival $h$): every retention is multiplied by $h$.
+\end{tcolorbox}
+
+\textbf{Consequences.}
+\begin{enumerate}[label=\arabic*.]
+\item \emph{Order:} $\rho_{\text{S}} \le \rho_{\text{U}_m} \le \rho_{\text{R}}$. Synergy is forgotten first, redundancy last.
+\item \emph{Size of the gap:} $\rho_{\text{R}}-\rho_{\text{S}} = p_1+p_2-2p_1p_2$ (for $p_1{=}p_2{=}p$: $2p(1-p)$). The gap vanishes
+when routes rarely fail ($p\!\to\!1$) and is largest at $p=\tfrac12$. So the effect depends on how hard the new task hits
+each route, not on the dataset alone.
+\item \emph{Locality:} if task~2 changes only modality~$m$, then only U$_m$ and S drop; R survives on the other route.
+\item \emph{Identity:} $\rho_{\text{R}}+\rho_{\text{S}}=\rho_{\text{U}_1}+\rho_{\text{U}_2}$, for any shared bottleneck $h$; and $h=\rho_{\text{U}_1}\rho_{\text{U}_2}/\rho_{\text{S}}$ becomes measurable.
+\end{enumerate}
+
+\textbf{Evidence.} Synthetic data with known types (5 robustness checks: equal modality strength, equal type mix,
+single-modality shifts, both combined; 5 seeds) and frozen-encoder features of three real datasets (two-view CIFAR-100,
+AV-MNIST, CREMA-D; 2 class splits, 2 training recipes, 3 seeds); with and without replay.
+
+\begin{minipage}[t]{0.49\linewidth}
+\small\centering
+\textbf{(a)} Zero-parameter prediction vs.\ observation\\[2pt]
+\begin{tabular}{lccc}
+\toprule
+data & runs & R: $r$ / $|$err$|$ & S: $r$ / $|$err$|$\\
+\midrule
+synthetic & 57 & 0.93 / 0.08 & 0.94 / 0.06\\
+real features & 60 & 0.94 / 0.07 & 0.89 / 0.12\\
+\bottomrule
+\end{tabular}\\[5pt]
+\textbf{(c)} Real data, with replay (observed / predicted)\\[2pt]
+\begin{tabular}{lccc}
+\toprule
+dataset & $p_1,p_2$ & $\rho_{\text{R}}$ & $\rho_{\text{S}}$\\
+\midrule
+two-view CIFAR & .57, .56 & .79 / .81 & .32 / .32\\
+CREMA-D & .87, .90 & .96 / .99 & .77 / .79\\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\small\centering
+\textbf{(b)} Locality, synthetic, no replay (observed / predicted)\\[2pt]
+\begin{tabular}{lcc}
+\toprule
+ & only $m_1$ changes & only $m_2$ changes\\
+\midrule
+U$_1$ & .26 (lost) & 1.00 (kept)\\
+U$_2$ & .96 (kept) & .21 (lost)\\
+R & .57 / .97 & .99 / 1.00\\
+S & .27 / .25 & .19 / .21\\
+\bottomrule
+\end{tabular}\\[5pt]
+\textbf{(d)} Difficulty control, synthetic, replay\\[2pt]
+\begin{tabular}{lc}
+\toprule
+check & S vs.\ R at equal confidence\\
+\midrule
+original / equal type mix & 0.50 / 0.49\\
+equal strength / both & 0.51 / 0.49\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+
+\vspace{3pt}
+\begin{itemize}
+\item Synergy is lost about \textbf{twice as fast} as redundancy even at equal starting confidence (d), so the effect is about
+the \emph{type} of knowledge, not how well it was learned.
+\item The law explains why the effect looked absent on CREMA-D: routes rarely fail there ($p\approx0.9$), so the gap is small (2); on
+two-view CIFAR routes fail often ($p\approx0.57$) and the gap is large (c).
+\item Measured bottleneck: $h\approx0.9$--$1.0$ with replay, $h\approx0.2$--$0.3$ without. Replay mainly protects the shared fusion layer.
+\end{itemize}
+
+\textbf{Where it fails / limits.} Without replay, R is over-predicted when one modality dominates (b, left): the model stores
+redundant knowledge mostly in the strong route, so the backup route is weak. Real-data synergy is rare (2--8\% of samples) and its
+labels come from probes (36\% agreement with human ratings on CREMA-D). Synthetic synergy is a modular sum. Frozen encoders; two tasks.
+
+\textbf{Next.} Three modalities (law: $\rho_{\text{S}_{123}}=p_1p_2p_3$, $\rho_{\text{R}_{123}}=1-\prod_m(1-p_m)$); three-way synergy is learnable
+with 3 classes. Interventions that change one route on real data. Weighting routes by how much redundant knowledge each actually stores.
+
+\end{document}

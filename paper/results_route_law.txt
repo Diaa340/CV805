@@ -1,0 +1,100 @@
+loaded 447 units (435 held-out), 5364 task-2 rows, 33525 corruption rows
+
+==================== Experiment 3: held-out prediction (zero parameters) ====================
+
+--- replay (control) [primary] ---
+  R: primary p   n=420 pearson=0.819 spearman=0.859 R2=0.388 MAE=0.045 RMSE=0.060
+  R: label-free p n=420 pearson=0.335 spearman=0.450 R2=-0.630 MAE=0.070 RMSE=0.098
+  S: primary p   n=360 pearson=0.889 spearman=0.860 R2=0.324 MAE=0.136 RMSE=0.159
+  S: label-free p n=360 pearson=0.189 spearman=0.215 R2=-2.192 MAE=0.279 RMSE=0.345
+  U1: label-free p n=420 pearson=0.367 spearman=0.377 R2=-0.982 MAE=0.164 RMSE=0.228
+  U2: label-free p n=420 pearson=0.629 spearman=0.706 R2=0.252 MAE=0.121 RMSE=0.170
+  by data source (primary p, R / S):
+    avmnist  R: n=45 pearson=0.481 spearman=0.621 R2=0.086 MAE=0.004 RMSE=0.007
+             S: n=45 pearson=0.389 spearman=0.308 R2=-1.310 MAE=0.107 RMSE=0.128
+    cifar2v  R: n=60 pearson=0.807 spearman=0.813 R2=-5.549 MAE=0.094 RMSE=0.097
+             S: n=0
+    cremad   R: n=60 pearson=0.750 spearman=0.651 R2=-0.617 MAE=0.048 RMSE=0.058
+             S: n=60 pearson=0.336 spearman=0.265 R2=-1.856 MAE=0.144 RMSE=0.172
+    food101  R: n=60 pearson=0.857 spearman=0.865 R2=-1.333 MAE=0.011 RMSE=0.012
+             S: n=60 pearson=0.183 spearman=0.156 R2=-3.293 MAE=0.130 RMSE=0.153
+    n24news  R: n=60 pearson=0.735 spearman=0.747 R2=-2.093 MAE=0.046 RMSE=0.051
+             S: n=60 pearson=0.237 spearman=0.302 R2=-1.320 MAE=0.144 RMSE=0.189
+    synth    R: n=135 pearson=0.890 spearman=0.862 R2=0.509 MAE=0.050 RMSE=0.066
+             S: n=135 pearson=0.963 spearman=0.960 R2=0.298 MAE=0.140 RMSE=0.150
+
+--- no replay [known failure regime] ---
+  R: primary p   n=420 pearson=0.946 spearman=0.952 R2=0.791 MAE=0.106 RMSE=0.142
+  R: label-free p n=420 pearson=0.759 spearman=0.740 R2=0.079 MAE=0.228 RMSE=0.298
+  S: primary p   n=360 pearson=0.662 spearman=0.742 R2=0.266 MAE=0.126 RMSE=0.186
+  S: label-free p n=360 pearson=0.393 spearman=0.402 R2=-0.111 MAE=0.187 RMSE=0.229
+  U1: label-free p n=420 pearson=0.761 spearman=0.518 R2=0.441 MAE=0.161 RMSE=0.226
+  U2: label-free p n=420 pearson=0.808 spearman=0.634 R2=0.439 MAE=0.167 RMSE=0.221
+  by data source (primary p, R / S):
+    avmnist  R: n=45 pearson=0.913 spearman=0.903 R2=0.784 MAE=0.106 RMSE=0.139
+             S: n=45 pearson=0.510 spearman=0.650 R2=-0.059 MAE=0.305 RMSE=0.377
+    cifar2v  R: n=60 pearson=0.922 spearman=0.911 R2=-1.146 MAE=0.126 RMSE=0.135
+             S: n=0
+    cremad   R: n=60 pearson=0.865 spearman=0.846 R2=0.339 MAE=0.154 RMSE=0.181
+             S: n=60 pearson=0.606 spearman=0.659 R2=0.208 MAE=0.141 RMSE=0.186
+    food101  R: n=60 pearson=0.985 spearman=0.983 R2=0.866 MAE=0.063 RMSE=0.072
+             S: n=60 pearson=0.882 spearman=0.875 R2=-0.719 MAE=0.183 RMSE=0.196
+    n24news  R: n=60 pearson=0.886 spearman=0.874 R2=0.476 MAE=0.062 RMSE=0.078
+             S: n=60 pearson=0.817 spearman=0.810 R2=-0.406 MAE=0.115 RMSE=0.145
+    synth    R: n=135 pearson=0.946 spearman=0.895 R2=0.789 MAE=0.114 RMSE=0.169
+             S: n=135 pearson=0.911 spearman=0.905 R2=0.807 MAE=0.040 RMSE=0.052
+
+--- baselines (linear regression fitted on the discovery batch, scored on held-out replay runs) ---
+  R: ROUTE LAW (0 params)       n=420 pearson=0.819 spearman=0.859 R2=0.388 MAE=0.045 RMSE=0.060
+  R: (a) initial PID amount     n=420 pearson=0.142 spearman=0.138 R2=-0.078 MAE=0.067 RMSE=0.080
+  R: (b) accuracy before        n=420 pearson=0.562 spearman=0.746 R2=0.232 MAE=0.055 RMSE=0.067
+  R: (c) per-modality accuracy  n=420 pearson=0.552 spearman=0.593 R2=0.063 MAE=0.058 RMSE=0.074
+  R: (d) gradient norm          n=420 pearson=0.294 spearman=0.375 R2=-1.339 MAE=0.080 RMSE=0.118
+  R: (e) parameter drift        n=420 pearson=0.118 spearman=0.272 R2=-7.744 MAE=0.146 RMSE=0.227
+  R: (f) additive in p1, p2     n=420 pearson=0.764 spearman=0.752 R2=0.253 MAE=0.054 RMSE=0.066
+  R: (g) all of (a)-(f)         n=420 pearson=-0.148 spearman=-0.160 R2=-37.824 MAE=0.347 RMSE=0.479
+  S: ROUTE LAW (0 params)       n=360 pearson=0.889 spearman=0.860 R2=0.324 MAE=0.136 RMSE=0.159
+  S: (a) initial PID amount     n=360 pearson=0.488 spearman=0.402 R2=-2.241 MAE=0.281 RMSE=0.348
+  S: (b) accuracy before        n=360 pearson=0.133 spearman=0.291 R2=-11.468 MAE=0.472 RMSE=0.682
+  S: (c) per-modality accuracy  n=360 pearson=0.112 spearman=0.035 R2=-11.901 MAE=0.543 RMSE=0.694
+  S: (d) gradient norm          n=360 pearson=0.118 spearman=0.150 R2=-2.660 MAE=0.276 RMSE=0.370
+  S: (e) parameter drift        n=360 pearson=0.318 spearman=0.419 R2=-16.155 MAE=0.546 RMSE=0.800
+  S: (f) additive in p1, p2     n=360 pearson=0.844 spearman=0.828 R2=0.695 MAE=0.081 RMSE=0.107
+  S: (g) all of (a)-(f)         (too few discovery rows)
+
+==================== Experiment 4: interventions on one route (replay regime) ====================
+per intervention kind (means; sign agreement = share of runs where observed change has the predicted sign):
+  distill1   n=864 | d p_m +0.095 (raised in 85%) | |d p_other|<=0.1 in 92% | d U_other +0.011
+               dS: observed +0.073 predicted +0.077 | sign agreement 71% | MAE of change 0.082 | r 0.35
+               dR: observed +0.021 predicted +0.019 | sign agreement 75% | MAE of change 0.019 | r 0.58
+  distill10  n=864 | d p_m +0.070 (raised in 77%) | |d p_other|<=0.1 in 91% | d U_other +0.011
+               dS: observed +0.033 predicted +0.061 | sign agreement 60% | MAE of change 0.096 | r 0.41
+               dR: observed +0.014 predicted +0.015 | sign agreement 76% | MAE of change 0.020 | r 0.56
+  freeze     n=864 | d p_m +0.056 (raised in 70%) | |d p_other|<=0.1 in 89% | d U_other +0.017
+               dS: observed +0.020 predicted +0.054 | sign agreement 61% | MAE of change 0.105 | r 0.41
+               dR: observed +0.012 predicted +0.013 | sign agreement 73% | MAE of change 0.021 | r 0.53
+  lowlr      n=864 | d p_m +0.070 (raised in 79%) | |d p_other|<=0.1 in 92% | d U_other +0.015
+               dS: observed +0.053 predicted +0.064 | sign agreement 63% | MAE of change 0.076 | r 0.33
+               dR: observed +0.017 predicted +0.015 | sign agreement 72% | MAE of change 0.018 | r 0.53
+  replayonly n=864 | d p_m -0.098 (raised in 18%) | |d p_other|<=0.1 in 12% | d U_other -0.383
+               dS: observed -0.355 predicted -0.352 | sign agreement 97% | MAE of change 0.167 | r 0.42
+               dR: observed -0.197 predicted -0.149 | sign agreement 87% | MAE of change 0.064 | r 0.89
+
+asymmetric target (one route ~0.9, the other ~0.4), all replay-regime runs:
+  n=27: mean p_hi 0.93, p_lo 0.41 | observed S 0.620 vs predicted 0.382 | observed U_hi 0.926
+
+==================== Experiment 5: corrupt / remove one modality ====================
+  model after control:
+    R: n=9408 pearson=0.926 spearman=0.911 R2=0.715 MAE=0.120 RMSE=0.169
+    S: n=6936 pearson=0.837 spearman=0.870 R2=0.526 MAE=0.168 RMSE=0.256
+  model after none:
+    R: n=1104 pearson=0.899 spearman=0.858 R2=0.615 MAE=0.148 RMSE=0.204
+    S: n=504 pearson=0.761 spearman=0.789 R2=0.333 MAE=0.212 RMSE=0.325
+  model after task1:
+    R: n=10728 pearson=0.932 spearman=0.922 R2=0.766 MAE=0.102 RMSE=0.151
+    S: n=9216 pearson=0.881 spearman=0.909 R2=0.647 MAE=0.140 RMSE=0.215
+
+  removal pattern (a = 1), mean retention [pre-registered: remove m1 -> U1, S collapse; U2 stable; R partial]:
+    remove m2   R 0.64 U1 0.85 U2 0.13 S 0.36  (law: R 0.87, S 0.11)
+    remove m1   R 0.69 U1 0.12 U2 0.89 S 0.41  (law: R 0.91, S 0.11)
+    remove both R -0.00 U1 0.00 U2 0.01 S 0.01  (law: R 0.03, S 0.00)

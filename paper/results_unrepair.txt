@@ -1,0 +1,24 @@
+=== tables: 125 runs, 625000 test samples; lost after drift 276237 (non-additive 9943) ===
+  linear repair recovers: additive cells 0.855 | non-additive cells 0.240  (MLP repair: 0.893 | 0.724)
+  AUC for predicting 'not recovered by the linear repair' among lost samples: non-additive cell 0.577 | local syn - red 0.794 | low confidence 0.700
+  non-additive AUC 95% unit-bootstrap [0.567, 0.587]; margin over the best competitor -0.217 [-0.225, -0.209]
+  [reported] non-additive AUC within confidence quintiles: [0.55, 0.572, 0.595, 0.62, 0.554]
+=== clevr: 103 runs, 309000 test samples; lost after drift 109067 (non-additive 8617) ===
+  linear repair recovers: additive cells 0.913 | non-additive cells 0.211  (MLP repair: 0.918 | 0.593)
+  AUC for predicting 'not recovered by the linear repair' among lost samples: non-additive cell 0.709 | local syn - red 0.954 | low confidence 0.766
+  non-additive AUC 95% unit-bootstrap [0.698, 0.721]; margin over the best competitor -0.245 [-0.255, -0.234]
+  [reported] non-additive AUC within confidence quintiles: [0.743, 0.7, 0.652, 0.599, 0.618]
+=== gqa: 72 runs, 36000 test samples; lost after drift 3294 (non-additive 710) ===
+  linear repair recovers: additive cells 0.796 | non-additive cells 0.007  (MLP repair: 0.846 | 0.685)
+  AUC for predicting 'not recovered by the linear repair' among lost samples: non-additive cell 0.785 | local syn - red 0.988 | low confidence 0.628
+  non-additive AUC 95% unit-bootstrap [0.755, 0.814]; margin over the best competitor -0.203 [-0.232, -0.174]
+  [reported] non-additive AUC within confidence quintiles: [0.832, 0.846, 0.795, 0.718, 0.622]
+=== pope: 5 runs, 11250 test samples; lost after drift 3743 (non-additive 112) ===
+  linear repair recovers: additive cells 0.808 | non-additive cells 0.366  (MLP repair: 0.831 | 0.580)
+  AUC for predicting 'not recovered by the linear repair' among lost samples: non-additive cell 0.539 | local syn - red 0.685 | low confidence 0.655
+  non-additive AUC 95% unit-bootstrap [0.522, 0.584]; margin over the best competitor -0.146 [-0.266, +0.012]
+  [reported] non-additive AUC within confidence quintiles: [0.539, 0.548, 0.54, 0.526, 0.507]
+
+U1 (AUC >= 0.70 on every benchmark): FAIL ({'tables': False, 'clevr': True, 'gqa': True, 'pope': False})
+U2 (beats synergy and confidence by >= 0.05 on >= 3 of 4): FAIL ({'tables': False, 'clevr': False, 'gqa': False, 'pope': False})
+VERDICTS: U1 FAIL | U2 FAIL

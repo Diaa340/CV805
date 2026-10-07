@@ -1,0 +1,143 @@
+
+=== tables: 93 runs; task-1 test 465000 (26302 exceptions), task-2 test 465000 (135315 exceptions) ===
+  task-1 accuracy before task 2: rule 0.903, exceptions 0.808; task-2-only model: rule 0.806, exceptions 0.858
+  family                         method              BWT_R   BWT_E | KS_R  KS_E  KS gap [95%]           | FWT_R  FWT_E  FWT gap [95%]          | ACC_bal
+  none                           finetune           -0.397 -0.284 | 0.01  0.08  +0.063 [+0.001,+0.124] | +0.011 -0.054 -0.065 [-0.069,-0.062] | 0.662
+  regularisation: parameter      ewc                -0.377 -0.268 | 0.06  0.13  +0.066 [+0.010,+0.124] | +0.007 -0.063 -0.070 [-0.074,-0.067] | 0.669
+  regularisation: parameter      si                 -0.368 -0.230 | 0.09  0.25  +0.166 [+0.100,+0.230] | +0.005 -0.070 -0.075 [-0.079,-0.072] | 0.678
+  regularisation: distillation   lwf                -0.133 -0.129 | 0.67  0.58  -0.087 [-0.143,-0.028] | -0.047 -0.122 -0.075 [-0.083,-0.067] | 0.736
+  regularisation: distillation   l2                 -0.397 -0.270 | 0.01  0.12  +0.108 [+0.028,+0.188] | -0.023 -0.102 -0.079 [-0.085,-0.074] | 0.645
+  memory                         er_random_1000     -0.136 -0.148 | 0.66  0.52  -0.143 [-0.189,-0.101] | +0.001 -0.067 -0.068 [-0.072,-0.065] | 0.756
+  memory                         agem_random_1000   -0.237 -0.206 | 0.41  0.33  -0.082 [-0.132,-0.033] | +0.007 -0.054 -0.061 [-0.064,-0.057] | 0.721
+  memory                         gem_random_1000    -0.216 -0.191 | 0.46  0.38  -0.084 [-0.132,-0.036] | +0.007 -0.068 -0.075 [-0.078,-0.071] | 0.727
+  memory                         derpp_random_1000  -0.020 -0.030 | 0.95  0.90  -0.049 [-0.081,-0.022] | -0.171 -0.260 -0.089 [-0.096,-0.083] | 0.723
+  memory                         icarl              -0.090 -0.374 | 0.78  -0.21  -0.990 [-1.136,-0.868] | -0.157 -0.219 -0.062 [-0.088,-0.037] | 0.634
+  architectural                  der_expand_1000    -0.094 -0.074 | 0.77  0.76  -0.006 [-0.038,+0.027] | +0.004 -0.063 -0.067 [-0.071,-0.063] | 0.787
+  architectural                  multihead          -0.233 -0.282 | 0.42  0.08  -0.337 [-0.440,-0.240] | +0.015 -0.053 -0.068 [-0.071,-0.065] | 0.705
+  our fix                        derpp_ruleexc_1000 -0.038 +0.059 | 0.91  1.19  +0.284 [+0.255,+0.321] | -0.160 -0.248 -0.088 [-0.093,-0.082] | 0.747
+  M3 DER++ rule+exceptions vs random: KS_E +0.289 [+0.252,+0.338], overall BWT -0.012 [-0.014,-0.010], task-2 acc +0.011
+  -> LwF / ER / DER++ with KS gap: 2/3, with FWT gap: 3/3
+
+=== clevr: 40 runs; task-1 test 120000 (11341 exceptions), task-2 test 120000 (10672 exceptions) ===
+  task-1 accuracy before task 2: rule 0.909, exceptions 0.564; task-2-only model: rule 0.909, exceptions 0.534
+  family                         method              BWT_R   BWT_E | KS_R  KS_E  KS gap [95%]           | FWT_R  FWT_E  FWT gap [95%]          | ACC_bal
+  none                           finetune           -0.317 -0.095 | 0.22  -0.47  -0.699 [-1.577,+0.180] | +0.007 +0.025 +0.018 [-0.002,+0.039] | 0.634
+  regularisation: parameter      ewc                -0.294 -0.105 | 0.28  -0.63  -0.912 [-1.864,-0.065] | +0.007 +0.011 +0.003 [-0.021,+0.029] | 0.634
+  regularisation: parameter      si                 -0.255 -0.095 | 0.38  -0.48  -0.860 [-1.773,+0.033] | +0.008 -0.044 -0.052 [-0.077,-0.029] | 0.633
+  regularisation: distillation   lwf                -0.211 -0.103 | 0.48  -0.60  -1.088 [-1.791,-0.407] | -0.037 -0.068 -0.031 [-0.071,+0.011] | 0.624
+  regularisation: distillation   l2                 -0.289 -0.069 | 0.29  -0.08  -0.369 [-1.365,+0.565] | -0.017 -0.164 -0.147 [-0.177,-0.119] | 0.594
+  memory                         er_random_1000     -0.011 -0.117 | 0.97  -0.82  -1.795 [-2.365,-1.078] | -0.011 -0.071 -0.060 [-0.087,-0.035] | 0.676
+  memory                         agem_random_1000   -0.049 -0.171 | 0.88  -1.67  -2.553 [-3.234,-1.580] | +0.004 +0.002 -0.002 [-0.028,+0.027] | 0.676
+  memory                         gem_random_1000    -0.052 -0.168 | 0.87  -1.63  -2.499 [-3.230,-1.498] | +0.005 +0.003 -0.002 [-0.023,+0.020] | 0.676
+  memory                         derpp_random_1000  +0.011 -0.091 | 1.03  -0.42  -1.446 [-1.850,-0.863] | -0.017 -0.310 -0.293 [-0.329,-0.259] | 0.627
+  memory                         icarl              -0.156 -0.175 | 0.62  -1.73  -2.346 [-3.086,-1.477] | -0.145 -0.143 +0.002 [-0.069,+0.075] | 0.574
+  architectural                  der_expand_1000    -0.001 -0.020 | 1.00  0.69  -0.311 [-0.531,-0.072] | +0.008 -0.048 -0.056 [-0.081,-0.031] | 0.714
+  architectural                  multihead          -0.118 -0.159 | 0.71  -1.48  -2.187 [-2.907,-1.363] | +0.015 +0.067 +0.052 [+0.030,+0.074] | 0.681
+  our fix                        derpp_ruleexc_1000 -0.007 +0.003 | 0.98  1.05  +0.067 [-0.085,+0.214] | -0.020 -0.319 -0.300 [-0.336,-0.265] | 0.643
+  M3 DER++ rule+exceptions vs random: KS_E +1.469 [+0.849,+1.893], overall BWT -0.007 [-0.010,-0.004], task-2 acc -0.003
+  -> LwF / ER / DER++ with KS gap: 3/3, with FWT gap: 2/3
+
+=== gqa: 72 runs; task-1 test 36000 (2535 exceptions), task-2 test 36000 (2535 exceptions) ===
+  task-1 accuracy before task 2: rule 0.939, exceptions 0.588; task-2-only model: rule 0.934, exceptions 0.578
+  family                         method              BWT_R   BWT_E | KS_R  KS_E  KS gap [95%]           | FWT_R  FWT_E  FWT gap [95%]          | ACC_bal
+  none                           finetune           -0.039 -0.236 | 0.91  -1.69  -2.599 [-3.538,-2.052] | +0.007 -0.006 -0.012 [-0.036,+0.010] | 0.691
+  regularisation: parameter      ewc                -0.026 -0.216 | 0.94  -1.46  -2.399 [-3.241,-1.860] | +0.007 -0.005 -0.012 [-0.037,+0.010] | 0.700
+  regularisation: parameter      si                 -0.020 -0.218 | 0.95  -1.48  -2.436 [-3.330,-1.861] | +0.007 -0.042 -0.049 [-0.073,-0.025] | 0.691
+  regularisation: distillation   lwf                -0.012 -0.255 | 0.97  -1.91  -2.880 [-3.913,-2.279] | +0.015 -0.177 -0.192 [-0.228,-0.162] | 0.652
+  regularisation: distillation   l2                 -0.033 -0.332 | 0.93  -2.78  -3.705 [-4.924,-2.977] | +0.012 -0.082 -0.094 [-0.119,-0.071] | 0.651
+  memory                         er_random_1000     -0.002 -0.047 | 1.00  0.47  -0.526 [-0.808,-0.321] | +0.002 -0.026 -0.028 [-0.050,-0.009] | 0.742
+  memory                         agem_random_1000   -0.008 -0.099 | 0.98  -0.13  -1.114 [-1.570,-0.819] | +0.005 -0.008 -0.013 [-0.035,+0.006] | 0.732
+  memory                         gem_random_1000    -0.005 -0.080 | 0.99  0.09  -0.896 [-1.307,-0.615] | +0.004 -0.020 -0.025 [-0.047,-0.005] | 0.734
+  memory                         derpp_random_1000  +0.006 -0.038 | 1.01  0.57  -0.445 [-0.628,-0.309] | -0.007 -0.133 -0.126 [-0.152,-0.101] | 0.717
+  memory                         icarl              -0.131 -0.003 | 0.70  0.97  +0.267 [-0.282,+0.833] | -0.103 -0.069 +0.033 [-0.021,+0.080] | 0.683
+  architectural                  der_expand_1000    +0.007 -0.058 | 1.02  0.34  -0.677 [-0.923,-0.500] | +0.008 -0.021 -0.029 [-0.050,-0.010] | 0.744
+  architectural                  multihead          -0.048 -0.215 | 0.89  -1.44  -2.335 [-3.202,-1.758] | +0.008 +0.008 +0.000 [-0.018,+0.018] | 0.698
+  our fix                        derpp_ruleexc_1000 +0.002 -0.007 | 1.01  0.92  -0.082 [-0.235,+0.083] | -0.008 -0.124 -0.117 [-0.144,-0.092] | 0.726
+  M3 DER++ rule+exceptions vs random: KS_E +0.355 [+0.224,+0.533], overall BWT -0.001 [-0.003,+0.000], task-2 acc -0.000
+  -> LwF / ER / DER++ with KS gap: 3/3, with FWT gap: 2/3
+
+=== pope: 5 runs; task-1 test 11250 (1650 exceptions), task-2 test 25000 (1333 exceptions) ===
+  task-1 accuracy before task 2: rule 0.766, exceptions 0.616; task-2-only model: rule 0.747, exceptions 0.944
+  family                         method              BWT_R   BWT_E | KS_R  KS_E  KS gap [95%]           | FWT_R  FWT_E  FWT gap [95%]          | ACC_bal
+  none                           finetune           -0.343 +0.263 | -0.29  3.27  +3.560 [+2.976,+4.341] | -0.013 +0.009 +0.022 [-0.013,+0.057] | 0.747
+  regularisation: parameter      ewc                -0.305 +0.285 | -0.15  3.46  +3.606 [+2.897,+4.378] | -0.003 -0.008 -0.005 [-0.046,+0.025] | 0.760
+  regularisation: parameter      si                 -0.260 +0.265 | 0.02  3.29  +3.263 [+2.662,+4.213] | +0.031 -0.100 -0.131 [-0.250,-0.056] | 0.752
+  regularisation: distillation   lwf                -0.189 +0.213 | 0.29  2.84  +2.547 [+2.042,+3.349] | -0.038 -0.005 +0.034 [+0.009,+0.061] | 0.763
+  regularisation: distillation   l2                 -0.334 +0.219 | -0.26  2.90  +3.152 [+2.538,+3.929] | -0.020 -0.019 +0.002 [-0.043,+0.055] | 0.730
+  memory                         er_random_1000     -0.091 +0.162 | 0.66  2.40  +1.740 [+1.088,+2.425] | -0.002 -0.020 -0.018 [-0.051,+0.008] | 0.781
+  memory                         agem_random_1000   -0.141 +0.195 | 0.47  2.69  +2.215 [+1.624,+2.885] | -0.004 -0.003 +0.001 [-0.021,+0.036] | 0.780
+  memory                         gem_random_1000    -0.134 +0.172 | 0.50  2.49  +1.990 [+1.353,+2.678] | -0.007 +0.002 +0.009 [-0.014,+0.032] | 0.777
+  memory                         derpp_random_1000  -0.021 +0.101 | 0.92  1.87  +0.948 [+0.598,+1.350] | -0.012 -0.159 -0.147 [-0.185,-0.114] | 0.745
+  memory                         icarl              -0.059 +0.011 | 0.78  1.09  +0.314 [-0.165,+1.016] | -0.032 -0.266 -0.234 [-0.306,-0.169] | 0.682
+  architectural                  der_expand_1000    -0.087 +0.193 | 0.67  2.66  +1.993 [+1.374,+2.681] | +0.002 -0.029 -0.030 [-0.080,+0.019] | 0.788
+  architectural                  multihead          -0.072 -0.095 | 0.73  0.18  -0.551 [-0.700,-0.403] | -0.005 +0.020 +0.024 [+0.006,+0.040] | 0.730
+  our fix                        derpp_ruleexc_1000 -0.050 +0.135 | 0.81  2.16  +1.351 [+0.960,+1.903] | -0.000 -0.136 -0.136 [-0.163,-0.090] | 0.755
+  M3 DER++ rule+exceptions vs random: KS_E +0.293 [+0.045,+0.509], overall BWT -0.020 [-0.025,-0.015], task-2 acc +0.012
+  -> LwF / ER / DER++ with KS gap: 0/3, with FWT gap: 1/3
+
+M4 (exploratory, criterion fixed in advance): keeps exceptions as well as the rule = KS_R >= 0.5 and KS gap lower bound > -0.05
+  none                           finetune           tables:. clevr:. gqa:. pope:.  -> 0/4
+  regularisation: parameter      ewc                tables:. clevr:. gqa:. pope:.  -> 0/4
+  regularisation: parameter      si                 tables:. clevr:. gqa:. pope:.  -> 0/4
+  regularisation: distillation   lwf                tables:. clevr:. gqa:. pope:.  -> 0/4
+  regularisation: distillation   l2                 tables:. clevr:. gqa:. pope:.  -> 0/4
+  memory                         er_random_1000     tables:. clevr:. gqa:. pope:Y  -> 1/4
+  memory                         agem_random_1000   tables:. clevr:. gqa:. pope:.  -> 0/4
+  memory                         gem_random_1000    tables:. clevr:. gqa:. pope:.  -> 0/4
+  memory                         derpp_random_1000  tables:. clevr:. gqa:. pope:Y  -> 1/4
+  memory                         icarl              tables:. clevr:. gqa:. pope:.  -> 0/4
+  architectural                  der_expand_1000    tables:Y clevr:. gqa:. pope:Y  -> 2/4
+  architectural                  multihead          tables:. clevr:. gqa:. pope:.  -> 0/4
+  our fix                        derpp_ruleexc_1000 tables:Y clevr:. gqa:. pope:Y  -> 2/4
+
+By family (mean over the family's methods): KS_R, KS_E, KS gap, FWT gap
+  tables  none                           0.01 0.08 +0.063 -0.065
+  tables  regularisation: parameter      0.08 0.19 +0.116 -0.073
+  tables  regularisation: distillation   0.34 0.35 +0.011 -0.077
+  tables  memory                         0.65 0.38 -0.270 -0.071
+  tables  architectural                  0.59 0.42 -0.172 -0.067
+  tables  our fix                        0.91 1.19 +0.284 -0.088
+  clevr   none                           0.22 -0.47 -0.699 +0.018
+  clevr   regularisation: parameter      0.33 -0.56 -0.886 -0.024
+  clevr   regularisation: distillation   0.39 -0.34 -0.729 -0.089
+  clevr   memory                         0.87 -1.25 -2.128 -0.071
+  clevr   architectural                  0.85 -0.39 -1.249 -0.002
+  clevr   our fix                        0.98 1.05 +0.067 -0.300
+  gqa     none                           0.91 -1.69 -2.599 -0.012
+  gqa     regularisation: parameter      0.95 -1.47 -2.418 -0.031
+  gqa     regularisation: distillation   0.95 -2.34 -3.293 -0.143
+  gqa     memory                         0.94 0.39 -0.543 -0.032
+  gqa     architectural                  0.95 -0.55 -1.506 -0.014
+  gqa     our fix                        1.01 0.92 -0.082 -0.117
+  pope    none                           -0.29 3.27 +3.560 +0.022
+  pope    regularisation: parameter      -0.06 3.37 +3.435 -0.068
+  pope    regularisation: distillation   0.02 2.87 +2.849 +0.018
+  pope    memory                         0.67 2.11 +1.441 -0.078
+  pope    architectural                  0.70 1.42 +0.721 -0.003
+  pope    our fix                        0.81 2.16 +1.351 -0.136
+
+VERDICTS: M1 PASS ({'tables': True, 'clevr': True, 'gqa': True, 'pope': False}) | M2 PASS ({'tables': True, 'clevr': True, 'gqa': True, 'pope': False}) | M3 (GQA, POPE) FAIL ({'tables': True, 'clevr': True, 'gqa': True, 'pope': False})
+
+== Reading (written after seeing results; post-hoc where marked) ==
+- Pre-registered: M1 PASS (tables, CLEVR, GQA; not POPE), M2 PASS (same three), M3 FAIL (GQA passes; POPE gains on
+  exceptions, KS_E +0.29 [+0.05,+0.51], but its overall BWT cost -0.020 [-0.025,-0.015] misses the -0.02 bound).
+- POST-HOC, design flaw: POPE task 1 and task 2 are cells of the same COCO answer table ("is object o in image k?";
+  checked: 100% agreement). Task 2 therefore adds data about task 1's facts instead of competing with them, and
+  task-1 exceptions improve under every method. POPE is not a forgetting test in this design.
+- POST-HOC, metric: the kept share KS is unstable when exceptions start near chance (CLEVR 0.564, GQA 0.588 before
+  task 2; denominators 0.06-0.09), so KS values like -2.5 are not shares. BWT by type is the robust companion.
+  Methods that forget nearly everything (finetune and regularisation on tables / CLEVR) show smaller exception BWT
+  only because exceptions start closer to chance; compare exception loss only among methods that keep the rule.
+- POST-HOC, families (exception BWT; rule BWT in brackets):
+  memory keeps the rule but loses exceptions: CLEVR ER -0.117 (-0.011), A-GEM -0.171 (-0.049), GEM -0.168 (-0.052),
+  DER++ -0.091 (+0.011); GQA ER -0.046 (-0.002), A-GEM -0.099, GEM -0.080, DER++ -0.038.
+  regularisation at matched plasticity does not keep the rule on tables / CLEVR; on GQA it keeps the rule and loses
+  exceptions as much as finetune (-0.236), distillation more (LwF -0.255, feature -0.332).
+  architectural: DER-expansion (frozen old encoders) is the best standard method on exceptions on tables (-0.074 vs
+  rule -0.094) and CLEVR (-0.020 vs -0.001), similar to ER on GQA (-0.058); multi-head (shared encoders drift) loses
+  exceptions badly (CLEVR -0.159, GQA -0.215).
+  our fix (DER++ rule+exceptions): exceptions +0.059 / +0.003 / -0.007 on tables / CLEVR / GQA.
+- POST-HOC, forward side: DER++ keeps old knowledge best but learns new exceptions worst: FWT_E -0.310 vs FWT_R -0.017
+  (CLEVR), -0.133 vs -0.007 (GQA); the fix inherits this (-0.319 / -0.124). A-GEM / GEM show no forward gap on CLEVR.
+
+POST-HOC: see results_answer_confound.txt — on GQA and CLOVE the aggregate exception gap is mostly an answer-class effect.

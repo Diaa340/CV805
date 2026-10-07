@@ -1,0 +1,31 @@
+=== CLOVE-scene, six tasks: 12 runs (orders x seeds), 43 units; test samples per run 21500 (0.060 exceptions, 0.129 yes) ===
+BWT over tasks 1-5 (final minus right after the task); FWT over tasks 2-6 (right after the task minus a task-only model)
+  family                         method          BWT_R   BWT_E   dBWT [95%]              | FWT_R   FWT_E   dFWT [95%]              | ACC_R ACC_E
+  none                           finetune       -0.069 -0.179  -0.111 [-0.164,-0.058] | +0.002 +0.021  +0.018 [+0.004,+0.032] | 0.868 0.310
+  regularisation: parameter      ewc            -0.035 -0.197  -0.162 [-0.210,-0.111] | +0.002 -0.035  -0.037 [-0.050,-0.026] | 0.897 0.249
+  regularisation: parameter      si             -0.022 -0.116  -0.094 [-0.129,-0.056] | +0.005 -0.090  -0.095 [-0.110,-0.078] | 0.909 0.271
+  regularisation: distillation   lwf            -0.028 -0.171  -0.143 [-0.183,-0.099] | +0.009 -0.085  -0.094 [-0.112,-0.075] | 0.907 0.229
+  regularisation: distillation   l2             -0.040 -0.156  -0.116 [-0.159,-0.071] | -0.001 -0.126  -0.125 [-0.148,-0.104] | 0.890 0.208
+  memory                         er             -0.029 -0.149  -0.119 [-0.148,-0.090] | +0.003 +0.023  +0.020 [+0.005,+0.036] | 0.902 0.338
+  memory                         agem           -0.018 -0.143  -0.125 [-0.158,-0.088] | +0.001 +0.019  +0.018 [+0.000,+0.035] | 0.909 0.339
+  memory                         gem            -0.044 -0.105  -0.061 [-0.093,-0.030] | +0.000 +0.010  +0.010 [-0.009,+0.028] | 0.887 0.364
+  memory                         derpp          +0.004 -0.178  -0.183 [-0.212,-0.153] | +0.008 -0.031  -0.040 [-0.055,-0.023] | 0.934 0.267
+  memory                         icarl          -0.059 +0.030  +0.090 [+0.056,+0.121] | -0.078 -0.001  +0.077 [+0.041,+0.114] | 0.800 0.474
+  architectural                  der_expand     -0.016 -0.107  -0.091 [-0.119,-0.061] | +0.000 -0.009  -0.009 [-0.022,+0.004] | 0.911 0.347
+  architectural                  multihead      -0.072 -0.164  -0.093 [-0.135,-0.051] | +0.004 +0.039  +0.034 [+0.018,+0.051] | 0.867 0.338
+  our fix                        derpp_ruleexc  -0.031 +0.053  +0.085 [+0.056,+0.116] | +0.008 -0.028  -0.035 [-0.050,-0.019] | 0.904 0.467
+
+C1 exceptions forgotten more (LwF, ER, DER++ with dBWT <= -0.03, upper < 0): 3/3 -> PASS
+C2 DER++ hinders new exceptions more (dFWT -0.040 [-0.055,-0.023]) -> PASS
+C3 rule+exceptions buffer: exception BWT +0.232 [+0.201,+0.262], overall BWT -0.019 [-0.024,-0.014] -> FAIL
+C4 DER-expansion loses exceptions less than ER (dBWT difference +0.029 [+0.010,+0.049]) -> PASS
+
+By family (mean over methods): BWT_R, BWT_E, dBWT, dFWT
+  none                           -0.069 -0.179 -0.111 +0.018
+  regularisation: parameter      -0.029 -0.157 -0.128 -0.066
+  regularisation: distillation   -0.034 -0.163 -0.129 -0.109
+  memory                         -0.029 -0.109 -0.080 +0.017
+  architectural                  -0.044 -0.135 -0.092 +0.013
+  our fix                        -0.031 +0.053 +0.085 -0.035
+
+POST-HOC: see results_answer_confound.txt — on GQA and CLOVE the aggregate exception gap is mostly an answer-class effect.

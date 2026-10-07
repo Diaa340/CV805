@@ -1,0 +1,50 @@
+=== 99 units ({'clove': 43, 'clevr': 24, 'gqa': 24, 'pope': 8}), 1,000 cells each; models: Qwen2.5-VL-7B, InternVL3.5-8B, LLaVA-OV-1.5-8B ===
+structural rules proven exact: 95/99; BROJA available: 99/99
+
+mean accuracy | EMAP accuracy | EMAP drop | accuracy on exceptions / rule cells, by model and benchmark
+  Qwen2.5-VL-7B    clevr  0.910 | 0.752 | +0.157 | 0.926 / 0.905
+  Qwen2.5-VL-7B    gqa    0.936 | 0.879 | +0.057 | 0.727 / 0.953
+  Qwen2.5-VL-7B    clove  0.927 | 0.872 | +0.056 | 0.845 / 0.933
+  Qwen2.5-VL-7B    pope   0.977 | 0.950 | +0.027 | 0.771 / 0.983
+  InternVL3.5-8B   clevr  0.973 | 0.776 | +0.198 | 0.959 / 0.976
+  InternVL3.5-8B   gqa    0.900 | 0.841 | +0.059 | 0.878 / 0.901
+  InternVL3.5-8B   clove  0.860 | 0.804 | +0.056 | 0.896 / 0.857
+  InternVL3.5-8B   pope   0.935 | 0.937 | -0.002 | 0.879 / 0.936
+  LLaVA-OV-1.5-8B  clevr  0.988 | 0.823 | +0.165 | 0.980 / 0.989
+  LLaVA-OV-1.5-8B  gqa    0.944 | 0.882 | +0.062 | 0.811 / 0.954
+  LLaVA-OV-1.5-8B  clove  0.925 | 0.872 | +0.054 | 0.851 / 0.930
+  LLaVA-OV-1.5-8B  pope   0.974 | 0.950 | +0.024 | 0.775 / 0.980
+
+Bound check: delta >= s - e holds for 1.000 of model-unit pairs (must be 1.000; s uses the proven lower bound)
+
+T1: within-benchmark Spearman rho(EMAP drop, s) [95% CI], per model
+  Qwen2.5-VL-7B    clevr +0.37 [-0.08,+0.77] (PID +0.34) | gqa +0.07 [-0.35,+0.46] (PID -0.08) | clove +0.61 [+0.35,+0.79] (PID +0.48) | pope +0.44 [-0.37,+0.96] (PID +0.78)  -> 1/4
+  InternVL3.5-8B   clevr +0.91 [+0.76,+0.96] (PID +0.90) | gqa +0.11 [-0.33,+0.51] (PID +0.11) | clove +0.76 [+0.55,+0.90] (PID +0.70) | pope +0.49 [-0.26,+0.93] (PID +0.51)  -> 2/4
+  LLaVA-OV-1.5-8B  clevr +0.97 [+0.90,+0.99] (PID +0.96) | gqa +0.09 [-0.38,+0.50] (PID +0.17) | clove +0.58 [+0.30,+0.78] (PID +0.47) | pope +0.48 [-0.38,+0.96] (PID +0.85)  -> 2/4
+
+T2: pooled within-benchmark partial Spearman, per model
+  Qwen2.5-VL-7B    rho(delta, s | PID, acc) +0.205 [+0.003,+0.438] | rho(delta, PID | s, acc) +0.140 | difference CI [-0.303,+0.360] -> False
+  InternVL3.5-8B   rho(delta, s | PID, acc) +0.290 [+0.079,+0.503] | rho(delta, PID | s, acc) +0.170 | difference CI [-0.270,+0.439] -> False
+  LLaVA-OV-1.5-8B  rho(delta, s | PID, acc) +0.192 [-0.024,+0.450] | rho(delta, PID | s, acc) +0.317 | difference CI [-0.538,+0.371] -> False
+
+T3: regression delta ~ s + PID + acc + model + benchmark (standardised), all models pooled
+  beta_s +0.534 [+0.331,+0.775] | beta_PID +0.209 [-0.082,+0.440] | beta_acc +0.325 | R2 0.874
+  R2 added by s after PID: +0.015 (need >= 0.05) | R2 added by PID after s: +0.002 (need <= 0.01) -> False
+
+T4: leave-one-benchmark-out: fit on three benchmarks, Spearman(predicted, actual drop) within the held-out one
+  Qwen2.5-VL-7B    clevr s +0.80 / PID +0.74 | gqa s +0.34 / PID +0.30 | clove s +0.75 / PID +0.63 | pope s +0.37 / PID +0.78  -> 3/4
+  InternVL3.5-8B   clevr s +0.92 / PID +0.90 | gqa s +0.30 / PID +0.38 | clove s +0.51 / PID +0.55 | pope s +0.69 / PID +0.44  -> 2/4
+  LLaVA-OV-1.5-8B  clevr s +0.97 / PID +0.97 | gqa s +0.54 / PID +0.58 | clove s +0.76 / PID +0.70 | pope s +0.32 / PID +0.81  -> 2/4
+
+Cell level (secondary): AUC for predicting the cells whose answer EMAP flips
+  Qwen2.5-VL-7B    exception label 0.675 | graded misfit 0.866 | low confidence 0.735 | flipped share 0.130
+  InternVL3.5-8B   exception label 0.623 | graded misfit 0.783 | low confidence 0.672 | flipped share 0.184
+  LLaVA-OV-1.5-8B  exception label 0.695 | graded misfit 0.880 | low confidence 0.639 | flipped share 0.140
+
+VERDICTS: T1 FAIL {'qwen': False, 'internvl': False, 'llava': False} | T2 FAIL {'qwen': False, 'internvl': False, 'llava': False} | T3 FAIL | T4 FAIL {'qwen': True, 'internvl': False, 'llava': False}
+
+== Reading (after seeing results) ==
+All tests FAIL. Within each benchmark, structure and BROJA synergy are nearly collinear on these natural units
+(Spearman +0.95 CLEVR, +0.90 CLOVE, +0.88 GQA, +0.48 POPE), so structure and PID cannot be separated here. The bound
+Delta >= s - e holds for every model-unit pair. Cell level: graded misfit predicts the cells whose answer EMAP flips
+(AUC 0.78-0.88) better than low confidence (0.64-0.74) for all three models. See results_vlm3_decor.txt.

@@ -1,0 +1,31 @@
+EXPLORATORY: 140 units x 2 regimes (280 rows)
+
+=== regime control (140 units with S and R) ===
+  median confidence p_full: R 1.000 | U1 1.000 | U2 1.000 | S 1.000
+  RAW:       S survival < R in 100% of units; median gap -0.221; S least retained in 94%
+  ADJUSTED (10 conf. bins, coverage of S samples 0.90): S < R in 82% of units; median gap -0.058; share of raw gap explained by confidence 0.74
+  ADJUSTED (20 bins): S < R in 84%; median gap -0.053
+  unique vs R, adjusted: U1 -0.020 (raw -0.085), U2 -0.013 (raw -0.054)
+  by dataset (median raw gap -> adjusted gap; % units adjusted < 0):
+    avmnist  n=20 -0.014 -> -0.006 (65%)
+    cifar2v  n=20 -0.286 -> -0.043 (80%)
+    clevr    n=20 -0.118 -> -0.077 (100%)
+    cremad   n=20 -0.130 -> -0.027 (55%)
+    food101  n=20 -0.224 -> -0.084 (100%)
+    n24news  n=20 -0.262 -> -0.051 (90%)
+    vqa      n=20 -0.421 -> -0.084 (85%)
+
+=== regime none (140 units with S and R) ===
+  median confidence p_full: R 1.000 | U1 1.000 | U2 1.000 | S 1.000
+  RAW:       S survival < R in 70% of units; median gap -0.103; S least retained in 54%
+  ADJUSTED (10 conf. bins, coverage of S samples 0.90): S < R in 62% of units; median gap -0.035; share of raw gap explained by confidence 0.66
+  ADJUSTED (20 bins): S < R in 69%; median gap -0.050
+  unique vs R, adjusted: U1 -0.038 (raw -0.063), U2 -0.018 (raw -0.022)
+  by dataset (median raw gap -> adjusted gap; % units adjusted < 0):
+    avmnist  n=20 -0.114 -> -0.067 (75%)
+    cifar2v  n=20 -0.317 -> -0.104 (95%)
+    clevr    n=20 +0.005 -> +0.003 (50%)
+    cremad   n=20 -0.044 -> +0.023 (50%)
+    food101  n=20 -0.280 -> -0.146 (95%)
+    n24news  n=20 -0.135 -> -0.051 (70%)
+    vqa      n=20 +0.085 -> +0.085 (0%)

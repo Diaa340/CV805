@@ -1,0 +1,36 @@
+Phase 1: 45 units with synergy learned in task 1
+
+=== REPLAY regime [primary]: mean chance-corrected task-1 retention (+- std) and task-2 accuracy ===
+  no_repair       R=0.89+-0.10 U1=0.74+-0.20 U2=0.68+-0.25 S=0.62+-0.18 | task2 0.90
+  fusion_refit    R=0.89+-0.11 U1=0.74+-0.21 U2=0.67+-0.26 S=0.61+-0.18 | task2 0.90
+  encoder_refit   R=0.86+-0.12 U1=0.69+-0.23 U2=0.62+-0.28 S=0.57+-0.19 | task2 0.90
+  additive_refit  R=0.94+-0.07 U1=0.80+-0.18 U2=0.74+-0.22 S=0.01+-0.01 | task2 0.67
+  fresh_encoders  R=0.76+-0.09 U1=0.25+-0.13 U2=0.20+-0.12 S=0.00+-0.00 | task2 0.46
+  task1_encoders  R=0.96+-0.03 U1=0.86+-0.11 U2=0.84+-0.12 S=0.65+-0.09 | task2 0.52
+  fusion_fresh    R=0.89+-0.10 U1=0.75+-0.20 U2=0.67+-0.25 S=0.58+-0.19 | task2 0.89
+
+=== PRE-REGISTERED VERDICT (replay regime) ===
+  1. fusion_refit S retention 0.61 >= 0.8 -> FAIL
+  2. S(fusion_refit) - S(fresh_encoders) = 0.60 >= 0.3 -> PASS
+  3. S(fusion_refit) - S(additive_refit) = 0.59 >= 0.3 and R(additive_refit) = 0.94 >= 0.8 -> PASS
+  4. task-2 acc fusion_refit 0.90 >= no_repair 0.90 - 0.05 -> PASS
+  -> hypothesis 'synergy is disconnected, not erased': NOT SUPPORTED
+  [exploratory] share of the lost retention that fusion_refit recovers: R=-0.02 U1=-0.01 U2=-0.01 S=-0.03
+
+=== NO-REPLAY regime: mean chance-corrected task-1 retention (+- std) and task-2 accuracy ===
+  no_repair       R=0.63+-0.35 U1=0.49+-0.37 U2=0.45+-0.39 S=0.19+-0.14 | task2 0.90
+  fusion_refit    R=0.82+-0.18 U1=0.65+-0.27 U2=0.58+-0.31 S=0.26+-0.18 | task2 0.89
+  encoder_refit   R=0.85+-0.13 U1=0.69+-0.24 U2=0.61+-0.30 S=0.50+-0.26 | task2 0.90
+  additive_refit  R=0.90+-0.11 U1=0.72+-0.23 U2=0.67+-0.27 S=0.01+-0.01 | task2 0.66
+  fresh_encoders  R=0.76+-0.09 U1=0.25+-0.13 U2=0.20+-0.12 S=0.00+-0.00 | task2 0.46
+  task1_encoders  R=0.96+-0.03 U1=0.86+-0.11 U2=0.84+-0.12 S=0.65+-0.09 | task2 0.52
+  fusion_fresh    R=0.84+-0.15 U1=0.67+-0.25 U2=0.61+-0.29 S=0.24+-0.17 | task2 0.88
+  [exploratory] share of the lost retention that fusion_refit recovers: R=0.35 U1=0.23 U2=0.18 S=0.09
+
+=== [exploratory, Phase 2] drift measures after task 2 (before repair), mean over units ===
+         cka_fusion_hidden  cka_emb1  cka_emb2  wdrift_fusion_m1  wdrift_fusion_m2  crossmodal_cka_before  crossmodal_cka_after
+regime                                                                                                                         
+control              0.635     0.660     0.577             0.364             0.363                  0.048                 0.039
+none                 0.464     0.499     0.436             0.394             0.390                  0.048                 0.037
+
+  [exploratory] correlation with synergy retention (replay regime, no repair): cka_fusion_hidden=+0.81 cka_emb1=+0.19 cka_emb2=+0.74 wdrift_fusion_m1=-0.48 wdrift_fusion_m2=-0.77

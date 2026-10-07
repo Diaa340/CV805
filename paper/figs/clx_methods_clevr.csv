@@ -1,0 +1,21 @@
+m,rule,exc,overall,task2
+Finetune,0.599,0.482,0.592,0.885
+EWC,0.625,0.483,0.617,0.883
+Feature distillation,0.632,0.528,0.626,0.846
+LwF,0.718,0.544,0.707,0.836
+ER random (250),0.902,0.528,0.879,0.87
+ER herding (250),0.838,0.595,0.823,0.866
+ER low-confidence (250),0.556,0.638,0.561,0.872
+ER forgetting events (250),0.629,0.631,0.629,0.867
+ER exceptions only (250),0.278,0.826,0.312,0.875
+ER rule + exceptions (250),0.773,0.763,0.772,0.866
+DER++ random (250),0.962,0.625,0.942,0.832
+DER++ rule + exceptions (250),0.934,0.839,0.928,0.829
+ER random (1000),0.939,0.636,0.92,0.862
+ER herding (1000),0.896,0.701,0.884,0.855
+ER low-confidence (1000),0.775,0.694,0.77,0.852
+ER forgetting events (1000),0.797,0.724,0.792,0.855
+ER exceptions only (1000),0.661,0.876,0.674,0.863
+ER rule + exceptions (1000),0.864,0.849,0.863,0.855
+DER++ random (1000),0.98,0.78,0.968,0.832
+DER++ rule + exceptions (1000),0.97,0.9,0.966,0.83

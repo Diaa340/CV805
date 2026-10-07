@@ -1,0 +1,27 @@
+EXPLORATORY graded analysis: 100 units, 914366 correctly-classified task-1 test samples per regime-pooled set
+
+=== NO REPLAY ===
+E1 survival under one modality's drift, by graded reliance on that modality (bins of reliance):
+   bin(reliance)   [-1.00,0.02)  [0.02,0.10)  [0.10,0.25)  [0.25,0.50)  [0.50,1.01)
+   modality 1 (s1)          0.97           0.92           0.88           0.85           0.66
+   modality 2 (s2)          0.96           0.90           0.85           0.86           0.74
+E2 graded composition over 116 (dataset x reliance-bin) cells (n>=50): weighted R^2 -0.049, weighted MAE 0.162
+E3 per-type survival under both drifts (fraction of correctly-learned samples), odd seeds:
+   graded_heldout: reliance curves learned on even seeds | graded_same_unit and discrete: factors measured in the same unit
+   R  n= 40  graded_heldout R^2 0.211 MAE 0.111 | graded_same_unit R^2 0.177 MAE 0.115 | discrete R^2 -1.541 MAE 0.217
+   U1 n= 40  graded_heldout R^2 0.361 MAE 0.106 | graded_same_unit R^2 0.400 MAE 0.110 | discrete R^2 0.019 MAE 0.145
+   U2 n= 40  graded_heldout R^2 0.128 MAE 0.158 | graded_same_unit R^2 0.062 MAE 0.167 | discrete R^2 -0.182 MAE 0.192
+   S  n= 40  graded_heldout R^2 -0.381 MAE 0.175 | graded_same_unit R^2 -0.545 MAE 0.186 | discrete R^2 0.431 MAE 0.107
+
+=== REPLAY ===
+E1 survival under one modality's drift, by graded reliance on that modality (bins of reliance):
+   bin(reliance)   [-1.00,0.02)  [0.02,0.10)  [0.10,0.25)  [0.25,0.50)  [0.50,1.01)
+   modality 1 (s1)          0.99           0.98           0.96           0.96           0.89
+   modality 2 (s2)          0.99           0.98           0.94           0.96           0.93
+E2 graded composition over 116 (dataset x reliance-bin) cells (n>=50): weighted R^2 0.815, weighted MAE 0.020
+E3 per-type survival under both drifts (fraction of correctly-learned samples), odd seeds:
+   graded_heldout: reliance curves learned on even seeds | graded_same_unit and discrete: factors measured in the same unit
+   R  n= 40  graded_heldout R^2 -7.671 MAE 0.089 | graded_same_unit R^2 -7.146 MAE 0.083 | discrete R^2 -3.120 MAE 0.046
+   U1 n= 40  graded_heldout R^2 -0.906 MAE 0.078 | graded_same_unit R^2 -0.898 MAE 0.073 | discrete R^2 -1.501 MAE 0.069
+   U2 n= 40  graded_heldout R^2 -0.335 MAE 0.066 | graded_same_unit R^2 -0.116 MAE 0.057 | discrete R^2 -0.036 MAE 0.051
+   S  n= 40  graded_heldout R^2 0.181 MAE 0.104 | graded_same_unit R^2 0.214 MAE 0.095 | discrete R^2 0.126 MAE 0.071

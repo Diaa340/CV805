@@ -1,0 +1,28 @@
+v4: 60 units x 2 regimes
+
+=== H1: decomposition separates the regimes (needs-both group; both regimes) ===
+  avmnist    n= 12 median C +0.003 | median N -0.001 | median |N| 0.056 | r12 0.71 vs P1*P2 0.76
+  bridge     n= 24 median C +0.008 | median N +0.020 | median |N| 0.022 | r12 0.33 vs P1*P2 0.30
+  cifar2v    n= 12 median C +0.035 | median N -0.019 | median |N| 0.026 | r12 0.43 vs P1*P2 0.43
+  clevr      n= 12 median C +0.009 | median N +0.091 | median |N| 0.091 | r12 0.38 vs P1*P2 0.28
+  cremad     n= 12 median C -0.025 | median N +0.051 | median |N| 0.094 | r12 0.53 vs P1*P2 0.53
+  food101    n= 12 median C +0.032 | median N -0.050 | median |N| 0.050 | r12 0.54 vs P1*P2 0.57
+  fv_cremad  n= 12 median C +0.015 | median N +0.067 | median |N| 0.067 | r12 0.84 vs P1*P2 0.75
+  n24news    n= 12 median C +0.024 | median N -0.069 | median |N| 0.069 | r12 0.38 vs P1*P2 0.44
+  synth      n= 12 median C +0.007 | median N +0.038 | median |N| 0.038 | r12 0.29 vs P1*P2 0.26
+  -> synthetic + bridge median |N| 0.028 (need <= 0.05); face-voice median N +0.067 (need >= 0.05): PASS
+
+=== H2: a-priori coupling statistic predicts N (needs-both group; all units, both regimes) ===
+  Spearman(kappa_c, N) = +0.014 (need >= 0.6) -> FAIL | [reported] Spearman(kappa, N) = -0.068
+  per group: avmnist: kappa_c -0.13, N -0.001; bridge: kappa_c -0.18, N +0.020; cifar2v: kappa_c -0.16, N -0.019; clevr: kappa_c -0.13, N +0.091; cremad: kappa_c -0.10, N +0.051; food101: kappa_c -0.17, N -0.050; fv_cremad: kappa_c -0.15, N +0.067; n24news: kappa_c -0.12, N -0.069; synth: kappa_c -0.15, N +0.038
+
+=== H3: graded evidence law vs discrete v3 law (natural datasets, all types, both regimes; target = share surviving S12) ===
+  R2 graded 0.525 | R2 discrete 0.691 | difference -0.166 (need >= 0.15) -> FAIL
+    R  n= 60 mean obs 0.75 graded 0.75 discrete 0.87
+    S  n= 60 mean obs 0.52 graded 0.48 discrete 0.54
+    U1 n= 60 mean obs 0.65 graded 0.59 discrete 0.70
+    U2 n= 60 mean obs 0.67 graded 0.65 discrete 0.74
+
+=== H4: linear-readout recovery falls with interaction share (natural datasets, no replay, lost samples) ===
+  recovered share by interaction-share quintile: Q1=0.95 Q2=0.94 Q3=0.93 Q4=0.91 Q5=0.85 | quintile share medians 0.02 0.06 0.10 0.15 0.26
+  Spearman -1.00 (need <= -0.9), Q5-Q1 -0.093 (need <= -0.15) -> FAIL

@@ -1,0 +1,30 @@
+tables 63; excluded (full - majority < 0.10): []
+Spearman among analysed tables: syn_broja vs dens +0.17; syn_broja vs d_add +0.28
+
+=== P1 (primary): partial Spearman of the readout gap ===
+  rho(gap, XOR density | BROJA synergy) = +0.908 [95% boot +0.83, +0.94]
+  rho(gap, BROJA synergy | XOR density) = +0.217 [95% boot -0.06, +0.45]
+  -> STRUCTURE WINS (keep)
+
+=== P2 (secondary): matched-synergy pairs, zero XOR squares vs XOR-dense (density >= 0.10), |dBROJA| <= 0.05 ===
+  no pairs
+  -> INCONCLUSIVE (fewer than 5 pairs)
+
+=== P3 (secondary): additive distance vs XOR density ===
+  Spearman(gap, d_add) +0.914 | Spearman(gap, density) +0.909 | Spearman(gap, BROJA synergy) +0.244
+  rho(gap, d_add | BROJA) +0.908; rho(gap, BROJA | d_add) -0.034; rho(gap, d_add | density) +0.568; rho(gap, density | d_add) +0.537
+
+[reported] other synergy measures in P1:
+  syn_ccs: rho(gap, density | syn) +0.854; rho(gap, syn | density) +0.247
+  syn_mmi: rho(gap, density | syn) +0.909; rho(gap, syn | density) +0.215
+
+[reported] ideal one-hot additive readout: Spearman(1 - acc_onehot, d_add) +0.952; max |(1 - acc_onehot) - d_add| 0.120
+
+[reported] by family (means):
+               dens  d_add  syn_broja  acc_full  acc_lin    gap
+fam                                                            
+and_or        0.000  0.000      0.499     0.912    0.911  0.003
+ferrers       0.000  0.000      0.577     0.907    0.888  0.064
+ferrers_flip  0.029  0.054      0.612     0.896    0.815  0.279
+random        0.056  0.110      0.683     0.902    0.781  0.463
+xor_block     0.048  0.051      0.550     0.898    0.816  0.334

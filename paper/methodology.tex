@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,enumitem}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\1}{\mathbf{1}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\begin{document}
+
+{\Large\bfseries Method: rules, exceptions, and how we measure them\par}\vspace{0.8em}
+
+\noindent
+Our analysis starts from one object, the \emph{answer table} of a task, and from it derives two kinds of knowledge:
+an additive \emph{rule}, which can be computed from each modality separately, and a set of \emph{exceptions}, which
+cannot. Section~\ref{sec:tables} defines answer tables and how we build them for each dataset.
+Section~\ref{sec:rule} defines the rule and the exceptions and how we compute them exactly.
+Section~\ref{sec:theory} states the properties we rely on. Section~\ref{sec:measures} defines the measures used in
+the experiments, and Section~\ref{sec:flow} summarises the pipeline.
+
+%------------------------------------------------------------------------------
+\section{Answer tables}\label{sec:tables}
+
+A two-modality task pairs an input $x_1$ from modality~1 with an input $x_2$ from modality~2 and asks a yes/no question
+with answer $y\in\{0,1\}$. We assume each input belongs to a discrete \emph{index}: $a(x_1)\in\mathcal{A}$ and
+$b(x_2)\in\mathcal{B}$ (for example a class, a question, or an image), and that the correct answer depends only on the
+pair of indices.
+
+\begin{definition}[Cell, answer table]
+A \emph{cell} is a pair $(a,b)\in\mathcal{A}\times\mathcal{B}$. The \emph{answer table} is the map
+$T:\Omega\to\{0,1\}$, where $\Omega\subseteq\mathcal{A}\times\mathcal{B}$ is the set of cells on which the question is
+well-posed and evaluated. The table is \emph{complete} if $\Omega=\mathcal{A}\times\mathcal{B}$ and \emph{partial}
+otherwise. Each cell carries a weight $w_{ab}\ge 0$ (its share of the evaluated samples), with
+$\sum_{(a,b)\in\Omega} w_{ab}=1$.
+\end{definition}
+
+\noindent
+Datasets and how each table is obtained:
+\begin{itemize}[leftmargin=1.5em]
+  \item \textbf{Constructed tasks.} $\mathcal{A}=\mathcal{B}=$ ten CIFAR-100 classes. A sample takes view~1 of an image
+  of class $a$ and view~2 of a \emph{different} image of class $b$; its label is $T(a,b)$ for a chosen $10\times10$
+  table. Complete tables; $w_{ab}=1/100$. We use 125 tables covering a wide range of structure (threshold tables,
+  threshold tables with flipped cells, XOR blocks, random tables).
+  \item \textbf{CLEVR.} $\mathcal{A}$ = ten yes/no questions of one question family, $\mathcal{B}$ = 1{,}000 validation
+  images. $T(a,b)$ is obtained by executing question $a$'s functional program on image $b$'s scene graph. Because
+  ``the red cube'' is undefined on images without exactly one red cube, we use the set-lifted semantics
+  (``some red cube''), which equals CLEVR's own answer on every question's original image (60{,}835/60{,}835 yes/no
+  questions). Complete tables; 103 units from 28 families.
+  \item \textbf{GQA.} $\mathcal{A}$ = ten existence questions of one family (\texttt{exist}, \texttt{existC},
+  \texttt{existOr}, \texttt{existOrC}), $\mathcal{B}$ = 200 validation images that contain at least one object the
+  questions mention. $T(a,b)$ comes from executing the question's program on the image's scene graph with object
+  identifiers removed. We keep families whose execution reproduces GQA's own answers on $\ge 99\%$ of questions, and
+  drop questions about superordinate categories (``animal'', ``vehicle''). Complete tables; 24 units.
+  \item \textbf{POPE.} $\mathcal{A}$ = 80 COCO object categories, $\mathcal{B}$ = the 500 POPE images; $T(a,b)=1$ iff
+  object $a$ is in POPE's ground-truth list for image $b$ (this reproduces all 9{,}000 POPE labels). $\Omega$ = the
+  cells POPE actually asks about; $w_{ab}\propto$ the number of times POPE asks the cell.
+\end{itemize}
+
+%------------------------------------------------------------------------------
+\section{The rule and the exceptions}\label{sec:rule}
+
+\begin{definition}[Additive rule]
+An \emph{additive rule} assigns a score $u_a\in\R$ to each modality-1 index and a score $v_b\in\R$ to each modality-2
+index, and answers
+\begin{equation}
+  f_{u,v}(a,b)=\1\!\left[\,u_a+v_b>0\,\right].
+\end{equation}
+\end{definition}
+
+\noindent
+Any model whose decision is a threshold on $g_1(x_1)+g_2(x_2)$ is an additive rule on every realisation of the inputs:
+late fusion by summed logits, a linear head on concatenated per-modality features, and a linear probe are all of this
+form. A constant bias is absorbed into $u$.
+
+\begin{definition}[Exact rule, exceptions, additive distance]
+The \emph{exact rule} is the additive rule with the largest weighted accuracy on the table,
+\begin{equation}\label{eq:ceiling}
+  (u^\star,v^\star)\in\argmax_{u,v}\ \sum_{(a,b)\in\Omega} w_{ab}\,\1\!\left[f_{u,v}(a,b)=T(a,b)\right].
+\end{equation}
+Its weighted accuracy is the \emph{additive ceiling} $C(T)$, and $d_{\mathrm{add}}(T)=1-C(T)$ is the
+\emph{additive distance}. The \emph{exceptions} are the cells the exact rule gets wrong,
+\begin{equation}
+  E=\{(a,b)\in\Omega:\ f_{u^\star,v^\star}(a,b)\neq T(a,b)\},
+\end{equation}
+and the \emph{rule cells} are $\Omega\setminus E$.
+\end{definition}
+
+\paragraph{Exact computation.} Problem \eqref{eq:ceiling} is a mixed-integer linear program. With an error indicator
+$z_{ab}\in\{0,1\}$ per cell, a margin of $1$ and a large constant $M$,
+\begin{align}
+  \min_{u,v,z}\quad & \sum_{(a,b)\in\Omega} w_{ab}\,z_{ab}\\
+  \text{s.t.}\quad & u_a+v_b+M z_{ab}\ \ge\ 1 && \text{if } T(a,b)=1,\nonumber\\
+  & u_a+v_b-M z_{ab}\ \le\ -1 && \text{if } T(a,b)=0,\nonumber\\
+  & |u_a|,|v_b|\le U,\qquad z_{ab}\in\{0,1\}.\nonumber
+\end{align}
+Because $f_{u,v}$ is unchanged by positive rescaling of $(u,v)$, the unit margin loses nothing once $U$ and $M$ are large
+enough ($U=50$, $M=201$). Two columns $b,b'$ with the same labels and weights on every row can share one score $v_b$
+without loss, so we merge identical columns and add their weights before solving; this makes the program small
+(at most $2^{|\mathcal{A}|}$ distinct columns for complete tables). We solve with HiGHS. When a time limit is reached
+we report the best solution found and the solver's upper bound on $C(T)$. Constructed and GQA tables solve to
+optimality; on CLEVR 62\% of units solve to optimality and the mean gap to the bound is $0.009$; for POPE the bound is
+reported with every number.
+
+\paragraph{Why not a trained additive model.} Logistic regression on one-hot indices, any gradient-trained additive
+model, and EMAP all optimise a smooth surrogate (log-loss or squared error), not the 0/1 objective in
+\eqref{eq:ceiling}. Their accuracy is a lower bound on $C(T)$ and was $4$--$5$ points below it on CLEVR and GQA. Only
+the exact program gives the ceiling and the exceptions.
+
+\paragraph{Graded misfit.} The exact rule gives a yes/no label per cell. For a graded score we use the marginal answer
+rates under the cell weights,
+\[
+  p(y)=\sum_{(a,b):\,T(a,b)=y}w_{ab},\qquad p(y\mid a)=\frac{\sum_{b:\,T(a,b)=y}w_{ab}}{\sum_{b}w_{ab}},\qquad p(y\mid b)\ \text{likewise},
+\]
+and define
+\begin{equation}\label{eq:misfit}
+  m(a,b)\;=\;-\log\frac{p(y\mid a)\,p(y\mid b)}{p(y)}\,\Big|_{y=T(a,b)}
+  \;=\;\log p(y)-\log p(y\mid a)-\log p(y\mid b).
+\end{equation}
+The fraction inside the logarithm is the (unnormalised) probability that an additive model in log-odds, built from the
+row and column answer rates alone, gives to the correct answer, so $m$ is large where the additive account fits the cell
+badly. For a deterministic answer, $m(a,b)$ equals the pointwise co-information
+$i(x_1;x_2;y)$ with a sign flip, i.e.\ the local synergy-minus-redundancy of partial information decomposition.
+
+%------------------------------------------------------------------------------
+\section{Properties used in the analysis}\label{sec:theory}
+
+\begin{definition}[XOR square]
+Rows $a\neq a'$ and columns $b\neq b'$ form an \emph{XOR square} if $T(a,b)=T(a',b')\neq T(a,b')=T(a',b)$.
+\end{definition}
+
+\begin{theorem}[Rule without exceptions]\label{thm:ferrers}
+For a complete table the following are equivalent: (i) $E=\varnothing$; (ii) $T$ contains no XOR square;
+(iii) $T$ is the only $0/1$ table with its row sums and column sums.
+\end{theorem}
+\noindent\emph{Source.} (i)$\Leftrightarrow$(ii) is the characterisation of Ferrers relations (biorders);
+(ii)$\Leftrightarrow$(iii) follows from Ryser's interchange theorem, since swapping an XOR square for its mirror image
+keeps every row and column sum and every two tables with equal sums are linked by such swaps.
+
+\begin{proposition}[Additive ceiling]\label{prop:ceiling}
+Let $x_1$ and $x_2$ be drawn independently given their indices. Then every additive readout
+$\1[g_1(x_1)+g_2(x_2)>0]$ has expected accuracy at most $C(T)$.
+\end{proposition}
+\noindent\emph{Proof sketch.} Fix one draw of $x_1$ per index $a$ and one draw of $x_2$ per index $b$ and set
+$u_a=g_1(x_1)$, $v_b=g_2(x_2)$; the result is an additive rule, so its accuracy is at most $C(T)$. Averaging over draws
+gives the expected accuracy of the readout. \qed
+
+\begin{proposition}[PID cannot locate exceptions]\label{prop:pid}
+For deterministic answers, every BROJA PID atom depends on $T$ only through the per-modality statistics
+$p(a,y)$ and $p(b,y)$. On partial tables, two tasks with identical atoms can have $E=\varnothing$ and $E\neq\varnothing$;
+on complete tables, tasks with identical atoms can have different $d_{\mathrm{add}}$.
+\end{proposition}
+\noindent
+Theorem~\ref{thm:ferrers} and Proposition~\ref{prop:ceiling} motivate the split: the rule is fixed by one number per
+row and per column, so any data that touches every row and column constrains it; an exception is constrained only by
+data from that cell, and no additive component can represent it.
+
+%------------------------------------------------------------------------------
+\section{Measures}\label{sec:measures}
+
+All measures are computed on held-out samples and split by cell type $g\in\{\text{rule},\text{exception}\}$.
+
+\paragraph{Continual-learning protocol.} A model with one encoder per modality and a fusion head is trained on task~1
+(30 epochs) and then on task~2 (10 epochs), where task~2 is another table over different classes (constructed tasks)
+or another question family on the same images (CLEVR, GQA), or the COCO object questions POPE does not ask (POPE). For each method $\mathcal{M}$ we record, for every task-1 test
+sample $i$, whether it is correct before task~2 ($c_i^0$) and after ($c_i^{\mathcal{M}}$). Methods: finetune, EWC,
+LwF, feature distillation, experience replay (ER) and DER++, with replay buffers selected at random, by herding, by low
+confidence, by forgetting events, from exception cells only, or half from exception cells and half at random
+(\emph{rule + exceptions}). Regularisation strengths are chosen per unit as the setting with the best retention among
+those whose task-2 accuracy is within $0.02$ of finetune (matched plasticity).
+
+\paragraph{Accuracy, backward transfer, retention.} With $I_g$ the task-1 test samples of type $g$,
+\begin{align}
+  \mathrm{Acc}_g^{\,0}&=\tfrac{1}{|I_g|}\textstyle\sum_{i\in I_g} c_i^0, &
+  \mathrm{Acc}_g^{\mathcal{M}}&=\tfrac{1}{|I_g|}\textstyle\sum_{i\in I_g} c_i^{\mathcal{M}}, &
+  \mathrm{BWT}_g^{\mathcal{M}}&=\mathrm{Acc}_g^{\mathcal{M}}-\mathrm{Acc}_g^{\,0},\\
+  \mathrm{Ret}_g^{\mathcal{M}}&=\frac{\sum_{i\in I_g} c_i^0\,c_i^{\mathcal{M}}}{\sum_{i\in I_g} c_i^0}, &
+  \mathrm{ACC}^{\mathcal{M}}&=\tfrac12\big(\mathrm{Acc}^{\mathcal{M}}_{\text{task 1}}+\mathrm{Acc}^{\mathcal{M}}_{\text{task 2}}\big).
+\end{align}
+BWT is the standard backward transfer; retention conditions on what was known before task~2. Reporting both by cell
+type matters because exceptions are a small share of samples and do not move the aggregate.
+
+\paragraph{Exception-aware transfer metrics.} Standard BWT and FWT average over samples, so a method can score well
+while losing exactly the samples that need fusion. We therefore define, for each type $g$:
+\begin{align}
+  \mathrm{KS}_g^{\mathcal{M}}&=\frac{\mathrm{Acc}_g^{\mathcal{M}}-\tfrac12}{\mathrm{Acc}_g^{\,0}-\tfrac12}
+  &&\text{(kept share: the fraction of above-chance task-1 knowledge kept)},\\
+  \mathrm{FWT}_g^{\mathcal{M}}&=\mathrm{Acc}_{2,g}^{\mathcal{M}}-\mathrm{Acc}_{2,g}^{\,\text{scratch}}
+  &&\text{(task-2 accuracy on type $g$ vs.\ a model trained on task~2 alone, same budget)},\\
+  \Delta\mathrm{KS}^{\mathcal{M}}&=\mathrm{KS}_{\text{exc}}^{\mathcal{M}}-\mathrm{KS}_{\text{rule}}^{\mathcal{M}},
+  \qquad
+  \Delta\mathrm{FWT}^{\mathcal{M}}=\mathrm{FWT}_{\text{exc}}^{\mathcal{M}}-\mathrm{FWT}_{\text{rule}}^{\mathcal{M}}, \\
+  \mathrm{ACC}_{\text{bal}}^{\mathcal{M}}&=\tfrac12\textstyle\sum_{t\in\{1,2\}}\tfrac12\big(\mathrm{Acc}_{t,\text{rule}}^{\mathcal{M}}+\mathrm{Acc}_{t,\text{exc}}^{\mathcal{M}}\big)
+  &&\text{(type-balanced accuracy)}.
+\end{align}
+$\mathrm{KS}_g$ is $1$ when nothing is lost and $0$ at chance, so it compares types that start at different accuracy;
+it is left undefined when $\mathrm{Acc}_g^{\,0}<0.55$. $\Delta\mathrm{KS}<0$ means the method forgets exceptions faster
+than the rule (backward), and $\Delta\mathrm{FWT}<0$ means it hinders learning new exceptions more than the new rule
+(forward; a per-type form of intransigence). Task-2 cell types come from the exact rule of the task-2 answer table.
+
+\paragraph{Matched-confidence gap.} Exceptions are often harder, so a raw difference could reflect difficulty. Let
+$s$ index strata formed by unit and decile of the task-1 model's confidence $|\ell_1-\ell_0|$ (logit margin), and $n_s$
+the number of exception samples correct before task~2 in stratum $s$. The gap is
+\begin{equation}
+  \Delta^{\mathcal{M}}=\frac{\sum_s n_s\left(\mathrm{Ret}_{\text{exc},s}^{\mathcal{M}}-\mathrm{Ret}_{\text{rule},s}^{\mathcal{M}}\right)}{\sum_s n_s},
+\end{equation}
+using strata with at least three samples of each type.
+
+\paragraph{Repair after forgetting.} After task~2 the encoders are frozen and a new head is trained on 20{,}000
+task-1 samples: a linear head (additive, the \emph{cheap repair}) or a two-layer MLP head (able to fuse). Among
+forgotten samples ($c^0_i=1$, $c^{\mathcal{M}}_i=0$) we report the recovered share $r_g$ and its chance-corrected form
+$\tilde r_g=(r_g-\tfrac12)/\tfrac12$, which is $0$ for guessing and negative when the head is systematically wrong.
+
+\paragraph{Predicting unrepairable samples.} For each forgotten sample we score its cell by the exception indicator,
+by the graded misfit \eqref{eq:misfit}, and by low confidence $-|\ell_1-\ell_0|$, and report the AUC for predicting
+that the linear repair does not recover it.
+
+\paragraph{Whether a model fuses.} For a trained model with output $h(x_1,x_2)$ on a sample set $\{(x_1^{(i)},x_2^{(i)})\}$,
+the EMAP projection is
+\begin{equation}
+  \hat h(x_1^{(i)},x_2^{(i)})=\tfrac1n\textstyle\sum_j h(x_1^{(i)},x_2^{(j)})+\tfrac1n\sum_j h(x_1^{(j)},x_2^{(i)})-\tfrac1{n^2}\sum_{j,k}h(x_1^{(j)},x_2^{(k)}),
+\end{equation}
+the closest additive function in squared error. The accuracy drop from $h$ to $\hat h$ measures how much the model uses
+interactions; it answers a question about the model, whereas $C(T)$ answers one about the task.
+
+\paragraph{Statistics.} Units (one table, one CLEVR question group) are the resampling unit: all intervals are 95\%
+bootstrap intervals over units. Every test, threshold and analysis script was fixed and hashed before its run.
+
+%------------------------------------------------------------------------------
+\section{Pipeline}\label{sec:flow}
+
+\begin{enumerate}[leftmargin=1.5em, label=\textbf{Step \arabic*.}]
+  \item \textbf{Build the answer table.} Choose $\mathcal{A}$, $\mathcal{B}$ and the well-posed cells $\Omega$; obtain
+        $T$ from the table design, program execution on scene graphs, or ground-truth object lists; set weights
+        $w_{ab}$ from how often each cell is sampled.
+  \item \textbf{Solve for the exact rule.} Merge identical columns, solve the program for $(u^\star,v^\star)$, and
+        record $C(T)$, its upper bound, and the exception set $E$. Compute the graded misfit $m(a,b)$.
+  \item \textbf{Label samples.} Give every sample the type of its cell (rule or exception) and its misfit; labels on
+        training cells are used only to select buffers, labels on test cells only for evaluation.
+  \item \textbf{Train and evaluate.} Run task~1, then task~2 under each method; record correctness before and after
+        for every task-1 test sample, and task-2 accuracy.
+  \item \textbf{Measure by cell type.} Report accuracy, BWT and retention for rule and exception samples, the
+        matched-confidence gap, repair recovery, prediction AUCs, and EMAP where a model's fusion is in question.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,15 @@
+=== CLOVE-scene with Qwen2.5-VL-3B + LoRA: 2 task orders, 43 units; test cells per order 4883 (0.263 exceptions) ===
+zero-shot accuracy: rule 0.932, exceptions 0.820; EWC strength picked: {0: '10000', 1: '10000'}
+  method          BWT_R   BWT_E   dBWT [95%]              | FWT_R   FWT_E   dFWT [95%]              | ACC_R ACC_E
+  finetune       +0.002 -0.057  -0.059 [-0.078,-0.040] | +0.010 -0.038  -0.048 [-0.076,-0.020] | 0.963 0.663
+  ewc            +0.000 -0.053  -0.053 [-0.075,-0.034] | +0.010 -0.033  -0.043 [-0.072,-0.013] | 0.961 0.670
+  lwf_1          +0.001 -0.062  -0.062 [-0.081,-0.045] | +0.007 -0.016  -0.023 [-0.048,+0.001] | 0.959 0.677
+  er             -0.001 -0.051  -0.050 [-0.076,-0.027] | +0.005 -0.034  -0.039 [-0.066,-0.013] | 0.956 0.671
+  derpp          +0.001 -0.008  -0.010 [-0.022,+0.003] | +0.007 -0.022  -0.029 [-0.055,-0.004] | 0.959 0.717
+  derpp_ruleexc  -0.002 +0.000  +0.002 [-0.009,+0.014] | +0.005 +0.012  +0.007 [-0.014,+0.027] | 0.955 0.753
+
+V1 exceptions forgotten more (LwF, ER, DER++): 2/3 -> PASS
+V2 DER++ hinders new exceptions more: dFWT -0.029 [-0.055,-0.004] -> FAIL
+V3 rule+exceptions buffer: exception BWT +0.009 [-0.007,+0.024], overall BWT +0.000 [-0.004,+0.004] -> FAIL
+
+POST-HOC: see results_answer_confound.txt — on GQA and CLOVE the aggregate exception gap is mostly an answer-class effect.

@@ -1,0 +1,130 @@
+P2: 100 units; >= 30 model-synergistic samples in 100% of units (learnability rule: >= 50%)
+  per dataset (mean counts R/U1/U2/S; agreement with probe PID types): avmnist: 1781/1911/620/680, agree 0.38, cifar2v: 603/734/664/1502, agree 0.23, cremad: 362/222/325/114, agree 0.39, food101: 955/312/7774/1644, agree 0.23, n24news: 456/235/1397/545, agree 0.34
+
+==================== ALL UNITS POOLED [pre-registered test] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=200 r=0.741 R2=0.403 MAE=0.164 | non-trivial subset n=77 r=0.497 R2=-0.064 MAE=0.260
+  U1 n=200 r=0.833 R2=0.671 MAE=0.123 | non-trivial subset n=128 r=0.739 R2=0.502 MAE=0.154
+  U2 n=200 r=0.770 R2=0.541 MAE=0.149 | non-trivial subset n=104 r=0.631 R2=0.335 MAE=0.193
+  S  n=200 r=0.835 R2=0.692 MAE=0.107 | non-trivial subset n=177 r=0.759 R2=0.565 MAE=0.115
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 56%; U2 undamaged by modality-1 drift in 67% (need >= 80%)
+  b2. mean min-factor R 0.86 vs S 0.61 -> +0.246 (need >= 0.10)
+      mean factors S: s1 0.66 s2 0.67 | R: s1 0.89 s2 0.88 | U1: s1 0.69 s2 0.89 | U2: s1 0.91 s2 0.71
+(c) reproduction: actual vs swap
+  replay    R  n=100 r=0.817 R2=-0.218 MAE=0.027 (mean actual 0.96, swap 0.93, fusion-only 1.00)
+  replay    U1 n=100 r=0.850 R2=0.362 MAE=0.039 (mean actual 0.88, swap 0.85, fusion-only 0.98)
+  replay    U2 n=100 r=0.923 R2=0.533 MAE=0.034 (mean actual 0.90, swap 0.87, fusion-only 0.98)
+  replay    S  n=100 r=0.920 R2=0.641 MAE=0.053 (mean actual 0.75, swap 0.71, fusion-only 0.93)
+  no replay R  n=100 r=0.799 R2=0.532 MAE=0.113 (mean actual 0.39, swap 0.45, fusion-only 0.99)
+  no replay U1 n=100 r=0.752 R2=0.480 MAE=0.111 (mean actual 0.31, swap 0.33, fusion-only 0.95)
+  no replay U2 n=100 r=0.745 R2=0.410 MAE=0.112 (mean actual 0.32, swap 0.36, fusion-only 0.97)
+  no replay S  n=100 r=0.667 R2=0.250 MAE=0.090 (mean actual 0.21, swap 0.21, fusion-only 0.91)
+
+==================== per dataset: avmnist [reported] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=40 r=0.811 R2=0.457 MAE=0.106 | non-trivial subset n=6 r=0.938 R2=0.620 MAE=0.112
+  U1 n=40 r=0.899 R2=0.713 MAE=0.078 | non-trivial subset n=8 r=0.886 R2=0.612 MAE=0.089
+  U2 n=40 r=0.774 R2=0.432 MAE=0.134 | non-trivial subset n=6 r=0.910 R2=0.719 MAE=0.155
+  S  n=40 r=0.877 R2=0.692 MAE=0.121 | non-trivial subset n=17 r=0.729 R2=0.037 MAE=0.226
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 85%; U2 undamaged by modality-1 drift in 85% (need >= 80%)
+  b2. mean min-factor R 0.92 vs S 0.81 -> +0.118 (need >= 0.10)
+      mean factors S: s1 0.85 s2 0.89 | R: s1 0.93 s2 0.96 | U1: s1 0.87 s2 0.96 | U2: s1 0.96 s2 0.92
+(c) reproduction: actual vs swap
+  replay    R  n=20 r=0.983 R2=-44.298 MAE=0.015 (mean actual 1.00, swap 0.98, fusion-only 1.00)
+  replay    U1 n=20 r=0.926 R2=-19.175 MAE=0.015 (mean actual 0.99, swap 0.98, fusion-only 1.00)
+  replay    U2 n=20 r=0.981 R2=0.953 MAE=0.003 (mean actual 0.99, swap 0.99, fusion-only 1.00)
+  replay    S  n=20 r=0.931 R2=0.827 MAE=0.011 (mean actual 0.96, swap 0.96, fusion-only 0.99)
+  no replay R  n=20 r=0.640 R2=-1.025 MAE=0.245 (mean actual 0.38, swap 0.62, fusion-only 1.00)
+  no replay U1 n=20 r=0.596 R2=-1.504 MAE=0.204 (mean actual 0.37, swap 0.57, fusion-only 1.00)
+  no replay U2 n=20 r=0.758 R2=-0.549 MAE=0.250 (mean actual 0.29, swap 0.53, fusion-only 1.00)
+  no replay S  n=20 r=0.729 R2=-0.330 MAE=0.187 (mean actual 0.24, swap 0.42, fusion-only 0.99)
+
+==================== per dataset: cifar2v [reported] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=40 r=0.957 R2=0.054 MAE=0.176 | non-trivial subset n=20 r=0.521 R2=-13.583 MAE=0.330
+  U1 n=40 r=0.979 R2=0.695 MAE=0.105 | non-trivial subset n=33 r=0.974 R2=0.619 MAE=0.122
+  U2 n=40 r=0.985 R2=0.726 MAE=0.100 | non-trivial subset n=32 r=0.980 R2=0.625 MAE=0.120
+  S  n=40 r=0.990 R2=0.936 MAE=0.049 | non-trivial subset n=40 r=0.990 R2=0.936 MAE=0.049
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 50%; U2 undamaged by modality-1 drift in 50% (need >= 80%)
+  b2. mean min-factor R 0.93 vs S 0.62 -> +0.313 (need >= 0.10)
+      mean factors S: s1 0.64 s2 0.64 | R: s1 0.94 s2 0.94 | U1: s1 0.76 s2 0.87 | U2: s1 0.86 s2 0.75
+(c) reproduction: actual vs swap
+  replay    R  n=20 r=0.463 R2=-1.164 MAE=0.012 (mean actual 0.96, swap 0.95, fusion-only 0.99)
+  replay    U1 n=20 r=0.561 R2=0.009 MAE=0.021 (mean actual 0.83, swap 0.82, fusion-only 0.96)
+  replay    U2 n=20 r=0.702 R2=-0.133 MAE=0.019 (mean actual 0.83, swap 0.82, fusion-only 0.96)
+  replay    S  n=20 r=0.700 R2=-0.317 MAE=0.024 (mean actual 0.65, swap 0.63, fusion-only 0.88)
+  no replay R  n=20 r=0.866 R2=-0.932 MAE=0.082 (mean actual 0.55, swap 0.47, fusion-only 1.00)
+  no replay U1 n=20 r=0.826 R2=-2.708 MAE=0.093 (mean actual 0.41, swap 0.31, fusion-only 0.97)
+  no replay U2 n=20 r=0.894 R2=-2.939 MAE=0.098 (mean actual 0.40, swap 0.31, fusion-only 0.97)
+  no replay S  n=20 r=0.894 R2=-4.039 MAE=0.080 (mean actual 0.28, swap 0.20, fusion-only 0.90)
+
+==================== per dataset: cremad [reported] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=40 r=0.802 R2=0.599 MAE=0.192 | non-trivial subset n=38 r=0.809 R2=0.587 MAE=0.198
+  U1 n=40 r=0.843 R2=0.493 MAE=0.225 | non-trivial subset n=36 r=0.827 R2=0.464 MAE=0.217
+  U2 n=40 r=0.839 R2=0.254 MAE=0.256 | non-trivial subset n=37 r=0.827 R2=0.204 MAE=0.261
+  S  n=40 r=0.619 R2=0.180 MAE=0.212 | non-trivial subset n=40 r=0.619 R2=0.180 MAE=0.212
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 32%; U2 undamaged by modality-1 drift in 22% (need >= 80%)
+  b2. mean min-factor R 0.57 vs S 0.35 -> +0.227 (need >= 0.10)
+      mean factors S: s1 0.49 s2 0.42 | R: s1 0.61 s2 0.66 | U1: s1 0.31 s2 0.79 | U2: s1 0.82 s2 0.31
+(c) reproduction: actual vs swap
+  replay    R  n=20 r=0.797 R2=0.051 MAE=0.039 (mean actual 0.90, swap 0.87, fusion-only 0.99)
+  replay    U1 n=20 r=0.771 R2=-0.604 MAE=0.060 (mean actual 0.84, swap 0.78, fusion-only 0.95)
+  replay    U2 n=20 r=0.910 R2=0.619 MAE=0.037 (mean actual 0.86, swap 0.83, fusion-only 0.95)
+  replay    S  n=20 r=0.428 R2=-0.685 MAE=0.072 (mean actual 0.69, swap 0.64, fusion-only 0.87)
+  no replay R  n=20 r=0.509 R2=-0.690 MAE=0.114 (mean actual 0.04, swap 0.13, fusion-only 0.93)
+  no replay U1 n=20 r=0.575 R2=0.223 MAE=0.114 (mean actual 0.00, swap 0.03, fusion-only 0.84)
+  no replay U2 n=20 r=0.813 R2=0.626 MAE=0.115 (mean actual 0.17, swap 0.21, fusion-only 0.91)
+  no replay S  n=20 r=0.403 R2=0.043 MAE=0.083 (mean actual 0.08, swap 0.05, fusion-only 0.76)
+
+==================== per dataset: food101 [reported] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=40 r=0.920 R2=-0.027 MAE=0.117 | non-trivial subset n=0 r=nan R2=nan MAE=nan
+  U1 n=40 r=0.978 R2=0.732 MAE=0.094 | non-trivial subset n=21 r=0.881 R2=-1.107 MAE=0.159
+  U2 n=40 r=0.983 R2=0.509 MAE=0.105 | non-trivial subset n=7 r=0.663 R2=-14.269 MAE=0.217
+  S  n=40 r=0.990 R2=0.906 MAE=0.054 | non-trivial subset n=40 r=0.990 R2=0.906 MAE=0.054
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 57%; U2 undamaged by modality-1 drift in 100% (need >= 80%)
+  b2. mean min-factor R 0.96 vs S 0.69 -> +0.266 (need >= 0.10)
+      mean factors S: s1 0.69 s2 0.80 | R: s1 0.99 s2 0.96 | U1: s1 0.77 s2 0.92 | U2: s1 0.98 s2 0.90
+(c) reproduction: actual vs swap
+  replay    R  n=20 r=0.519 R2=-2.429 MAE=0.004 (mean actual 1.00, swap 0.99, fusion-only 1.00)
+  replay    U1 n=20 r=0.367 R2=-0.016 MAE=0.031 (mean actual 0.87, swap 0.86, fusion-only 0.98)
+  replay    U2 n=20 r=0.633 R2=-0.088 MAE=0.008 (mean actual 0.98, swap 0.98, fusion-only 1.00)
+  replay    S  n=20 r=0.273 R2=-1.720 MAE=0.041 (mean actual 0.78, swap 0.75, fusion-only 0.94)
+  no replay R  n=20 r=0.630 R2=-0.249 MAE=0.075 (mean actual 0.62, swap 0.68, fusion-only 1.00)
+  no replay U1 n=20 r=0.667 R2=0.008 MAE=0.059 (mean actual 0.44, swap 0.39, fusion-only 0.99)
+  no replay U2 n=20 r=0.673 R2=0.267 MAE=0.058 (mean actual 0.54, swap 0.57, fusion-only 1.00)
+  no replay S  n=20 r=0.517 R2=-1.104 MAE=0.053 (mean actual 0.35, swap 0.30, fusion-only 0.96)
+
+==================== per dataset: n24news [reported] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=40 r=0.822 R2=-0.166 MAE=0.230 | non-trivial subset n=13 r=0.200 R2=-33.222 MAE=0.402
+  U1 n=40 r=0.929 R2=0.647 MAE=0.112 | non-trivial subset n=30 r=0.913 R2=0.554 MAE=0.126
+  U2 n=40 r=0.897 R2=0.513 MAE=0.152 | non-trivial subset n=22 r=0.818 R2=0.097 MAE=0.189
+  S  n=40 r=0.911 R2=0.669 MAE=0.099 | non-trivial subset n=40 r=0.911 R2=0.669 MAE=0.099
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 57%; U2 undamaged by modality-1 drift in 78% (need >= 80%)
+  b2. mean min-factor R 0.89 vs S 0.58 -> +0.306 (need >= 0.10)
+      mean factors S: s1 0.65 s2 0.60 | R: s1 0.95 s2 0.89 | U1: s1 0.74 s2 0.89 | U2: s1 0.93 s2 0.65
+(c) reproduction: actual vs swap
+  replay    R  n=20 r=0.502 R2=-16.911 MAE=0.065 (mean actual 0.94, swap 0.88, fusion-only 1.00)
+  replay    U1 n=20 r=0.787 R2=-1.033 MAE=0.067 (mean actual 0.85, swap 0.79, fusion-only 0.98)
+  replay    U2 n=20 r=0.651 R2=-17.054 MAE=0.102 (mean actual 0.86, swap 0.75, fusion-only 0.99)
+  replay    S  n=20 r=0.281 R2=-12.583 MAE=0.114 (mean actual 0.66, swap 0.55, fusion-only 0.94)
+  no replay R  n=20 r=0.859 R2=0.698 MAE=0.051 (mean actual 0.35, swap 0.35, fusion-only 1.00)
+  no replay U1 n=20 r=0.762 R2=0.543 MAE=0.084 (mean actual 0.32, swap 0.35, fusion-only 0.98)
+  no replay U2 n=20 r=0.753 R2=0.549 MAE=0.041 (mean actual 0.20, swap 0.20, fusion-only 0.99)
+  no replay S  n=20 r=0.561 R2=0.165 MAE=0.045 (mean actual 0.12, swap 0.11, fusion-only 0.94)
+
+==================== PRE-REGISTERED VERDICT ====================
+  pooled: (a) composition FAIL | (b) two-factor signature FAIL | (c) reproduction FAIL
+  avmnist          (a) FAIL | (b) PASS | (c) PASS   [reported, not a criterion]
+  cifar2v          (a) FAIL | (b) FAIL | (c) FAIL   [reported, not a criterion]
+  cremad           (a) FAIL | (b) FAIL | (c) FAIL   [reported, not a criterion]
+  food101          (a) FAIL | (b) FAIL | (c) FAIL   [reported, not a criterion]
+  n24news          (a) FAIL | (b) FAIL | (c) FAIL   [reported, not a criterion]

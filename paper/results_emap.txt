@@ -1,0 +1,29 @@
+=== VLM (Qwen2.5-VL-7B) on 24 fully well-posed CLEVR units (10 questions x 100 held-out images) ===
+               acc_vlm  acc_emap_vlm  ceiling  acc_emap_truth
+final                                                        
+equal_integer    0.690         0.530    0.762           0.759
+exist            1.000         0.846    0.859           0.856
+greater_than     0.987         0.842    0.869           0.863
+less_than        0.976         0.796    0.842           0.840
+  means: VLM 0.913 | EMAP(VLM) 0.754 | exact additive ceiling 0.833 | EMAP(truth) 0.829
+  M1 (EMAP of a strong model recovers the exact ceiling): MAE 0.080 (<= 0.05), Spearman +0.943 (>= 0.6) -> FAIL
+  M2 (the VLM uses interactions): VLM - EMAP(VLM) +0.160 [+0.143, +0.179] (>= 0.05, lower > 0) -> PASS
+  [reported] without equal_integer: VLM 0.988, EMAP(VLM) 0.828, ceiling 0.857
+
+=== Benchmarks: EMAP of the frozen-feature full model vs the trained additive model ===
+         acc_full  acc_emap  emap_gap  trained_gap
+data                                              
+avmnist     0.995     0.995     0.001        0.002
+cifar2v     0.593     0.592     0.001       -0.006
+clevr       0.483     0.472     0.011        0.010
+cremad      0.842     0.835     0.007        0.002
+food101     0.924     0.918     0.006        0.000
+n24news     0.790     0.778     0.012        0.000
+vqa         0.405     0.386     0.019        0.001
+  B1 (|EMAP gap| <= 0.02 and within 0.02 of the trained gap) in 7/7 datasets (need >= 6) -> PASS
+
+=== Label tables (63): EMAP gap of the full model ===
+  rho(EMAP gap, d_add | BROJA) +0.839 | rho(EMAP gap, BROJA | d_add) -0.171 -> T1 PASS
+  [reported] Spearman(EMAP gap, linear-readout gap) +0.951; mean EMAP gap 0.280, readout gap 0.253; tables with d_add = 0: EMAP gap 0.103
+
+VERDICTS: M1 FAIL | M2 PASS | B1 PASS | T1 PASS

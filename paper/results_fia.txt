@@ -1,0 +1,85 @@
+FIA: 48 units, 2544 runs
+
+=== P-a (P1 bridge): FIA - L2 in S retention at matched plasticity (need mean >= 0.05) ===
+  per unit: [nan nan nan nan nan nan] | mean +nan -> FAIL
+
+=== P-b (natural): FIA - L2 gain on S exceeds gain on R by >= 0.03; FIA vs FIA-no-beta |dS| < 0.02 ===
+  gain S +0.047, gain R +0.026, difference +0.020; FIA - FIA_nobeta on S +0.014 -> FAIL
+
+=== P-c (face-voice): at equal lambda, FIA-joint task-2 acc >= FIA-full + 0.01 with S retention within +-0.02 ===
+  task-2 acc difference +0.019, S retention difference +0.102 -> FAIL
+
+=== VERDICT: P-a FAIL | P-b FAIL | P-c FAIL ===
+
+=== [reported] methods at matched plasticity: mean S retention / R retention / task-2 acc / avg acc / BWT, by dataset group ===
+  -- bridge (6 units)
+     finetune    S 0.034 R 0.047 task2 0.778 avg 0.462 BWT -0.631 (units 6)
+     ewc         S 0.041 R 0.097 task2 0.776 avg 0.472 BWT -0.610 (units 6)
+     fia_joint   S 0.157 R 0.132 task2 0.777 avg 0.493 BWT -0.591 (units 5)
+     replay[random]         S 0.385 R 0.705 task2 0.766 avg 0.633 BWT -0.278 sec/step 0.0046
+     derpp[random]          S 0.710 R 0.889 task2 0.719 avg 0.688 BWT -0.120 sec/step 0.0063
+     fia+buf[random]        S 0.605 R 0.767 task2 0.616 avg 0.590 BWT -0.213 sec/step 0.0303
+     fia+buf[needsboth]     S 0.752 R 0.505 task2 0.615 avg 0.535 BWT -0.322 sec/step 0.0271
+     fia+buf[beta]          S 0.739 R 0.722 task2 0.616 avg 0.589 BWT -0.216 sec/step 0.0256
+     joint                  S 0.860 R 0.958 task2 0.744 avg 0.733 BWT -0.055 sec/step nan
+     oracle_realign         S 0.995 R 1.033 task2 0.136 avg 0.461 BWT +0.007 sec/step nan
+  -- clevr (6 units)
+     finetune    S 0.099 R 0.091 task2 0.474 avg 0.314 BWT -0.317 (units 6)
+     ewc         S 0.199 R 0.221 task2 0.475 avg 0.356 BWT -0.233 (units 6)
+     lwf         S 0.746 R 0.882 task2 0.462 avg 0.462 BWT -0.009 (units 6)
+     l2          S 0.388 R 0.342 task2 0.461 avg 0.375 BWT -0.180 (units 5)
+     jac         S 0.458 R 0.426 task2 0.461 avg 0.388 BWT -0.146 (units 1)
+     fia         S 0.411 R 0.366 task2 0.465 avg 0.381 BWT -0.169 (units 4)
+     fia_joint   S 0.295 R 0.227 task2 0.463 avg 0.359 BWT -0.216 (units 6)
+     fia_swap    S 0.332 R 0.290 task2 0.459 avg 0.365 BWT -0.198 (units 6)
+     fia_nobeta  S 0.313 R 0.271 task2 0.464 avg 0.363 BWT -0.208 (units 6)
+     fia_mixed   S 0.381 R 0.303 task2 0.463 avg 0.373 BWT -0.188 (units 6)
+     replay[random]         S 0.444 R 0.600 task2 0.471 avg 0.449 BWT -0.043 sec/step 0.0046
+     derpp[random]          S 0.683 R 0.815 task2 0.465 avg 0.465 BWT -0.005 sec/step 0.0064
+     fia+buf[random]        S 0.707 R 0.859 task2 0.444 avg 0.453 BWT -0.008 sec/step 0.0228
+     fia+buf[needsboth]     S 0.745 R 0.821 task2 0.444 avg 0.451 BWT -0.013 sec/step 0.0226
+     fia+buf[beta]          S 0.724 R 0.839 task2 0.442 avg 0.452 BWT -0.008 sec/step 0.0223
+     joint                  S 0.519 R 0.647 task2 0.474 avg 0.474 BWT +0.005 sec/step nan
+     oracle_realign         S 0.675 R 0.810 task2 0.076 avg 0.273 BWT +0.000 sec/step nan
+  -- fv_cremad (6 units)
+     finetune    S 0.585 R nan task2 0.861 avg 0.784 BWT -0.149 (units 6)
+     ewc         S 0.641 R nan task2 0.867 avg 0.797 BWT -0.128 (units 6)
+     lwf         S 0.687 R nan task2 0.852 avg 0.799 BWT -0.113 (units 5)
+     l2          S 0.462 R nan task2 0.853 avg 0.759 BWT -0.192 (units 6)
+     jac         S 0.457 R nan task2 0.859 avg 0.760 BWT -0.194 (units 6)
+     fia         S 0.389 R nan task2 0.850 avg 0.744 BWT -0.218 (units 6)
+     fia_joint   S 0.620 R nan task2 0.866 avg 0.793 BWT -0.137 (units 6)
+     fia_swap    S 0.544 R nan task2 0.860 avg 0.777 BWT -0.163 (units 6)
+     fia_nobeta  S 0.540 R nan task2 0.869 avg 0.780 BWT -0.165 (units 6)
+     fia_mixed   S 0.435 R nan task2 0.852 avg 0.753 BWT -0.201 (units 6)
+     replay[random]         S 1.028 R nan task2 0.864 avg 0.864 BWT +0.009 sec/step 0.0046
+     derpp[random]          S 1.016 R nan task2 0.860 avg 0.860 BWT +0.005 sec/step 0.0066
+     fia+buf[random]        S 1.033 R nan task2 0.853 avg 0.860 BWT +0.011 sec/step 0.0298
+     fia+buf[needsboth]     S 0.836 R nan task2 0.857 avg 0.826 BWT -0.060 sec/step 0.0271
+     fia+buf[beta]          S 1.046 R nan task2 0.857 avg 0.864 BWT +0.015 sec/step 0.0257
+     joint                  S 1.012 R nan task2 0.862 avg 0.861 BWT +0.003 sec/step nan
+     oracle_realign         S 1.010 R nan task2 0.649 avg 0.753 BWT +0.003 sec/step nan
+  -- natural (30 units)
+     finetune    S 0.178 R 0.386 task2 0.876 avg 0.625 BWT -0.512 (units 30)
+     ewc         S 0.214 R 0.410 task2 0.876 avg 0.636 BWT -0.490 (units 30)
+     lwf         S 0.907 R 0.987 task2 0.865 avg 0.870 BWT -0.012 (units 30)
+     l2          S 0.736 R 0.829 task2 0.883 avg 0.837 BWT -0.121 (units 16)
+     jac         S 0.894 R 0.955 task2 0.956 avg 0.938 BWT -0.044 (units 8)
+     fia         S 0.783 R 0.839 task2 0.925 avg 0.879 BWT -0.109 (units 15)
+     fia_joint   S 0.774 R 0.898 task2 0.866 avg 0.833 BWT -0.087 (units 30)
+     fia_swap    S 0.778 R 0.897 task2 0.867 avg 0.832 BWT -0.089 (units 29)
+     fia_nobeta  S 0.796 R 0.909 task2 0.865 avg 0.838 BWT -0.078 (units 26)
+     fia_mixed   S 0.802 R 0.870 task2 0.917 avg 0.877 BWT -0.094 (units 17)
+     replay[random]         S 0.750 R 0.955 task2 0.873 avg 0.848 BWT -0.063 sec/step 0.0044
+     derpp[random]          S 0.701 R 0.933 task2 0.855 avg 0.824 BWT -0.092 sec/step 0.0063
+     fia+buf[random]        S 0.898 R 0.993 task2 0.836 avg 0.856 BWT -0.010 sec/step 0.0444
+     fia+buf[needsboth]     S 0.906 R 0.991 task2 0.835 avg 0.853 BWT -0.014 sec/step 0.0460
+     fia+buf[beta]          S 0.898 R 0.993 task2 0.834 avg 0.855 BWT -0.011 sec/step 0.0440
+     joint                  S 0.869 R 0.986 task2 0.883 avg 0.883 BWT -0.002 sec/step nan
+     oracle_realign         S 0.918 R 0.995 task2 0.187 avg 0.540 BWT +0.007 sec/step nan
+
+=== [reported] retention by interaction-share quintile (share of task-1-correct samples kept), matched plasticity, natural ===
+  finetune  Q1=0.422 Q2=0.413 Q3=0.415 Q4=0.389 Q5=0.347
+  l2        Q1=0.859 Q2=0.854 Q3=0.851 Q4=0.838 Q5=0.795
+  lwf       Q1=0.974 Q2=0.973 Q3=0.970 Q4=0.963 Q5=0.935
+  fia       Q1=0.886 Q2=0.876 Q3=0.877 Q4=0.850 Q5=0.835
