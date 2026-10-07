@@ -1,0 +1,57 @@
+tables: selected 63, fresh 62, pairs 24; excluded (not learned): []
+
+=== R1: P1 replication on the fresh tables (readout gap ~ XOR density vs BROJA) ===
+  rho(gap, dens | BROJA) = +0.861 [+0.74, +0.93] | rho(gap, BROJA | dens) = +0.112 [-0.14, +0.36]
+  -> R1: STRUCTURE WINS
+
+=== A (1a): repair after drift, additive shortfall = (MLP repair - linear repair) / (before - majority); 125 tables ===
+  rho(shortfall, d_add | BROJA) = +0.859 [+0.80, +0.90] | rho(shortfall, BROJA | d_add) = -0.096 [-0.28, +0.09]
+  -> A: STRUCTURE WINS
+
+=== B (1b): compositional OOD, drop = seen - held-out balanced accuracy; 125 tables ===
+  rho(ood_drop, d_add | BROJA) = +0.309 [+0.12, +0.49] | rho(ood_drop, BROJA | d_add) = +0.357 [+0.20, +0.51]
+  -> B: SYNERGY WINS
+
+=== D (1d): matched pairs by construction ===
+        gap        syn_broja          dens      d_add     
+role  dense   zero     dense   zero  dense zero dense zero
+pair                                                      
+0.0   0.773  0.003     0.500  0.500  0.074  0.0  0.10  0.0
+1.0   0.434  0.016     0.529  0.529  0.083  0.0  0.06  0.0
+2.0   0.402  0.073     0.580  0.580  0.061  0.0  0.06  0.0
+3.0   0.562 -0.002     0.583  0.583  0.095  0.0  0.08  0.0
+4.0   0.952  0.082     0.591  0.589  0.089  0.0  0.12  0.0
+5.0   0.938  0.100     0.591  0.592  0.089  0.0  0.12  0.0
+6.0   0.599  0.100     0.594  0.593  0.079  0.0  0.08  0.0
+7.0   0.226  0.048     0.596  0.594  0.083  0.0  0.04  0.0
+8.0   0.361  0.062     0.605  0.604  0.071  0.0  0.10  0.0
+9.0   0.435  0.056     0.605  0.605  0.071  0.0  0.06  0.0
+10.0  0.353  0.077     0.609  0.609  0.063  0.0  0.08  0.0
+11.0  0.603  0.071     0.617  0.617  0.124  0.0  0.09  0.0
+  gap(dense) - gap(zero): mean +0.496; >= 0.20 in 92% of 12 pairs -> PASS
+
+[reported] 1c survival in removable vs non-removable cells (tables with non-removable cells; seed means, then table means):
+P1_rem     0.761
+P2_rem     0.734
+r12_rem    0.604
+E_rem      0.048
+N_rem      0.053
+P1_non     0.582
+P2_non     0.579
+r12_non    0.497
+E_non      0.162
+N_non      0.162
+
+[reported] with XOR density instead of d_add, and with I_ccs:
+  shortfall: rho(., density | BROJA) +0.846; rho(., BROJA | density) +0.089; rho(., d_add | CCS) +0.810; rho(., CCS | d_add) -0.110
+  ood_drop: rho(., density | BROJA) +0.009; rho(., BROJA | density) +0.407; rho(., d_add | CCS) +0.056; rho(., CCS | d_add) +0.402
+  R1 with d_add: rho(gap, d_add | BROJA) +0.931
+
+[reported] recovery fractions and OOD by structure (tables split at d_add = 0):
+          rec_lin  rec_mlp  shortfall  seen_bal  ood_bal  ood_drop  ood_lin_bal  ood_onehot_cells
+additive                                                                                         
+False       0.606    0.800       0.23     0.891    0.751     0.140        0.714             0.764
+True        0.739    0.825       0.09     0.901    0.820     0.081        0.824             0.902
+  Spearman(rec_mlp, d_add) -0.425; Spearman(rec_mlp, BROJA) -0.345
+
+VERDICTS: R1 STRUCTURE WINS | A STRUCTURE WINS | B SYNERGY WINS | D PASS

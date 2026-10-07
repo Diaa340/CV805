@@ -1,0 +1,35 @@
+Phase 1b: 50 units with synergy learned in task 1
+
+=== REPLAY regime: mean retention per arm (task-2 accuracy) ===
+  no_repair     R=0.88 U1=0.73 U2=0.64 S=0.59 | task2 0.89
+  swap_both     R=0.91 U1=0.77 U2=0.70 S=0.60 | task2 0.85
+  swap_1        R=0.93 U1=0.73 U2=1.02 S=0.81 | task2 0.56
+  swap_2        R=0.98 U1=1.02 U2=0.67 S=0.73 | task2 0.49
+  ceiling       R=0.94 U1=0.81 U2=0.73 S=0.56 | task2 0.54
+  fusion_refit  R=0.87 U1=0.73 U2=0.63 S=0.58 | task2 0.89
+  encoder_refit R=0.83 U1=0.64 U2=0.55 S=0.50 | task2 0.90
+  anchor_1      R=0.86 U1=0.66 U2=0.68 S=0.55 | task2 0.88
+  anchor_2      R=0.88 U1=0.76 U2=0.56 S=0.54 | task2 0.88
+  anchor_both   R=0.83 U1=0.65 U2=0.54 S=0.49 | task2 0.89
+  synergy recovery (share of gap to ceiling), median: fusion_refit=-0.15 encoder_refit=-0.60 anchor_1=-0.21 anchor_2=-0.38 anchor_both=-0.64 swap_both=0.19
+
+=== NO-REPLAY regime: mean retention per arm (task-2 accuracy) ===
+  no_repair     R=0.58 U1=0.45 U2=0.40 S=0.17 | task2 0.90
+  swap_both     R=0.71 U1=0.58 U2=0.52 S=0.20 | task2 0.79
+  swap_1        R=0.82 U1=0.58 U2=0.97 S=0.52 | task2 0.52
+  swap_2        R=0.95 U1=1.01 U2=0.55 S=0.47 | task2 0.46
+  ceiling       R=0.94 U1=0.81 U2=0.73 S=0.56 | task2 0.54
+  fusion_refit  R=0.78 U1=0.61 U2=0.53 S=0.24 | task2 0.89
+  encoder_refit R=0.82 U1=0.63 U2=0.53 S=0.43 | task2 0.90
+  anchor_1      R=0.83 U1=0.66 U2=0.50 S=0.30 | task2 0.87
+  anchor_2      R=0.76 U1=0.55 U2=0.55 S=0.29 | task2 0.86
+  anchor_both   R=0.83 U1=0.65 U2=0.54 S=0.44 | task2 0.89
+  synergy recovery (share of gap to ceiling), median: fusion_refit=0.20 encoder_refit=0.86 anchor_1=0.09 anchor_2=0.09 anchor_both=0.79 swap_both=0.07
+
+=== PRE-REGISTERED VERDICT ===
+  1. anchor_both recovers >= 50% of synergy gap (median): replay -0.64 (n=19) -> FAIL | no replay 0.79 (n=50) -> PASS
+  2. S(anchor_both) - S(fusion_refit) >= 0.10: replay -0.087 -> FAIL | no replay +0.203 -> PASS
+  3. task-2 accuracy kept: replay  -> PASS | no replay  -> PASS
+  4. H2 (4.5/3.0, both): anchor_2 (weak) > anchor_1 in 30% of 20 pairs (need >= 70%) -> FAIL
+  5. H2 secondary (all units): anchoring the more-drifted modality wins in 47% of 100 pairs (need >= 70%) -> FAIL
+  -> H1 (fusion keeps the interaction; encoders drift): NOT SUPPORTED; H2 (weak modality): NOT SUPPORTED

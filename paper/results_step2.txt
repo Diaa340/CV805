@@ -1,0 +1,35 @@
+units 103 from 28 families ({'exist': 43, 'equal_integer': 18, 'less_than': 15, 'greater_than': 10, 'equal_color': 6, 'equal_size': 5, 'equal_material': 4, 'equal_shape': 2})
+collinearity: Spearman(dens, MMI synergy) +0.98; (d_add, MMI) +0.98
+
+=== S2-A (primary): the table's additive ceiling predicts the linear readout (symbolic features) ===
+  (i) Spearman(full - linear, 1 - ceiling) = +0.749 (need >= 0.6)
+  (ii) units with full >= 0.90: 33; MAE(linear, ceiling) = 0.011 (need <= 0.05); mean linear 0.876 vs ceiling 0.886
+  -> PASS
+
+=== S2-B (primary): the tasks need fusion; frozen CLIP models learn only the additive part ===
+  symbolic full model above the additive ceiling (+0.03) in 45% of units (need >= 70%)
+  CLIP: learnable units 59/103; full model at or below the ceiling (+0.02) in 59% (need >= 70%)
+  means: ceiling 0.853 | symbolic full 0.875 linear 0.838 | CLIP full 0.853 linear 0.832 | majority 0.762
+  -> FAIL
+
+[reported] S2-C: PID estimates vs exact structure (Spearman across units)
+  syn_mmi_exact   vs d_add +0.98 | vs density +0.98 | vs symbolic gap +0.76 | mean 0.568
+  syn_broja_sym   vs d_add +0.19 | vs density +0.17 | vs symbolic gap -0.22 | mean 0.038
+  syn_ccs_sym     vs d_add +0.21 | vs density +0.21 | vs symbolic gap +0.10 | mean 0.035
+  syn_broja_clip  vs d_add +0.46 | vs density +0.45 | vs symbolic gap +0.26 | mean 0.042
+  syn_ccs_clip    vs d_add +0.41 | vs density +0.42 | vs symbolic gap +0.42 | mean 0.041
+  partial (symbolic gap): rho(gap, d_add | BROJA_sym) +0.83; rho(gap, BROJA_sym | d_add) -0.57 (high collinearity: not decisive)
+
+[reported] by final function:
+                 dens  d_add_hat  syn_mmi_exact   ceil  gap_sym  gap_clip
+final                                                                    
+equal_color     0.018      0.114          0.497  0.883   -0.008    -0.012
+equal_integer   0.048      0.192          0.683  0.807    0.043     0.026
+equal_material  0.010      0.078          0.374  0.920    0.000     0.001
+equal_shape     0.010      0.086          0.388  0.909    0.005    -0.003
+equal_size      0.010      0.080          0.398  0.918    0.003     0.004
+exist           0.032      0.152          0.588  0.846    0.042     0.024
+greater_than    0.020      0.117          0.490  0.880    0.034     0.016
+less_than       0.033      0.150          0.588  0.851    0.061     0.035
+
+VERDICTS: S2-A PASS | S2-B FAIL

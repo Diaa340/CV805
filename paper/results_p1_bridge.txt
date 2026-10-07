@@ -1,0 +1,88 @@
+P1 bridge: 90 units; synergy learned in task 1 in 100% of units (learnability rule: >= 50%)
+  per dataset: bridge_cifar2v: 100% (task-1 acc S 0.48, chance 0.10), bridge_food101: 100% (task-1 acc S 0.82, chance 0.10), bridge_n24news: 100% (task-1 acc S 0.75, chance 0.33)
+
+==================== ALL UNITS POOLED [pre-registered test] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=180 r=0.919 R2=0.757 MAE=0.087 | non-trivial subset n=50 r=0.949 R2=0.155 MAE=0.228
+  U1 n=180 r=0.993 R2=0.983 MAE=0.025 | non-trivial subset n=45 r=0.982 R2=0.929 MAE=0.048
+  U2 n=180 r=0.995 R2=0.991 MAE=0.022 | non-trivial subset n=8 r=0.900 R2=-0.430 MAE=0.033
+  S  n=180 r=0.997 R2=0.993 MAE=0.018 | non-trivial subset n=91 r=0.996 R2=0.989 MAE=0.021
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 80%; U2 undamaged by modality-1 drift in 98% (need >= 80%)
+  b2. mean min-factor R 0.79 vs S 0.47 -> +0.321 (need >= 0.10)
+      mean factors S: s1 0.62 s2 0.69 | R: s1 0.92 s2 0.84 | U1: s1 0.61 s2 0.96 | U2: s1 1.00 s2 0.64
+(c) reproduction: actual vs swap
+  replay    R  n=90 r=0.964 R2=0.888 MAE=0.034 (mean actual 0.83, swap 0.86, fusion-only 0.98)
+  replay    U1 n=90 r=0.969 R2=0.860 MAE=0.059 (mean actual 0.63, swap 0.69, fusion-only 0.98)
+  replay    U2 n=90 r=0.986 R2=0.936 MAE=0.044 (mean actual 0.72, swap 0.76, fusion-only 0.99)
+  replay    S  n=90 r=0.988 R2=0.963 MAE=0.030 (mean actual 0.60, swap 0.62, fusion-only 0.99)
+  no replay R  n=90 r=0.950 R2=0.829 MAE=0.110 (mean actual 0.50, swap 0.60, fusion-only 0.94)
+  no replay U1 n=90 r=0.976 R2=0.891 MAE=0.089 (mean actual 0.37, swap 0.45, fusion-only 0.91)
+  no replay U2 n=90 r=0.958 R2=0.834 MAE=0.114 (mean actual 0.42, swap 0.53, fusion-only 0.93)
+  no replay S  n=90 r=0.976 R2=0.872 MAE=0.043 (mean actual 0.15, swap 0.19, fusion-only 0.97)
+
+==================== per dataset: bridge_cifar2v [reported] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=60 r=0.948 R2=0.699 MAE=0.080 | non-trivial subset n=20 r=0.989 R2=0.275 MAE=0.179
+  U1 n=60 r=0.996 R2=0.992 MAE=0.021 | non-trivial subset n=13 r=0.992 R2=0.954 MAE=0.033
+  U2 n=60 r=0.995 R2=0.989 MAE=0.026 | non-trivial subset n=7 r=0.874 R2=-0.733 MAE=0.035
+  S  n=60 r=0.994 R2=0.986 MAE=0.015 | non-trivial subset n=34 r=0.993 R2=0.982 MAE=0.018
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 85%; U2 undamaged by modality-1 drift in 93% (need >= 80%)
+  b2. mean min-factor R 0.80 vs S 0.33 -> +0.473 (need >= 0.10)
+      mean factors S: s1 0.55 s2 0.56 | R: s1 0.86 s2 0.90 | U1: s1 0.56 s2 0.97 | U2: s1 1.00 s2 0.55
+(c) reproduction: actual vs swap
+  replay    R  n=30 r=0.968 R2=0.592 MAE=0.069 (mean actual 0.78, swap 0.85, fusion-only 0.96)
+  replay    U1 n=30 r=0.983 R2=0.788 MAE=0.109 (mean actual 0.53, swap 0.64, fusion-only 0.95)
+  replay    U2 n=30 r=0.988 R2=0.838 MAE=0.092 (mean actual 0.56, swap 0.65, fusion-only 0.97)
+  replay    S  n=30 r=0.978 R2=0.852 MAE=0.034 (mean actual 0.37, swap 0.40, fusion-only 0.99)
+  no replay R  n=30 r=0.981 R2=0.726 MAE=0.149 (mean actual 0.46, swap 0.61, fusion-only 0.90)
+  no replay U1 n=30 r=0.989 R2=0.862 MAE=0.121 (mean actual 0.33, swap 0.45, fusion-only 0.85)
+  no replay U2 n=30 r=0.989 R2=0.904 MAE=0.103 (mean actual 0.34, swap 0.44, fusion-only 0.90)
+  no replay S  n=30 r=0.945 R2=0.577 MAE=0.038 (mean actual 0.07, swap 0.11, fusion-only 0.96)
+
+==================== per dataset: bridge_food101 [reported] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=60 r=0.904 R2=0.586 MAE=0.072 | non-trivial subset n=10 r=0.918 R2=-5.731 MAE=0.313
+  U1 n=60 r=0.990 R2=0.971 MAE=0.029 | non-trivial subset n=10 r=0.945 R2=-1.193 MAE=0.107
+  U2 n=60 r=0.990 R2=0.974 MAE=0.024 | non-trivial subset n=0 r=nan R2=nan MAE=nan
+  S  n=60 r=0.998 R2=0.997 MAE=0.014 | non-trivial subset n=17 r=0.998 R2=0.996 MAE=0.017
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 88%; U2 undamaged by modality-1 drift in 100% (need >= 80%)
+  b2. mean min-factor R 0.89 vs S 0.54 -> +0.353 (need >= 0.10)
+      mean factors S: s1 0.64 s2 0.79 | R: s1 0.96 s2 0.92 | U1: s1 0.67 s2 0.97 | U2: s1 1.01 s2 0.79
+(c) reproduction: actual vs swap
+  replay    R  n=30 r=0.964 R2=0.788 MAE=0.015 (mean actual 0.94, swap 0.95, fusion-only 0.99)
+  replay    U1 n=30 r=0.970 R2=0.881 MAE=0.039 (mean actual 0.74, swap 0.78, fusion-only 0.99)
+  replay    U2 n=30 r=0.910 R2=0.765 MAE=0.021 (mean actual 0.92, swap 0.94, fusion-only 1.00)
+  replay    S  n=30 r=0.973 R2=0.928 MAE=0.022 (mean actual 0.77, swap 0.78, fusion-only 0.99)
+  no replay R  n=30 r=0.962 R2=0.705 MAE=0.142 (mean actual 0.60, swap 0.74, fusion-only 0.94)
+  no replay U1 n=30 r=0.985 R2=0.880 MAE=0.102 (mean actual 0.39, swap 0.49, fusion-only 0.92)
+  no replay U2 n=30 r=0.951 R2=0.555 MAE=0.198 (mean actual 0.48, swap 0.68, fusion-only 0.91)
+  no replay S  n=30 r=0.982 R2=0.911 MAE=0.042 (mean actual 0.20, swap 0.24, fusion-only 0.97)
+
+==================== per dataset: bridge_n24news [reported] ====================
+(a) composition sb_t = s1_t * s2_t (both regimes)
+  R  n=60 r=0.931 R2=0.790 MAE=0.110 | non-trivial subset n=20 r=0.990 R2=0.293 MAE=0.235
+  U1 n=60 r=0.993 R2=0.984 MAE=0.026 | non-trivial subset n=22 r=0.993 R2=0.978 MAE=0.030
+  U2 n=60 r=0.998 R2=0.996 MAE=0.017 | non-trivial subset n=1 r=nan R2=nan MAE=nan
+  S  n=60 r=0.996 R2=0.985 MAE=0.025 | non-trivial subset n=40 r=0.996 R2=0.985 MAE=0.025
+(b) two-factor signature
+  b1. U1 undamaged by modality-2 drift in 67%; U2 undamaged by modality-1 drift in 100% (need >= 80%)
+  b2. mean min-factor R 0.67 vs S 0.53 -> +0.138 (need >= 0.10)
+      mean factors S: s1 0.67 s2 0.71 | R: s1 0.93 s2 0.71 | U1: s1 0.59 s2 0.93 | U2: s1 1.00 s2 0.59
+(c) reproduction: actual vs swap
+  replay    R  n=30 r=0.994 R2=0.985 MAE=0.018 (mean actual 0.76, swap 0.77, fusion-only 0.99)
+  replay    U1 n=30 r=0.980 R2=0.942 MAE=0.030 (mean actual 0.63, swap 0.65, fusion-only 1.00)
+  replay    U2 n=30 r=0.997 R2=0.988 MAE=0.020 (mean actual 0.69, swap 0.70, fusion-only 1.00)
+  replay    S  n=30 r=0.810 R2=0.539 MAE=0.033 (mean actual 0.66, swap 0.67, fusion-only 1.00)
+  no replay R  n=30 r=0.993 R2=0.985 MAE=0.039 (mean actual 0.45, swap 0.45, fusion-only 0.97)
+  no replay U1 n=30 r=0.990 R2=0.963 MAE=0.044 (mean actual 0.39, swap 0.42, fusion-only 0.97)
+  no replay U2 n=30 r=0.997 R2=0.982 MAE=0.041 (mean actual 0.43, swap 0.47, fusion-only 0.97)
+  no replay S  n=30 r=0.963 R2=0.812 MAE=0.048 (mean actual 0.18, swap 0.22, fusion-only 0.98)
+
+==================== PRE-REGISTERED VERDICT ====================
+  pooled: (a) composition PASS | (b) two-factor signature PASS | (c) reproduction PASS
+  bridge_cifar2v   (a) PASS | (b) PASS | (c) PASS   [reported, not a criterion]
+  bridge_food101   (a) PASS | (b) PASS | (c) PASS   [reported, not a criterion]
+  bridge_n24news   (a) PASS | (b) FAIL | (c) FAIL   [reported, not a criterion]

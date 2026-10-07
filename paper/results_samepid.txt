@@ -1,0 +1,20 @@
+12 families x 3 arrangements; max within-family spread: BROJA synergy 0.0024, BROJA redundancy 0.0024, I_ccs synergy 0.0000
+       d_add                gap              
+kind     max   min  orig    max    min   orig
+family                                       
+0       0.18  0.14  0.17  0.677  0.617  0.615
+1       0.20  0.15  0.18  0.824  0.749  0.861
+2       0.21  0.16  0.19  0.819  0.735  0.723
+3       0.20  0.16  0.19  0.816  0.764  0.801
+4       0.17  0.12  0.14  0.766  0.640  0.705
+5       0.19  0.15  0.18  0.890  0.826  0.866
+6       0.17  0.14  0.16  1.044  0.794  0.978
+7       0.18  0.14  0.15  0.775  0.680  0.654
+8       0.19  0.15  0.18  0.656  0.606  0.623
+9       0.22  0.17  0.20  0.736  0.685  0.698
+10      0.16  0.13  0.15  0.874  0.813  0.841
+11      0.23  0.16  0.20  0.730  0.574  0.749
+
+within-family Spearman(d_add, gap) +0.784 (need >= 0.4)
+gap(max) - gap(min): mean +0.094, one-sided 95% lower +0.063; >= 0.05 in 100% of families (need >= 75%)
+VERDICT: PASS (identical PID, the readout gap follows the degree of non-additivity)

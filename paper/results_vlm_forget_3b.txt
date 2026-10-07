@@ -1,0 +1,30 @@
+[3b] cells 15260 (non-additive 7630); base accuracy 0.971 (additive 0.965, non-additive 0.978); correct at base 14824
+
+retention among cells correct at base (excluding equal_integer): overall | additive | non-additive | matched gap (non-add - add)
+  OCR   250 steps: 0.993 | 0.994 | 0.992 | -0.002
+  OCR  1000 steps: 0.988 | 0.988 | 0.989 | +0.001
+  OCR  3000 steps: 0.975 | 0.981 | 0.969 | -0.006
+  OCR  8000 steps: 0.903 | 0.912 | 0.895 | +0.012
+
+=== primary (level 8000): matched retention gap +0.012 [95% image bootstrap -0.003, +0.025] ===
+  -> KILL: fusion not forgotten first
+
+=== repair (secondary): among cells lost at 8000 steps (n=1188, non-additive 657), share regained ===
+  projector: additive 0.885 | non-additive 0.948 | matched (add - non-add) -0.021 [-0.047, +0.012] -> NOT SHOWN
+  last4: additive 0.448 | non-additive 0.094 | matched (add - non-add) +0.198 [+0.145, +0.262] -> ADDITIVE RECOVERS MORE
+
+[reported] equal_integer separately, and raw retention by type at the largest drift:
+  equal_integer OCR 250: additive 0.992 | non-additive 0.973 | matched -0.019
+  equal_integer OCR 1000: additive 0.980 | non-additive 0.964 | matched -0.018
+  equal_integer OCR 3000: additive 0.939 | non-additive 0.929 | matched -0.018
+  equal_integer OCR 8000: additive 0.529 | non-additive 0.568 | matched +0.030
+  equal_color     retention at 8000: additive 0.968 | non-additive 0.866
+  equal_integer   retention at 8000: additive 0.529 | non-additive 0.568
+  equal_material  retention at 8000: additive 0.932 | non-additive 0.930
+  equal_shape     retention at 8000: additive 0.735 | non-additive 0.949
+  equal_size      retention at 8000: additive 0.927 | non-additive 0.926
+  exist           retention at 8000: additive 0.915 | non-additive 0.877
+  greater_than    retention at 8000: additive 0.894 | non-additive 0.945
+  less_than       retention at 8000: additive 0.905 | non-additive 0.922
+
+VERDICT: KILL: fusion not forgotten first

@@ -1,0 +1,35 @@
+=== 99 sub-tables (one per grid, 10 x 50); within-benchmark Spearman(s, BROJA) / (s, yes): clevr +0.02 / -0.00, clove -0.00 / +0.00, gqa +0.20 / -0.00, pope +0.02 / +0.00
+
+--- Idefics3-8B (confirmatory) ---
+  accuracy / EMAP drop by benchmark: clevr 0.866 / +0.119 | gqa 0.927 / +0.045 | clove 0.914 / +0.051 | pope 0.971 / +0.023
+  bound check (delta >= s_low - error): 1.000
+  C1 rho(delta, s | PID, acc, yes)  +0.416 [+0.212,+0.559]  (>= 0.3, lower > 0) -> True
+  C2 rho(delta, PID | s, acc, yes)  +0.065 [-0.167,+0.285]  (interval contains 0, |rho| <= 0.15) -> True
+  C3 regression (benchmark effects): beta_s +0.302 [+0.022,+0.750], beta_PID +0.443, beta_yes +0.200; R2 added by s +0.014 (>= 0.05), by PID +0.021 (<= 0.01) -> False
+  within benchmark rho(delta, s) / rho(delta, PID): clevr +0.37 / -0.47 | gqa +0.25 / +0.05 | clove +0.26 / +0.30 | pope +0.58 / +0.49
+
+--- Qwen2.5-VL-7B ---
+  accuracy / EMAP drop by benchmark: clevr 0.904 / +0.162 | gqa 0.937 / +0.057 | clove 0.927 / +0.055 | pope 0.978 / +0.029
+  bound check (delta >= s_low - error): 1.000
+  C1 rho(delta, s | PID, acc, yes)  +0.260 [+0.059,+0.440]  (>= 0.3, lower > 0) -> False
+  C2 rho(delta, PID | s, acc, yes)  +0.027 [-0.181,+0.252]  (interval contains 0, |rho| <= 0.15) -> True
+  C3 regression (benchmark effects): beta_s +0.152 [-0.014,+0.438], beta_PID +0.417, beta_yes +0.386; R2 added by s +0.003 (>= 0.05), by PID +0.018 (<= 0.01) -> False
+  within benchmark rho(delta, s) / rho(delta, PID): clevr -0.16 / -0.47 | gqa +0.17 / +0.23 | clove +0.41 / +0.32 | pope +0.23 / +0.93
+
+--- InternVL3.5-8B ---
+  accuracy / EMAP drop by benchmark: clevr 0.976 / +0.202 | gqa 0.899 / +0.057 | clove 0.859 / +0.054 | pope 0.933 / -0.004
+  bound check (delta >= s_low - error): 1.000
+  C1 rho(delta, s | PID, acc, yes)  +0.418 [+0.197,+0.584]  (>= 0.3, lower > 0) -> True
+  C2 rho(delta, PID | s, acc, yes)  +0.048 [-0.157,+0.261]  (interval contains 0, |rho| <= 0.15) -> True
+  C3 regression (benchmark effects): beta_s +0.539 [+0.357,+0.685], beta_PID +0.029, beta_yes +0.445; R2 added by s +0.045 (>= 0.05), by PID +0.000 (<= 0.01) -> False
+  within benchmark rho(delta, s) / rho(delta, PID): clevr +0.43 / +0.47 | gqa +0.17 / +0.14 | clove +0.39 / +0.32 | pope +0.46 / +0.60
+
+--- LLaVA-OV-1.5-8B ---
+  accuracy / EMAP drop by benchmark: clevr 0.990 / +0.169 | gqa 0.945 / +0.060 | clove 0.925 / +0.055 | pope 0.973 / +0.024
+  bound check (delta >= s_low - error): 1.000
+  C1 rho(delta, s | PID, acc, yes)  +0.433 [+0.228,+0.584]  (>= 0.3, lower > 0) -> True
+  C2 rho(delta, PID | s, acc, yes)  +0.239 [+0.022,+0.417]  (interval contains 0, |rho| <= 0.15) -> False
+  C3 regression (benchmark effects): beta_s +0.340 [+0.038,+0.514], beta_PID +0.428, beta_yes +0.054; R2 added by s +0.018 (>= 0.05), by PID +0.019 (<= 0.01) -> False
+  within benchmark rho(delta, s) / rho(delta, PID): clevr +0.58 / +0.28 | gqa -0.24 / +0.26 | clove +0.37 / +0.35 | pope +0.17 / +0.83
+
+VERDICT (confirmatory, Idefics3-8B): C1 PASS | C2 PASS | C3 FAIL -> CONFIRMED (primary = C1 and C2)

@@ -1,0 +1,32 @@
+
+=== tables: 93 units, 417461 task-1-correct test samples (non-additive 21259) ===
+  retention (additive / non-additive), matched gap [95% unit bootstrap], task-2 accuracy:
+    finetune           0.507 / 0.532 | gap +0.023 [+0.002, +0.044]   | task2 0.813
+    ewc                0.529 / 0.546 | gap +0.021 [+0.003, +0.042]   | task2 0.808
+    lwf                0.816 / 0.761 | gap -0.030 [-0.049, -0.012] * | task2 0.752
+    l2                 0.507 / 0.546 | gap +0.036 [+0.008, +0.067]   | task2 0.775
+    er_random_1000     0.800 / 0.729 | gap -0.025 [-0.041, -0.010]   | task2 0.802
+    derpp_random_1000  0.944 / 0.904 | gap -0.015 [-0.024, -0.006]   | task2 0.625
+  L2b LwF selective protection (gain on additive - gain on non-additive): +0.080 [+0.054, +0.105] -> PASS
+  L2a replay coverage (ER random 50; cells covered 0.38): non-additive covered-uncovered minus additive: -0.050 [-0.086, -0.011] -> FAIL
+  L3 buffer 50: rule+exceptions vs best competitor (random): overall -0.025 (lower -0.031), non-additive +0.102 (lower +0.082), task2 -0.001 -> FAIL   [reported] pure exception buffer overall -0.055
+  L3 buffer 250: rule+exceptions vs best competitor (random): overall -0.053 (lower -0.059), non-additive +0.160 (lower +0.142), task2 +0.001 -> FAIL   [reported] pure exception buffer overall -0.164
+  L3 buffer 1000: rule+exceptions vs best competitor (random): overall -0.039 (lower -0.044), non-additive +0.149 (lower +0.136), task2 +0.003 -> FAIL   [reported] pure exception buffer overall -0.085
+  [reported] DER++ 250: rule+exceptions vs random overall -0.053, non-additive +0.116
+  [reported] DER++ 1000: rule+exceptions vs random overall -0.014, non-additive +0.063
+
+=== clevr: 40 units, 105138 task-1-correct test samples (non-additive 6398) ===
+  retention (additive / non-additive), matched gap [95% unit bootstrap], task-2 accuracy:
+    finetune           0.599 / 0.482 | gap -0.070 [-0.181, +0.027]   | task2 0.885
+    ewc                0.625 / 0.483 | gap -0.082 [-0.196, +0.022]   | task2 0.883
+    lwf                0.718 / 0.544 | gap -0.097 [-0.168, -0.028] * | task2 0.836
+    l2                 0.632 / 0.528 | gap -0.041 [-0.170, +0.070]   | task2 0.846
+    er_random_1000     0.939 / 0.636 | gap -0.207 [-0.249, -0.169] * | task2 0.862
+    derpp_random_1000  0.980 / 0.780 | gap -0.155 [-0.178, -0.135] * | task2 0.832
+  L2b LwF selective protection (gain on additive - gain on non-additive): +0.056 [+0.002, +0.108] -> PASS
+  L3 buffer 250: rule+exceptions vs best competitor (random): overall -0.107 (lower -0.120), non-additive +0.235 (lower +0.197), task2 -0.004 -> FAIL   [reported] pure exception buffer overall -0.567
+  L3 buffer 1000: rule+exceptions vs best competitor (random): overall -0.057 (lower -0.069), non-additive +0.213 (lower +0.176), task2 -0.007 -> FAIL   [reported] pure exception buffer overall -0.246
+  [reported] DER++ 250: rule+exceptions vs random overall -0.013, non-additive +0.214
+  [reported] DER++ 1000: rule+exceptions vs random overall -0.003, non-additive +0.120
+
+VERDICTS: L1 MIXED ({'L1 tables': np.int64(1), 'L1 clevr': np.int64(3)}) | L2b tables PASS | L2a tables FAIL | L3 tables FAIL | L2b clevr PASS | L3 clevr FAIL

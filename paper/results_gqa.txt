@@ -1,0 +1,18 @@
+24 units from 4 families; yes 0.117; exact MMI synergy 0.428 bits
+
+=== G1: trained additive model (CLIP) vs exact additive ceiling on test cells ===
+  additive 0.886 | exact ceiling 0.930 | full 0.915 | linear readout 0.882 | majority 0.883; MAE(additive, ceiling) 0.043 -> FAIL
+
+=== VLM (Qwen2.5-VL-7B), balanced accuracy on complete 10 x 100 tables ===
+          bal_vlm  bal_emap  ceil_bal  bal_emap_truth
+family                                               
+exist       0.916     0.562     0.896           0.544
+existC      0.917     0.620     0.915           0.643
+existOr     0.773     0.504     0.851           0.518
+existOrC    0.729     0.501     0.897           0.549
+  means: VLM 0.834 | EMAP(VLM) 0.547 | exact balanced ceiling 0.890 | EMAP(truth) 0.564
+  G2 (VLM uses interactions): VLM - EMAP(VLM) +0.287 [+0.248, +0.325] -> VLM FUSES
+  G3 (EMAP of the VLM recovers the exact ceiling): MAE 0.343, Spearman +0.530 -> FAIL
+  [reported] plain accuracy: VLM 0.935, EMAP 0.879, exact ceiling 0.931
+
+VERDICTS: G1 FAIL | G2 VLM FUSES | G3 FAIL

@@ -1,0 +1,20 @@
+Qwen2.5-VL-7B-Instruct: 25401 cells, 103 units; accuracy 0.928, balanced 0.925; non-additive share 0.300
+raw error: additive cells 0.079 (n=17771), non-additive 0.054 (n=7630)
+
+=== V1 (primary): odds ratio of an error on non-additive cells, with question and image fixed effects ===
+  OR = 0.54 [95% image-bootstrap 0.42, 0.65]
+  -> MIXED
+
+[reported] by final function (error additive / non-additive, n non-additive):
+  equal_color     0.030 / 0.119 (n=252)
+  equal_integer   0.380 / 0.165 (n=1294)
+  equal_material  0.020 / 0.040 (n=376)
+  equal_shape     0.022 / 0.139 (n=151)
+  equal_size      0.023 / 0.043 (n=532)
+  exist           0.009 / 0.020 (n=3963)
+  greater_than    0.023 / 0.015 (n=410)
+  less_than       0.015 / 0.037 (n=652)
+
+[reported] share of non-additive-cell errors: the VLM gives the additive rule's answer by construction (binary); mean |log-odds| additive 8.35 vs non-additive 6.97
+
+VERDICT: MIXED

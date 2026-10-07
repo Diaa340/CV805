@@ -1,0 +1,28 @@
+=== Nonce-word CLEVR, Qwen2.5-VL-3B + LoRA: 2 orders, 40 units; zero-shot accuracy rule 0.644, exceptions 0.530; EWC picked {0: '10000', 1: '100'} ===
+  method        BWT_R   BWT_E | dBWT raw | dBWT_s [95%]           | E yes/no  R yes/no            | dFWT_s [95%]           | final acc R / E
+  finetune     -0.027 +0.011 | +0.038 | +0.105 [+0.007,+0.176] | -0.079/+0.240 -0.148/+0.042 | +0.041 [-0.010,+0.097] | 0.831 / 0.491
+  ewc          -0.033 +0.033 | +0.066 | +0.150 [+0.046,+0.219] | -0.076/+0.310 -0.184/+0.054 | +0.043 [-0.005,+0.092] | 0.828 / 0.517
+  lwf_1        -0.058 +0.040 | +0.098 | +0.241 [+0.082,+0.346] | -0.140/+0.499 -0.314/+0.089 | +0.037 [-0.001,+0.075] | 0.808 / 0.519
+  er           -0.015 +0.052 | +0.068 | +0.046 [+0.015,+0.080] | +0.081/-0.021 +0.024/-0.038 | +0.045 [+0.011,+0.081] | 0.850 / 0.538
+  derpp        -0.009 -0.015 | -0.006 | -0.006 [-0.034,+0.022] | -0.008/-0.032 -0.009/-0.009 | +0.019 [-0.031,+0.071] | 0.864 / 0.471
+  er_classbal  -0.020 +0.118 | +0.138 | +0.130 [+0.049,+0.216] | +0.142/+0.055 -0.005/-0.028 | +0.082 [+0.013,+0.155] | 0.842 / 0.623
+  lora_expand  -0.000 +0.057 | +0.057 | +0.035 [-0.001,+0.075] | +0.094/-0.037 +0.040/-0.023 | +0.043 [-0.002,+0.087] | 0.858 / 0.539
+
+GATES: zero-shot accuracy 0.587 (must be <= 0.80); task-only accuracy 0.651 (must be >= zero-shot + 0.10) -> NOT MET: tests below are not interpretable
+
+VC1 ER and DER++ lose exceptions more within the same answer: FAIL
+VC2 DER++ hinders new exceptions more (dFWT_s +0.019 [-0.031,+0.071]): FAIL
+VC3 LoRA-expansion dBWT_s minus ER's: -0.010 [-0.039,+0.023]: FAIL
+
+== Reading (after seeing results) ==
+- GATE NOT MET (pre-registered): task-only accuracy 0.651 vs zero-shot 0.587 (+0.064 < +0.10). VC1-VC3 are reported
+  but not interpreted. Retrained task-1 models (resume) agreed with the saved ones on 0.889 / 0.879 of task-1 cells.
+- POST-HOC, why the gate failed: the model learns the new words for the rule cells (zero-shot 0.644 -> task-only
+  0.861) but not for the exceptions, which get WORSE with training (0.530 -> 0.441; exception "no" cells 0.746 ->
+  0.278). The pilot (+0.16 to +0.26) used natural test samples (~10% exceptions); the gate used the 50/50 sample.
+- So, when a VLM must learn new word-image bindings within this budget, LoRA learns the additive rule and overrides
+  the exceptions (below chance). The bottleneck is acquisition, not retention: exceptions that are never learned
+  cannot be forgotten. This matches the forward-transfer finding (exceptions are learned worse) and the small models
+  on GQA / CLOVE, where exceptions also sit near chance after training.
+- POST-HOC: class-balanced ER ends with the highest exception accuracy (0.623 vs 0.47-0.54 for the others), with rule
+  accuracy unchanged (0.842).

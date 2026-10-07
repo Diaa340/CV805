@@ -1,0 +1,54 @@
+POST-HOC DIAGNOSTICS (not pre-registered)
+PART A: kappa_c under KNOWN co-drift
+  [fv_cremad] task-1 S samples correct: 16777
+    size 0.3 gamma 0.00: P(S1) 0.99 P(S2) 0.77 r12 0.77 N -0.001 | kappa_c (implemented) -0.085 | kappa_c^pair -0.139
+    size 0.3 gamma 0.25: P(S1) 0.99 P(S2) 0.86 r12 0.86 N -0.001 | kappa_c (implemented) -0.061 | kappa_c^pair -0.094
+    size 0.3 gamma 0.50: P(S1) 0.99 P(S2) 0.94 r12 0.93 N +0.000 | kappa_c (implemented) -0.039 | kappa_c^pair -0.056
+    size 0.3 gamma 0.75: P(S1) 0.99 P(S2) 0.98 r12 0.98 N +0.003 | kappa_c (implemented) -0.019 | kappa_c^pair -0.026
+    size 0.3 gamma 1.00: P(S1) 0.99 P(S2) 1.00 r12 1.00 N +0.005 | kappa_c (implemented) -0.007 | kappa_c^pair -0.005
+    size 0.6 gamma 0.00: P(S1) 0.99 P(S2) 0.59 r12 0.59 N +0.006 | kappa_c (implemented) -0.256 | kappa_c^pair -0.480
+    size 0.6 gamma 0.25: P(S1) 0.99 P(S2) 0.63 r12 0.63 N +0.006 | kappa_c (implemented) -0.192 | kappa_c^pair -0.315
+    size 0.6 gamma 0.50: P(S1) 0.99 P(S2) 0.75 r12 0.76 N +0.017 | kappa_c (implemented) -0.121 | kappa_c^pair -0.170
+    size 0.6 gamma 0.75: P(S1) 0.99 P(S2) 0.93 r12 0.93 N +0.007 | kappa_c (implemented) -0.049 | kappa_c^pair -0.062
+    size 0.6 gamma 1.00: P(S1) 0.99 P(S2) 1.00 r12 0.99 N +0.010 | kappa_c (implemented) -0.022 | kappa_c^pair -0.012
+  [synth] task-1 S samples correct: 4842
+    size 0.3 gamma 0.00: P(S1) 0.99 P(S2) 0.76 r12 0.77 N +0.007 | kappa_c (implemented) -0.220 | kappa_c^pair -0.103
+    size 0.3 gamma 0.25: P(S1) 0.99 P(S2) 0.86 r12 0.86 N +0.001 | kappa_c (implemented) -0.162 | kappa_c^pair -0.073
+    size 0.3 gamma 0.50: P(S1) 0.99 P(S2) 0.93 r12 0.93 N +0.002 | kappa_c (implemented) -0.102 | kappa_c^pair -0.045
+    size 0.3 gamma 0.75: P(S1) 0.99 P(S2) 0.98 r12 0.98 N +0.004 | kappa_c (implemented) -0.046 | kappa_c^pair -0.021
+    size 0.3 gamma 1.00: P(S1) 0.99 P(S2) 1.00 r12 0.99 N +0.002 | kappa_c (implemented) -0.016 | kappa_c^pair -0.008
+    size 0.6 gamma 0.00: P(S1) 0.99 P(S2) 0.45 r12 0.45 N +0.000 | kappa_c (implemented) -0.344 | kappa_c^pair -0.199
+    size 0.6 gamma 0.25: P(S1) 0.99 P(S2) 0.62 r12 0.62 N +0.004 | kappa_c (implemented) -0.272 | kappa_c^pair -0.139
+    size 0.6 gamma 0.50: P(S1) 0.99 P(S2) 0.83 r12 0.82 N +0.002 | kappa_c (implemented) -0.182 | kappa_c^pair -0.083
+    size 0.6 gamma 0.75: P(S1) 0.99 P(S2) 0.96 r12 0.95 N +0.002 | kappa_c (implemented) -0.084 | kappa_c^pair -0.036
+    size 0.6 gamma 1.00: P(S1) 0.99 P(S2) 1.00 r12 0.99 N +0.001 | kappa_c (implemented) -0.030 | kappa_c^pair -0.015
+  [bridge_cifar2v] task-1 S samples correct: 2825
+    size 0.3 gamma 0.00: P(S1) 0.98 P(S2) 0.89 r12 0.89 N +0.005 | kappa_c (implemented) -0.129 | kappa_c^pair -0.088
+    size 0.3 gamma 0.25: P(S1) 0.98 P(S2) 0.93 r12 0.92 N +0.006 | kappa_c (implemented) -0.095 | kappa_c^pair -0.065
+    size 0.3 gamma 0.50: P(S1) 0.98 P(S2) 0.95 r12 0.95 N +0.005 | kappa_c (implemented) -0.061 | kappa_c^pair -0.042
+    size 0.3 gamma 0.75: P(S1) 0.98 P(S2) 0.98 r12 0.97 N +0.005 | kappa_c (implemented) -0.029 | kappa_c^pair -0.020
+    size 0.3 gamma 1.00: P(S1) 0.98 P(S2) 1.00 r12 0.98 N +0.005 | kappa_c (implemented) -0.014 | kappa_c^pair -0.006
+    size 0.6 gamma 0.00: P(S1) 0.97 P(S2) 0.63 r12 0.63 N +0.016 | kappa_c (implemented) -0.275 | kappa_c^pair -0.202
+    size 0.6 gamma 0.25: P(S1) 0.97 P(S2) 0.76 r12 0.76 N +0.017 | kappa_c (implemented) -0.211 | kappa_c^pair -0.141
+    size 0.6 gamma 0.50: P(S1) 0.97 P(S2) 0.86 r12 0.85 N +0.013 | kappa_c (implemented) -0.140 | kappa_c^pair -0.086
+    size 0.6 gamma 0.75: P(S1) 0.97 P(S2) 0.93 r12 0.92 N +0.016 | kappa_c (implemented) -0.068 | kappa_c^pair -0.037
+    size 0.6 gamma 1.00: P(S1) 0.97 P(S2) 0.99 r12 0.97 N +0.007 | kappa_c (implemented) -0.036 | kappa_c^pair -0.015
+
+PART B: spread of N across units vs within-unit bootstrap SE (needs-both group, runs/v4)
+  avmnist       control units= 6 mean N +0.028 | SD across units 0.059 | within-unit SE 0.010 | reliability 0.97 | Spearman(kappa_c, N) -0.14
+  avmnist       none    units= 6 mean N -0.121 | SD across units 0.155 | within-unit SE 0.018 | reliability 0.99 | Spearman(kappa_c, N) -0.03
+  cifar2v       control units= 6 mean N +0.005 | SD across units 0.020 | within-unit SE 0.011 | reliability 0.70 | Spearman(kappa_c, N) +0.66
+  cifar2v       none    units= 6 mean N -0.068 | SD across units 0.042 | within-unit SE 0.011 | reliability 0.93 | Spearman(kappa_c, N) +0.43
+  clevr         control units= 6 mean N +0.111 | SD across units 0.026 | within-unit SE 0.004 | reliability 0.98 | Spearman(kappa_c, N) +0.89
+  clevr         none    units= 6 mean N +0.087 | SD across units 0.031 | within-unit SE 0.004 | reliability 0.99 | Spearman(kappa_c, N) +0.09
+  cremad        control units= 6 mean N +0.120 | SD across units 0.098 | within-unit SE 0.052 | reliability 0.72 | Spearman(kappa_c, N) +0.83
+  cremad        none    units= 6 mean N -0.032 | SD across units 0.145 | within-unit SE 0.059 | reliability 0.83 | Spearman(kappa_c, N) -0.09
+  food101       control units= 6 mean N -0.013 | SD across units 0.020 | within-unit SE 0.009 | reliability 0.82 | Spearman(kappa_c, N) +0.77
+  food101       none    units= 6 mean N -0.105 | SD across units 0.033 | within-unit SE 0.011 | reliability 0.89 | Spearman(kappa_c, N) +0.20
+  fv_cremad     control units= 6 mean N +0.062 | SD across units 0.014 | within-unit SE 0.002 | reliability 0.97 | Spearman(kappa_c, N) -0.77
+  fv_cremad     none    units= 6 mean N +0.070 | SD across units 0.014 | within-unit SE 0.003 | reliability 0.96 | Spearman(kappa_c, N) -0.14
+  n24news       control units= 6 mean N -0.020 | SD across units 0.036 | within-unit SE 0.019 | reliability 0.73 | Spearman(kappa_c, N) +0.89
+  n24news       none    units= 6 mean N -0.139 | SD across units 0.064 | within-unit SE 0.019 | reliability 0.91 | Spearman(kappa_c, N) +0.26
+  synth+bridge  control units=18 mean N +0.010 | SD across units 0.017 | within-unit SE 0.006 | reliability 0.87 | Spearman(kappa_c, N) +0.61
+  synth+bridge  none    units=18 mean N +0.044 | SD across units 0.020 | within-unit SE 0.006 | reliability 0.92 | Spearman(kappa_c, N) +0.68
+  POOLED units=120 SD across units 0.090 | within-unit SE 0.020 | reliability 0.95 | between-group share of N variance 0.38

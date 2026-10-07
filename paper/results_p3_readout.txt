@@ -1,0 +1,32 @@
+
+=== NO REPLAY [primary]: 100 units ===
+  mean retention per arm: 
+    no_repair       R=0.41 U1=0.29 U2=0.34 S=0.21
+    readout_linear  R=0.97 U1=0.93 U2=0.93 S=0.81
+    readout_mlp     R=0.98 U1=0.93 U2=0.94 S=0.83
+    encoder_realign R=0.99 U1=0.97 U2=0.98 S=0.92
+    ceiling         R=1.00 U1=0.98 U2=0.99 S=0.95
+  median recovery (readout_linear ): R=0.98 U1=0.92 U2=0.92 S=0.81  (units with S defined: 100)
+  median recovery (readout_mlp    ): R=0.98 U1=0.92 U2=0.94 S=0.84  (units with S defined: 100)
+  median recovery (encoder_realign): R=1.00 U1=0.98 U2=0.99 S=0.96  (units with S defined: 100)
+  C1: median[min(rec R,U1,U2) - rec S] = +0.066 (need >= 0.15); S lowest in 93% of 100 units (need >= 70%)
+  C2: median[rec_S(encoder_realign) - rec_S(readout_mlp)] = +0.117 (need >= 0.20)
+  per dataset, readout_mlp median recovery R/U1/U2/S: avmnist: 1.00/0.99/0.99/0.96; cifar2v: 0.95/0.85/0.85/0.72; cremad: 0.94/0.92/0.88/0.79; food101: 1.00/0.92/0.98/0.86; n24news: 0.98/0.91/0.93/0.80
+
+=== REPLAY [reported]: 100 units ===
+  mean retention per arm: 
+    no_repair       R=0.96 U1=0.87 U2=0.90 S=0.75
+    readout_linear  R=0.98 U1=0.95 U2=0.96 S=0.86
+    readout_mlp     R=0.99 U1=0.95 U2=0.96 S=0.87
+    encoder_realign R=0.99 U1=0.97 U2=0.98 S=0.92
+    ceiling         R=1.00 U1=0.98 U2=0.99 S=0.95
+  median recovery (readout_linear ): R=0.72 U1=0.69 U2=0.66 S=0.58  (units with S defined: 82)
+  median recovery (readout_mlp    ): R=0.73 U1=0.66 U2=0.64 S=0.60  (units with S defined: 82)
+  median recovery (encoder_realign): R=0.93 U1=0.89 U2=0.90 S=0.81  (units with S defined: 82)
+  C1: median[min(rec R,U1,U2) - rec S] = -0.001 (need >= 0.15); S lowest in 50% of 34 units (need >= 70%)
+  C2: median[rec_S(encoder_realign) - rec_S(readout_mlp)] = +0.201 (need >= 0.20)
+  per dataset, readout_mlp median recovery R/U1/U2/S: avmnist: nan/nan/0.79/0.65; cifar2v: 0.84/0.61/0.62/0.54; cremad: 0.68/0.60/0.61/0.57; food101: nan/0.78/0.90/0.68; n24news: 0.78/0.66/0.70/0.60
+
+=== PRE-REGISTERED VERDICT (no replay) ===
+  C1 readout limit: FAIL | C2 re-alignment beats readout for synergy: FAIL
+  -> claim 'readout retraining recovers R/U but not synergy': NOT SUPPORTED

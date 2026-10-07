@@ -1,0 +1,20 @@
+=== F1: DER++ with a rule + exceptions buffer vs DER++ with a random buffer (fresh seed; fresh CLEVR units) ===
+  -- tables: 93 units, 416566 task-1-correct samples (20633 exceptions)
+     buffer 1000: exceptions +0.064 [+0.057, +0.072] | overall -0.015 [-0.017, -0.013] | rule -0.019 | task 2 +0.009 -> PASS (primary)
+       [reported] vs best DER++ competitor (random): exceptions +0.064, overall -0.015
+     buffer 250: exceptions +0.115 [+0.101, +0.128] | overall -0.050 [-0.055, -0.045] | rule -0.058 | task 2 +0.028 -> FAIL (reported)
+       [reported] vs best DER++ competitor (random): exceptions +0.115, overall -0.050
+  -- clevr: 40 units, 105141 task-1-correct samples (6153 exceptions)
+     buffer 1000: exceptions +0.146 [+0.129, +0.166] | overall +0.001 [-0.002, +0.003] | rule -0.008 | task 2 -0.005 -> PASS (primary)
+       [reported] vs best DER++ competitor (herding): exceptions +0.079, overall +0.000
+     buffer 250: exceptions +0.230 [+0.204, +0.259] | overall -0.013 [-0.019, -0.007] | rule -0.028 | task 2 -0.003 -> PASS (reported)
+       [reported] vs best DER++ competitor (random): exceptions +0.230, overall -0.013
+
+=== F2: graded additive misfit predicts which forgotten samples cheap repair cannot recover (fresh seeds) ===
+  tables lost 275881: AUC misfit 0.793 | confidence 0.697 | difference +0.096 [+0.075, +0.113] | within confidence quintiles median 0.816
+  clevr  lost 109216: AUC misfit 0.943 | confidence 0.773 | difference +0.170 [+0.151, +0.189] | within confidence quintiles median 0.929
+  gqa    lost 3231: AUC misfit 0.987 | confidence 0.629 | difference +0.358 [+0.323, +0.391] | within confidence quintiles median 0.986
+  pope   lost 3722: AUC misfit 0.777 | confidence 0.655 | difference +0.122 [+0.039, +0.233] | within confidence quintiles median 0.747
+  counts: F2a 4/4, F2b 4/4
+
+VERDICTS: F1 tables PASS | F1 clevr PASS | F2a (AUC >= 0.75 on >= 3 of 4) PASS | F2b (beats confidence by >= 0.05 on >= 3 of 4) PASS

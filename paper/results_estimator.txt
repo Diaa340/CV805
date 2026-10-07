@@ -1,0 +1,24 @@
+exact reference (MMI = exact BROJA, checked on 10x100 sub-tables): median synergy 0.558 bits
+feat   pca   k  median_S  median_ratio  rho_dadd  rho_exact   n
+clip False   5     0.018         0.033     0.230      0.243 103
+clip False  10     0.041         0.075     0.464      0.476 103
+clip False  30     0.067         0.126     0.657      0.668 103
+clip False 100     0.120         0.223     0.879      0.893 103
+clip  True   5     0.017         0.030     0.347      0.354 103
+clip  True  10     0.036         0.066     0.483      0.492 103
+clip  True  30     0.061         0.116     0.597      0.605 103
+clip  True 100     0.115         0.216     0.816      0.833 103
+ sym False   5     0.026         0.052     0.245      0.244 103
+ sym False  10     0.051         0.094     0.414      0.433 103
+ sym False  30     0.081         0.155     0.639      0.670 103
+ sym False 100     0.147         0.268     0.869      0.891 103
+ sym  True   5     0.021         0.041     0.448      0.427 103
+ sym  True  10     0.047         0.092     0.580      0.618 103
+ sym  True  30     0.081         0.149     0.616      0.662 103
+ sym  True 100     0.134         0.248     0.745      0.785 103
+
+their default (CLIP-like features, PCA 5, k = 30): clip True 30 0.061 0.116 0.597 0.605 103
+
+claim 1 (underestimates > 2x) holds in 16/16 settings; claim 2 (ranks units by structure weakly, rho < 0.5) in 7/16
+best setting for structure: clip, PCA False, k 100: rho 0.88, median ratio 0.22
+VERDICT: SETTING-DEPENDENT
