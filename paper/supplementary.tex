@@ -1,0 +1,424 @@
+% ============================================================================
+% Supplementary material
+% Uses the same preamble as the main paper (amsmath, amsthm, booktabs, graphicx,
+% xcolor[table]) and the same labels (sec:theory, eq:floor, prop:pid, tab:main, ...).
+% ============================================================================
+
+\appendix
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{table}{0}\setcounter{figure}{0}
+
+\section*{Supplementary Material}
+
+\noindent
+The supplement contains the construction of every answer table (Sec.~\ref{sup:tables}),
+the exact solver (Sec.~\ref{sup:milp}), full proofs (Sec.~\ref{sup:proofs}), details and
+full results of the controlled study (Sec.~\ref{sup:controlled}), the VLM study
+(Sec.~\ref{sup:vlm}) and the continual-learning study (Sec.~\ref{sup:cl}), and the
+pre-registration record with every deviation (Sec.~\ref{sup:prereg}). Code, pre-registrations
+and all result files are released with the paper.
+
+% ----------------------------------------------------------------------------
+\section{Answer tables}
+\label{sup:tables}
+
+Every table is computed from ground truth, never from a model. A question enters a table only
+if it is well posed on every image of that table, so every cell has a defined answer.
+
+\paragraph{CLEVR.}
+Rows are ten yes/no questions of one CLEVR question family; columns are validation images. We
+execute each question's functional program on each image's scene graph. Questions that refer
+to ``the'' object are undefined on images without exactly one such object; we use set-lifted
+semantics (``some'' object), which reproduces CLEVR's own answer on every question's original
+image (60{,}835 of 60{,}835 yes/no questions). For the VLM study we keep only families whose
+questions are well posed on every image under the natural reading (existence and count
+comparisons; 24 units), so that a VLM is never asked an ill-posed question.
+
+\paragraph{GQA.}
+Rows are ten existence questions of one family (\texttt{exist}, \texttt{existC},
+\texttt{existOr}, \texttt{existOrC}); columns are validation images containing at least one
+object the questions mention. We execute each program on each scene graph with object
+identifiers removed. A family is kept if execution reproduces GQA's own answers on at least
+99\% of its questions, and questions about superordinate categories (``animal'', ``vehicle'')
+are dropped because scene graphs label specific objects. This gives 24 units of 200 images.
+
+\paragraph{CLOVE-scene.}
+CLOVE~\cite{lei2023symbolic} splits GQA images into six scene tasks (shop and dining,
+workplace, home or hotel, transportation, sport and leisure, outdoors) and releases the GQA
+program of every question. We extend the executor with relations (\texttt{relate}) and keep
+existence questions whose named objects are not superordinate categories and occur at least
+50 times in GQA scene graphs. Family-level agreement with CLOVE's answers is 0.98--1.00. Units
+take ten distinct programs of one family, 150 training images from the task's CLOVE train
+split and 50 test images from its validation split, and require a yes-share between 0.10 and
+0.90. Relation questions (``Is there bacon on the grill?'') are true on only about 1\% of
+other images, even when sampling only images that contain all named objects, so every
+relation unit fails the yes-share rule. The study uses 43 existence units, 6--8 per task.
+
+\paragraph{POPE.}
+Rows are COCO object categories and columns are the 500 POPE images; a cell is ``yes'' if the
+object is in the image's COCO annotation, which reproduces all 9{,}000 POPE labels. For the VLM
+study, eight units each take ten objects (shuffled) and 100 images.
+
+\paragraph{Constructed tasks.}
+Rows and columns are ten CIFAR-100 classes each. A sample takes one view of an image of class
+$a$ and one view of a different image of class $b$, labelled $T(a,b)$. Tables are drawn from a
+pool of 1{,}368 candidates spanning threshold tables, threshold tables with flipped cells, XOR
+blocks and random tables.
+
+% ----------------------------------------------------------------------------
+\section{Exact computation of the additive rule}
+\label{sup:milp}
+
+With an error indicator $z_{ab}\in\{0,1\}$ per cell, a unit margin and a constant $M$,
+\begin{align}
+  \min_{u,v,z}\quad & \textstyle\sum_{(a,b)\in\Omega} w_{ab}\,z_{ab}\\
+  \text{s.t.}\quad & u_a+v_b+M z_{ab}\ \ge\ 1 && \text{if } T(a,b)=1,\nonumber\\
+  & u_a+v_b-M z_{ab}\ \le\ -1 && \text{if } T(a,b)=0,\nonumber\\
+  & |u_a|,|v_b|\le U,\qquad z_{ab}\in\{0,1\}.\nonumber
+\end{align}
+Because the rule is unchanged by positive rescaling of $(u,v)$, the unit margin loses nothing
+for $U$ and $M$ large enough; we use $U=50$, $M=201$. Columns with identical answers and
+weights on every row can share one score, so we merge them and add their weights; a complete
+table with ten rows then has at most $2^{10}$ distinct columns. We solve with HiGHS. When a
+time limit is reached we keep the best rule and the solver's proven bound. In the VLM study,
+95 of the 99 full tables are proven optimal; the other four (CLEVR count comparisons) are within
+0.014 of the bound after one hour. Of the 99 confirmatory sub-tables, 98 are proven optimal. On
+the full CLEVR set used for continual learning, 62\% of units are proven optimal and the mean
+gap to the bound is 0.009.
+
+\paragraph{Why not a trained additive model.}
+Logistic regression on one-hot indices, any gradient-trained additive model, and EMAP optimise
+a smooth surrogate (log-loss or squared error), not 0/1 accuracy. Their accuracy is a lower
+bound on $C(T)$ and was 4--5 points below it on CLEVR and GQA.
+
+% ----------------------------------------------------------------------------
+\section{Proofs}
+\label{sup:proofs}
+
+\paragraph{Theorem~\ref{thm:ferrers}.}
+(i)$\Rightarrow$(ii): if $u_a+v_b>0$, $u_{a'}+v_{b'}>0$, $u_a+v_{b'}\le 0$ and $u_{a'}+v_b\le 0$,
+adding the first two and the last two gives $u_a+u_{a'}+v_b+v_{b'}$ both $>0$ and $\le 0$.
+(ii)$\Rightarrow$(i): without an XOR square, the sets of ``yes'' columns of any two rows are
+nested, so rows can be ordered by inclusion and columns by how many rows they answer ``yes'';
+the table is then a staircase, which scores equal to these ranks reproduce exactly
+(the Ferrers or biorder characterisation~\cite{ducamp1969composite,doignon1984realizable}).
+(ii)$\Leftrightarrow$(iii): replacing an XOR square by its mirror image keeps every row and
+column sum, so a table with an XOR square is not the only table with its sums. Conversely, by
+Ryser's theorem~\cite{ryser1957combinatorial} any two $0/1$ tables with equal row and column
+sums are connected by a sequence of such swaps; a table with no XOR square admits no swap, so
+it is the only one. \qed
+
+\paragraph{Proposition~\ref{prop:ceiling}.}
+Given the indices, $x_1$ and $x_2$ are independent. Fix one draw $x_1^{(a)}$ per row and one
+draw $x_2^{(b)}$ per column, and set $u_a=g_1(x_1^{(a)})$, $v_b=g_2(x_2^{(b)})$. This is an
+additive rule, so its weighted accuracy is at most $C(T)$. For every cell, the pair
+$(x_1^{(a)},x_2^{(b)})$ has the distribution of a test pair from that cell, so averaging over
+draws gives exactly the expected accuracy of the readout. \qed
+
+\paragraph{Proposition~\ref{prop:floor}.}
+EMAP replaces the score matrix $\ell$ by $\hat\ell_{ab}=\bar\ell_{a\cdot}+\bar\ell_{\cdot b}-\bar\ell_{\cdot\cdot}$,
+whose sign is the additive rule with $u_a=\bar\ell_{a\cdot}-\bar\ell_{\cdot\cdot}$ and
+$v_b=\bar\ell_{\cdot b}$. Its error on the uniformly weighted complete table is at least $s(T)$.
+With $e$ the error of $f$, $\Delta(f)=(1-e)-\mathrm{Acc}(\hat\ell)\ge(1-e)-(1-s(T))=s(T)-e$. \qed
+
+\paragraph{Proposition~\ref{prop:pid}.}
+BROJA~\cite{bertschinger2014quantifying} defines unique information as
+$\mathrm{UI}(y{:}a\setminus b)=\min_{q\in\Delta_p} I_q(y;a\mid b)$ over the set $\Delta_p$ of joint
+distributions with the same $p(a,y)$ and $p(b,y)$; redundancy and synergy follow from UI, the
+pairwise informations $I(y;a)$, $I(y;b)$ (functions of $p(a,y)$, $p(b,y)$) and the total
+$I(y;a,b)$. For deterministic answers $I(y;a,b)=H(y)$, a function of $p(y)$. Every term is
+therefore a function of $p(a,y)$ and $p(b,y)$ alone. \qed
+
+\paragraph{Example on partial tables.}
+On partial tables PID cannot even detect whether exceptions exist. The two $3\times3$ tables
+below (``$\cdot$'' = cell not in $\Omega$, uniform weights) have identical row and column
+answer counts and therefore identical BROJA atoms (synergy 0.667, redundancy 0.126, unique
+0.000 and 0.126 bits), yet the first is exactly additive and the second contains an XOR square.
+\begin{center}\small
+\begin{tabular}{ccc}0&1&0\\0&$\cdot$&1\\$\cdot$&0&$\cdot$\end{tabular}
+\qquad\qquad
+\begin{tabular}{ccc}0&1&0\\$\cdot$&0&1\\0&$\cdot$&$\cdot$\end{tabular}
+\end{center}
+
+\paragraph{BROJA solver.}
+For the 10$\times$100 VLM tables we compute BROJA with the convex solver of
+Liang~\etal~\cite{liang2023quantifying} (SCS). On six 10$\times$20 checks it matches the exact
+\texttt{dit} implementation to within 0.0003 bits.
+
+% ----------------------------------------------------------------------------
+\section{Controlled study}
+\label{sup:controlled}
+
+From the pool of 1{,}368 tables we select 63 with BROJA synergy between 0.40 and 0.75 bits
+such that synergy and XOR density are nearly uncorrelated ($+0.17$). Each modality is a frozen
+image feature; the full model fuses two small encoders through an MLP head, and the linear
+readout uses the same features. Three seeds per table. The gap is the full model's accuracy
+minus the readout's, as a share of the full model's accuracy above the majority baseline.
+
+\begin{table}[h]
+\centering\small
+\caption{Controlled tables. Partial rank correlations with the readout gap, each controlling
+for the other predictor; 95\% bootstrap intervals over tables.}
+\label{tab:sup_controlled}
+\begin{tabular}{lcc}
+\toprule
+Test & Structure & PID synergy \\
+\midrule
+63 tables, synergy and structure decorrelated & $+0.91$ $[0.83, 0.94]$ & $+0.22$ $[-0.06, 0.45]$ \\
+62 fresh tables (replication) & $+0.86$ $[0.74, 0.93]$ & $+0.11$ $[-0.14, 0.36]$ \\
+Repair after drift (125 tables) & $+0.86$ $[0.80, 0.90]$ & $-0.10$ $[-0.28, 0.09]$ \\
+12 families with identical PID & $+0.78$ (within family) & constant \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+The same holds with $I_{\mathrm{ccs}}$ ($+0.85$ vs.\ $+0.25$) and MMI ($+0.91$ vs.\ $+0.22$)
+in place of BROJA. All 16 tables without exceptions have a gap of at most 0.09 (median 0.06)
+while carrying up to 0.67 bits of synergy. One pre-registered comparison went the other way:
+for accuracy on held-out cell combinations, synergy predicted slightly better than structure
+($+0.36$ vs.\ $+0.31$).
+
+% ----------------------------------------------------------------------------
+\section{VLM study}
+\label{sup:vlm}
+
+\paragraph{Models and inference.}
+Qwen2.5-VL-7B-Instruct, InternVL3.5-8B (HF port), LLaVA-OneVision-1.5-8B-Instruct (publisher
+code at a pinned revision, run with \texttt{transformers} 4.53, the version it targets) and
+Idefics3-8B-Llama3. Images are scaled to a longest side of 448 pixels; InternVL3.5 and
+Idefics3 use a single image tile instead of their default multi-tile cropping. The prompt is
+``\textit{$\langle$question$\rangle$} Answer with yes or no.'' and the score is the log-odds of
+the first token of ``Yes/yes'' versus ``No/no'' at the next position. No model is fine-tuned.
+
+\paragraph{EMAP.}
+For each complete 10$\times$100 table we compute $\hat\ell$ from the model's log-odds on all
+1{,}000 cells and report the accuracy of $\ell$ minus that of $\hat\ell$.
+
+\paragraph{Study A: full tables.}
+Within each benchmark, the exception share and BROJA synergy are nearly collinear (Spearman
+$+0.95$ CLEVR, $+0.90$ CLOVE, $+0.88$ GQA, $+0.48$ POPE), so the two cannot be separated.
+
+\begin{table}[h]
+\centering\small\setlength{\tabcolsep}{3pt}
+\caption{Study A. Within-benchmark Spearman correlation of the EMAP drop with the exception
+share (synergy in parentheses).}
+\begin{tabular}{lcccc}
+\toprule
+Model & CLEVR & GQA & CLOVE & POPE \\
+\midrule
+Qwen2.5-VL-7B   & $+0.37$ $(+0.34)$ & $+0.07$ $(-0.08)$ & $+0.61$ $(+0.48)$ & $+0.44$ $(+0.78)$ \\
+InternVL3.5-8B  & $+0.91$ $(+0.90)$ & $+0.11$ $(+0.11)$ & $+0.76$ $(+0.70)$ & $+0.49$ $(+0.51)$ \\
+LLaVA-OV-1.5-8B & $+0.97$ $(+0.96)$ & $+0.09$ $(+0.17)$ & $+0.58$ $(+0.47)$ & $+0.48$ $(+0.85)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Selecting decorrelated sub-tables.}
+From each table we draw 27 sub-tables of 50 images (2{,}673 candidates). Image weights are
+tilted towards or away from columns rich in exceptions or in ``yes'' answers,
+$w_b\propto\exp(\alpha z_b^{\mathrm{exc}}+\beta z_b^{\mathrm{yes}})$ with
+$\alpha,\beta\in\{-2,0,2\}$ and three draws each, so that structure and synergy vary partly
+independently. Each candidate gets its exact rule (MILP, 300 s; 97.5\% proven optimal), BROJA
+and MMI. One candidate per table is then chosen by coordinate descent (30 sweeps) to minimise,
+within each benchmark, $|\rho(s,\mathrm{BROJA})|$ (study B) or
+$|\rho(s,\mathrm{BROJA})|+|\rho(s,\mathrm{yes})|$ (study C), while keeping the spread of $s$ at
+least half that of the candidate pool. The selection uses answer tables only. Achieved
+correlations: study B, $\rho(s,\mathrm{BROJA})=0.00$ in every benchmark; study C,
+$\rho(s,\mathrm{BROJA})\le 0.02$ (GQA $0.20$) and $\rho(s,\mathrm{yes})\le 0.00$.
+
+\begin{table}[h]
+\centering\small\setlength{\tabcolsep}{3pt}
+\caption{Studies B and C. Within-benchmark partial rank correlations of the EMAP drop. B
+controls for the other measure and accuracy; C also controls for the yes-share. 95\%
+bootstrap intervals over tables.}
+\begin{tabular}{llcc}
+\toprule
+Study & Model & Structure & Synergy \\
+\midrule
+B & Qwen2.5-VL-7B   & $+0.33$ $[0.10, 0.50]$ & $+0.19$ \\
+B & InternVL3.5-8B  & $+0.37$ $[0.17, 0.54]$ & $+0.44$ \\
+B & LLaVA-OV-1.5-8B & $+0.32$ $[0.09, 0.50]$ & $+0.43$ \\
+\midrule
+C & Idefics3-8B (confirmatory) & $+0.42$ $[0.21, 0.56]$ & $+0.07$ $[-0.17, 0.29]$ \\
+C & InternVL3.5-8B  & $+0.42$ $[0.20, 0.58]$ & $+0.05$ $[-0.16, 0.26]$ \\
+C & LLaVA-OV-1.5-8B & $+0.43$ $[0.23, 0.58]$ & $+0.24$ $[0.02, 0.42]$ \\
+C & Qwen2.5-VL-7B   & $+0.26$ $[0.06, 0.44]$ & $+0.03$ $[-0.18, 0.25]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+In study B, synergy kept a signal of its own. A post-hoc check found that, once structure was
+fixed, synergy followed the yes-share ($+0.57$ to $+0.83$); adding the yes-share as a control
+removed synergy's signal and strengthened structure's ($+0.37$ to $+0.48$). Study C was
+pre-registered to test this on a new model and a fresh selection. Its secondary linear
+regression (standardised, with benchmark effects) failed for all four models: on the raw
+scale, structure and synergy each add only 1--4\% of explained variance beyond benchmark and
+answer balance (Idefics3: $+0.014$ and $+0.021$).
+
+\paragraph{Floor and cells.}
+$\Delta\ge s-e$ held for all $4\times99$ model--table pairs, using the solver's proven lower
+bound on $s$ where the rule was not proven optimal.
+
+\begin{table}[h]
+\centering\small
+\caption{Cell level (full tables). AUC for predicting the cells whose answer EMAP flips.}
+\begin{tabular}{lccc}
+\toprule
+Model & Exception label & Graded misfit & Low confidence \\
+\midrule
+Qwen2.5-VL-7B   & 0.68 & 0.87 & 0.74 \\
+InternVL3.5-8B  & 0.62 & 0.78 & 0.67 \\
+LLaVA-OV-1.5-8B & 0.70 & 0.88 & 0.64 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ----------------------------------------------------------------------------
+\section{Continual-learning study}
+\label{sup:cl}
+
+\paragraph{Network and training.}
+Each input is a frozen feature vector: CIFAR image features for constructed tasks, symbolic
+scene features and CLIP question features for CLEVR, and CLIP image and question features for
+GQA and CLOVE. Each modality has a trainable MLP encoder (two hidden layers of 256 units,
+128-dimensional output); the fusion head is an MLP on the concatenated codes. Adam, learning rate
+$10^{-3}$, weight decay $10^{-5}$, batch 256, 50{,}000 training draws per task. The first task
+is trained for 30 epochs and later tasks for 10. Buffers hold 1{,}000 samples (split equally
+over past tasks in the six-task setting), with 32 replayed samples per step; DER++ uses
+$\alpha=0.5$.
+
+\paragraph{Matched plasticity.}
+Strengths are chosen per run from EWC $\{1,10^2,10^4\}$, SI $\{0.1,1,10,100\}$, LwF and
+feature distillation $\{0.3,3\}$, and iCaRL distillation $\{0.1,1\}$: among settings whose
+accuracy on the new task is within 0.02 of finetuning, the one that best keeps the old task.
+
+\paragraph{Benchmarks.}
+Constructed: 93 tables with exceptions, each followed by a balanced table on other classes.
+CLEVR: 40 units, each followed by a unit of another family. GQA: 24 units with three seeds,
+each followed by a unit of another family. CLOVE: six scene tasks in CLOVE's six released
+orders, two seeds (12 runs).
+
+\paragraph{Same-answer gaps.}
+With $\mathrm{BWT}_{g,y}$ the backward transfer on cells of type $g\in\{E,R\}$ (exception or
+rule) and answer $y$, and $\pi_y$ the share of exceptions with answer $y$,
+\begin{equation}
+  \Delta\mathrm{B}=\sum_{y}\pi_y\left[\mathrm{BWT}_{E,y}-\mathrm{BWT}_{R,y}\right],
+\end{equation}
+and $\Delta\mathrm{F}$ likewise from forward transfer against a model trained on the new task
+alone. Answers with no cells of one type are dropped and $\pi$ is renormalised. Intervals are
+bootstraps over units.
+
+\paragraph{Why matching answers matters.}
+Exceptions are 92\% ``yes'' on GQA and 89\% on CLOVE, against 6\% and 8\% of rule cells.
+Without matching, every protective method appeared to lose exceptions faster on all
+benchmarks; with matching, the backward effect remains strong only on CLEVR (Tab.~\ref{tab:main}).
+Our first, unmatched analyses were pre-registered and passed; we report the matched analysis
+as the main result because the unmatched one partly measures class imbalance.
+
+\paragraph{Buffer control.}
+DER++ with four buffers of 1{,}000 samples (pre-registered).
+
+\begin{table}[h]
+\centering\small\setlength{\tabcolsep}{3pt}
+\caption{Backward transfer on exceptions / overall for four DER++ buffers.}
+\begin{tabular}{lcccc}
+\toprule
+Buffer & Constructed & CLEVR & GQA & CLOVE \\
+\midrule
+Random                         & $-.034$ / $-.021$ & $-.085$ / $.000$ & $-.040$ / $.004$ & $-.153$ / $-.007$ \\
+Class-balanced random          & $-.025$ / $-.022$ & $-.059$ / $-.001$ & $-.009$ / $.001$ & $-.007$ / $-.018$ \\
+Rule + exceptions              & $.058$ / $-.032$ & $.001$ / $-.006$ & $-.007$ / $.001$ & $.054$ / $-.026$ \\
+Rule + exceptions, balanced    & $.053$ / $-.048$ & $.008$ / $-.008$ & $-.014$ / $.001$ & $.077$ / $-.035$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+Balanced rule+exceptions versus balanced random, exception BWT: $+0.078$ $[0.069, 0.088]$,
+$+0.068$ $[0.054, 0.081]$, $-0.005$ $[-0.016, 0.005]$, $+0.085$ $[0.058, 0.112]$ (pass on 3 of
+4). The overall cost bound ($>-0.02$) failed on constructed tasks ($-0.027$) and CLOVE
+($-0.028$).
+
+\paragraph{Method guide (negative result).}
+We tested whether data descriptors (exception share, answer skew, yes-share, exception
+accuracy after learning) predict which method keeps the most exceptions on a held-out
+benchmark. The descriptors beat a fixed method ranking on 3 of 4 held-out benchmarks but did
+not beat the standard ranking by overall backward transfer (1 of 4).
+
+\paragraph{VLM continual learning.}
+Qwen2.5-VL-3B-Instruct with LoRA ($r=16$, $\alpha=32$) on all language-model projections;
+images 336$\times$336; 300 steps of 8 examples per task, learning rate $10^{-4}$; memory of
+1{,}000 examples with 4 replayed per step. On CLOVE, the pre-registered tests gave: exceptions
+forgotten faster for LwF and ER (pass, 2 of 3 methods, unmatched); DER++ forward gap $-0.029$
+(fail, threshold $-0.03$); exception buffer (fail, DER++ already kept exceptions).
+
+\paragraph{Nonce-word CLEVR.}
+On plain CLEVR, Qwen2.5-VL-3B already answers 92--98\% of cells zero-shot, rule and exception
+cells alike, so a task sequence teaches it nothing. We therefore rename the 15 attribute
+concepts (eight colours, three shapes, two materials, two sizes, with synonyms and plurals) in
+each task with that task's own made-up words; answers and exception labels are unchanged. A
+pilot set the budget (300 steps). The pre-registered learning check (task-only accuracy at
+least 0.10 above zero-shot) failed: 0.651 versus 0.587. The reason is that rule cells are
+learned (0.64 to 0.86) while exceptions get worse (0.53 to 0.44), and the check was measured on
+test sets that are half exceptions. We report the experiment as descriptive.
+
+\paragraph{Pretraining as the first task (post hoc).}
+Measuring change from the zero-shot model, with answers matched: fine-tuning on the related
+CLOVE sequence lowers exceptions more than rule cells ($-0.07$); fine-tuning on an unrelated
+OCR task does not ($+0.04$, mixed by answer).
+
+% ----------------------------------------------------------------------------
+\section{Pre-registration record}
+\label{sup:prereg}
+
+Before each study we wrote its hypotheses, thresholds and analysis code and recorded SHA-256
+hashes of the files. Table~\ref{tab:prereg} lists the studies in the paper.
+
+\begin{table}[h]
+\centering\small\setlength{\tabcolsep}{3pt}
+\caption{Pre-registered studies (first 8 hex digits of the pre-registration hash) and outcomes.}
+\label{tab:prereg}
+\begin{tabular}{llp{6.2cm}}
+\toprule
+Study & Hash & Outcome \\
+\midrule
+Controlled tables & \texttt{05a6cbe5} & structure predicts the readout gap, synergy does not: pass \\
+Replication, repair, held-out cells & \texttt{a81c643f} & structure wins on replication and repair; synergy wins on held-out cells \\
+CLEVR exact tables & \texttt{7d7efb6e} & one of two tests pass \\
+Identical PID & \texttt{fa2c7659} & pass \\
+EMAP & \texttt{4f3d08ed} & three of four tests pass \\
+VLMs, full tables (A) & \texttt{a28a1cc8} & all fail (structure and synergy collinear) \\
+VLMs, decorrelated (B) & \texttt{b34f82c2} & all fail (synergy keeps a signal) \\
+VLMs, confirmatory (C) & \texttt{5bd2adae} & primary tests pass; secondary regression fails \\
+First CL study & \texttt{02df0791} & mixed; LwF protects the rule more: pass \\
+Fresh-seed buffer test & \texttt{9cefaca3} & pass \\
+Two-task CL metrics & \texttt{4f466930} & two of three pass (unmatched answers) \\
+CLOVE build & \texttt{ca2724b8} & outcome-free \\
+CLOVE CL & \texttt{8089f739} & three of four pass (unmatched answers) \\
+CLOVE VLM CL & \texttt{e7d32ad4} & one of three pass \\
+Same-answer metrics, buffer control & \texttt{df08ce46} & buffer control: one of two pass \\
+Method guide & \texttt{248c6008} & one of two pass \\
+Nonce-word VLM & \texttt{71551ea1} & learning check failed \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Deviations and disclosures.}
+\begin{itemize}
+  \item The same-answer analysis of saved continual-learning results was printed while we
+  checked that the script runs, before its pre-registration was written. We therefore treat it
+  as descriptive; only the buffer control in that study is confirmatory.
+  \item A POPE continual-learning design was dropped after running: its second task used cells
+  of the same answer table as the first, so it taught the first task's facts.
+  \item Importing one build script re-ran it and rewrote the GQA tables; the result was
+  verified identical (all saved exception labels still make every table exception-free).
+  \item Several runs crashed (missing cell indices, out-of-memory) and were fixed or resumed;
+  each fix is logged as an addendum. Resuming the nonce-word run retrained the first task; the
+  retrained model agreed with the original on 88--89\% of test cells.
+  \item Pilots and smoke tests were seen before several pre-registrations; each file lists
+  what was seen.
+\end{itemize}

@@ -1,0 +1,33 @@
+1. How unique are the exceptions? (random tie-breaking among optimal rules; ambiguity is a lower bound)
+  clevr    64 tables | ambiguous cells 0.032 (median 0.032) | stable exceptions 0.074 of cells vs 0.090 exception share | accepted solutions 7.2/10 | proven optimal 0.56
+  clove    43 tables | ambiguous cells 0.048 (median 0.044) | stable exceptions 0.036 of cells vs 0.060 exception share | accepted solutions 20.0/20 | proven optimal 1.00
+  gqa      24 tables | ambiguous cells 0.054 (median 0.046) | stable exceptions 0.045 of cells vs 0.070 exception share | accepted solutions 20.0/20 | proven optimal 1.00
+  tables   94 tables | ambiguous cells 0.058 (median 0.020) | stable exceptions 0.037 of cells vs 0.058 exception share | accepted solutions 20.0/20 | proven optimal 0.99
+  vlm      99 tables | ambiguous cells 0.054 (median 0.044) | stable exceptions 0.042 of cells vs 0.067 exception share | accepted solutions 19.8/20 | proven optimal 0.99
+
+2. Continual learning: same-answer gaps with the saved labels vs with stable labels only (points; [95% CI])
+  tables task 1: saved exceptions that are stable exceptions 0.657; saved rule cells that are stable rule cells 0.969; ambiguous 0.048
+  tables task 2: saved exceptions that are stable exceptions 0.000; saved rule cells that are stable rule cells 0.000; ambiguous 1.000
+  clevr task 1: saved exceptions that are stable exceptions 0.749; saved rule cells that are stable rule cells 0.974; ambiguous 0.031
+  clevr task 2: saved exceptions that are stable exceptions 0.742; saved rule cells that are stable rule cells 0.975; ambiguous 0.035
+  gqa task 1: saved exceptions that are stable exceptions 0.641; saved rule cells that are stable rule cells 0.970; ambiguous 0.054
+  gqa task 2: saved exceptions that are stable exceptions 0.641; saved rule cells that are stable rule cells 0.970; ambiguous 0.054
+  forward  tables derpp_random_1000  saved   -7.7 [ -8.5, -7.0] | stable   +nan [ +nan, +nan]
+  forward  tables l2                 saved   -6.9 [ -7.5, -6.5] | stable   +nan [ +nan, +nan]
+  backward clevr  er_random_1000     saved   -8.7 [-11.5, -5.8] | stable   -9.3 [-12.6, -5.9]
+  backward clevr  agem_random_1000   saved  -11.0 [-14.2, -7.2] | stable  -12.0 [-15.7, -8.4]
+  backward clevr  gem_random_1000    saved  -10.0 [-13.7, -5.6] | stable  -10.7 [-15.2, -5.8]
+  backward clevr  derpp_random_1000  saved   -9.2 [-10.6, -7.5] | stable  -10.2 [-11.8, -8.3]
+  forward  clevr  derpp_random_1000  saved  -25.6 [-29.5,-19.8] | stable  -27.8 [-31.8,-22.1]
+  forward  clevr  l2                 saved  -13.2 [-16.1, -9.8] | stable  -14.8 [-17.7,-11.0]
+  forward  gqa    derpp_random_1000  saved   -7.1 [-12.3, -1.5] | stable   -6.0 [-12.6, +1.2]
+  forward  gqa    l2                 saved   -7.5 [-13.3, -1.9] | stable   -6.8 [-13.8, +0.8]
+
+U1 (backward, CLEVR, stable labels): 4/4 replay methods keep gap <= -3 points with upper bound < 0 -> PASS
+U2 (forward, DER++, stable labels): 1/3 benchmarks keep gap <= -3 points with upper bound < 0 -> FAIL
+
+3. VLM cells (Study C sub-tables): AUC for cells whose answer EMAP flips
+  idefics   stable exception label 0.619 (on 0.95 of cells) | exception in any optimal rule 0.669 | graded misfit 0.818 | low confidence 0.730
+  internvl  stable exception label 0.597 (on 0.95 of cells) | exception in any optimal rule 0.644 | graded misfit 0.776 | low confidence 0.666
+  llava     stable exception label 0.657 (on 0.95 of cells) | exception in any optimal rule 0.712 | graded misfit 0.878 | low confidence 0.627
+  qwen      stable exception label 0.641 (on 0.95 of cells) | exception in any optimal rule 0.694 | graded misfit 0.863 | low confidence 0.726

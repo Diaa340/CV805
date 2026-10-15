@@ -548,3 +548,25 @@ association with interaction dependence runs through answer balance.
    - exceptions are learned worse (forward), across benchmarks;
    - old exceptions are forgotten faster on compositional CLEVR;
    - exception metrics must be split by answer.
+
+## 32. Revision analyses for the CVPR review (pre-registered, hash 73d425b2)
+
+| Review point | Result | Verdict |
+|---|---|---|
+| Q1: accuracy-matched null scorer (VLM study) | Reproduces most of the structure–EMAP-drop relation. Excess for Idefics3 +0.17 [−0.07, 0.38]; only InternVL3.5 goes beyond (+0.26 [0.05, 0.43]; slack +0.28) | **FAIL** (primary) |
+| Q5: yes-share's own signal | +0.23 to +0.34, all intervals above 0 | reported |
+| Q2: uniqueness of exceptions | 3–6% of cells ambiguous (lower bound); 64–75% of saved exception labels stable. CLEVR forgetting holds on stable labels (4/4) | U1 **PASS** |
+| | Learning gap on stable labels: CLEVR holds; GQA interval reaches 0; constructed task-2 table has no stable cells | U2 **FAIL** (1/3) |
+| Q3: difficulty matching | CLEVR forgetting survives (ER −12.5, DER++ −7.8) | D2 **PASS** |
+| | Learning gap: CLEVR every method −10.6 to −27.0; GQA marginal at 18% coverage | D1 **PASS** (3/3), robust only on CLEVR |
+| Q4: size dependence of s | Grows slowly with table width; rankings stable (ρ ≥ 0.97) | descriptive |
+
+**Consequences for the claims.**
+- **VLMs:** the exception share sets the interaction dependence an accurate model requires; VLMs mostly use about
+  that much (InternVL3.5 more).
+- **Continual learning:** exceptions are forgotten faster and learned worse than same-answer, same-difficulty rule
+  cells on CLEVR. GQA and CLOVE effects are mostly answer imbalance or too weakly matched to claim. Constructed-task
+  forward results are dropped (labels not unique).
+- **Environment:** the GPU driver changed; GPU work now runs in `.venv_cu128` (PyTorch 2.14.0 for CUDA 12.6, matching
+  torchvision 0.29.0 and torchaudio 2.11.0).
+- **Revised paper text:** `paper/revision/`.

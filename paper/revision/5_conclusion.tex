@@ -1,0 +1,47 @@
+\section{Limitations}
+\label{sec:limits}
+
+\paragraph{Exact tables are needed.}
+The split requires the answer to every input pair. We obtain it from programs, scene graphs and annotations, which
+restricts the analysis to datasets such as CLEVR, GQA, CLOVE and POPE, and even there only to questions well posed on
+every image. On GQA, CLOVE and POPE these are existence questions, whose exceptions mostly record which objects
+co-occur in which images: basic grounding rather than compositional reasoning. Exact computation is NP-hard in general;
+merging identical columns makes it practical for tables with about ten rows, which is a real constraint on table shape.
+
+\paragraph{What the measure is.}
+The exception share is a property of a sampled table, not of a task in the abstract. It grows slowly with the number of
+images (on CLEVR from 0.079 at 25 images to 0.099 at 1{,}000) and is lower with fewer questions, while rankings of tables
+are stable across sizes (Spearman $\ge0.97$; Sec.~\ref{sup:stability}). Comparisons should therefore be made at a fixed
+table shape. The share is unique, but individual exception cells are not; 3--6\% of cells are ambiguous across optimal
+rules, and cell-level analyses depend on this choice unless restricted to stable labels.
+
+\paragraph{Strength of the VLM result.}
+The exception share sets the interaction dependence an accurate model needs, and across four VLMs the EMAP drop follows
+it. Most of this relation is what accuracy alone requires: an accuracy-matched null scorer reproduces it, and only
+InternVL3.5 relies on interactions clearly beyond the requirement. The comparison with synergy holds within benchmarks
+at fixed answer balance, explains little variance, and synergy keeps a signal for one of four models. We tested
+zero-shot 7--8B models; larger or fine-tuned models may differ. Our critique of PID concerns deterministic answers on
+index-level tables; PID estimators on noisy, high-dimensional features face additional, separate
+problems~\cite{liang2023quantifying}.
+
+\paragraph{Scope of the continual-learning results.}
+Most continual-learning runs use small fusion networks on frozen features, far from the VLMs that motivate the paper.
+The robust findings (forgetting and learning gaps that survive answer matching, difficulty matching and label
+ambiguity) are on CLEVR; on GQA and CLOVE answer matching removes most of the effect, and the constructed tasks' second
+table has no stable exceptions. For VLMs we tested one model with LoRA, and its pre-registered learning check failed.
+
+\section{Conclusion}
+\label{sec:conclusion}
+Synergy is widely used to measure how much a multimodal task requires fusion. For deterministic answers it depends
+only on per-modality statistics, while the need for non-additive fusion depends on how answers are arranged across
+input pairs. Using the classical theory of additive structure, every answer table splits into an additive rule and a
+minimum set of exceptions, whose share is the lowest error any additive model can reach and sets a floor on how much an
+accurate model must rely on interactions. Four VLMs rely on interactions roughly as much as this floor and their
+accuracy require, and one model clearly more. In continual learning, exceptions on compositional tasks are forgotten
+faster and learned worse than equally difficult rule cells with the same answer, while standard backward transfer
+misses both.
+
+Two recommendations follow. Claims that a benchmark requires fusion should be supported by its exception share, not
+by synergy. Continual learners should be evaluated on exceptions separately, against rule cells with the same answer
+and difficulty. Natural next steps are estimators of the exception share for data without answer tables, and methods
+that learn and keep exceptions without giving up the rule.
