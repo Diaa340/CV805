@@ -114,3 +114,15 @@ size).
 The 99 sub-tables chosen for Studies B and C: source table, image columns, s, synergy, yes-share.
 - **Result:** within each benchmark ρ(s, BROJA) = 0.00 (B); ρ(s, BROJA) ≤ 0.02 (GQA 0.20) and ρ(s, yes) ≈ 0 (C).
 - **Meaning:** the selection achieved the separation the tests need, using answer tables only.
+
+### 15a_flip_rate_by_misfit_decile.csv / 15b_flip_auc.csv: Fig. `fig_flips` (new)
+Per cell of the 99 full tables and all four VLMs: does the answer flip when the model's interactions are removed
+(EMAP)? 15a: flip rate by graded-misfit decile (95% bootstrap over tables) for each model and for the
+accuracy-matched null scorer. 15b: AUC for predicting flips from graded misfit, model confidence and the exception
+label, plus the null scorer's misfit AUC. Per-cell data: `runs/rev/flip_cells.csv.gz`; script: `make_fig_flips.py`.
+- **Result:** flips rise from 2–5% of cells in the lowest misfit decile to 61–80% in the highest. Misfit predicts them
+  (AUC 0.78–0.88) better than the model's confidence (0.64–0.74) and the binary exception label (0.62–0.70). The null
+  scorer shows the same pattern even more sharply (AUC 0.96–0.99).
+- **Meaning:** graded misfit locates the cells where an accurate model must use interactions, and VLMs' interaction
+  use falls there. Because the null shows the same, this is a property of the answer table, not a sign that VLMs fuse
+  in a special way.
