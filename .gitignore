@@ -27,3 +27,5 @@ xiu/*
 
 # keep the small exported data behind the revised paper (overrides data/ above)
 !paper/revision/data/
+cl_raw_bundle/
+cl_raw_bundle.tgz
