@@ -1,7 +1,7 @@
 # Revision: what changed and why
 
 Files in `paper/revision/`: `0_abstract.tex`, `1_intro.tex`, `2_related.tex`, `3_method.tex`, `4_experiments.tex`,
-`5_conclusion.tex` (limitations + conclusion), `supplementary.tex`, `refs_revision.bib`, `rebuttal.md`.
+`5_conclusion.tex` (limitations + conclusion), `supplementary.tex`, `refs_revision.bib`.
 New analyses: pre-registered in `paper/preregistration_revision.md` (hash 73d425b2); results in
 `paper/results_rev_null.txt`, `results_rev_unique.txt`, `results_rev_difficulty.txt`, `results_rev_stability.txt`.
 
