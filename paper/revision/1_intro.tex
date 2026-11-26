@@ -1,0 +1,56 @@
+\section{Introduction}
+\label{sec:intro}
+Multimodal models answer questions that cannot be resolved from any single input by combining images with text, audio,
+or other signals~\cite{baltrusaitis2019multimodal,liang2024foundations}. Vision-language models (VLMs) now perform such
+reasoning at scale~\cite{radford2021clip,alayrac2022flamingo,liu2023llava,bai2025qwen25vl}. A basic question for these
+tasks is how much their answers require fusion: can the answer be determined from each modality separately, or does it
+depend on how the modalities interact? Partial Information Decomposition (PID)~\cite{williams2010nonnegative,bertschinger2014quantifying}
+is the standard framework for this question. It splits the information two modalities carry about a label into
+redundant, unique and synergistic parts, where synergy is information available only from their combination. Synergy
+is used to characterise multimodal datasets and guide model selection~\cite{liang2023quantifying,liang2024multimodal},
+to analyse how VLMs use their inputs~\cite{xiu2026comprehensive,fang2026towards}, and to define training objectives
+and curricula~\cite{kontras2026synib,yarici2026synco,singh2026spice}.
+
+Synergy, however, is not the same as requiring fusion. Consider a task whose answer is ``yes'' only when both
+modalities show an object (logical AND). Under a balanced binary setup, PID assigns this task 0.5 bits of synergy,
+yet a model that scores each modality separately and adds the two scores answers it perfectly. What an additive model
+cannot represent is a reversal: an XOR-like pattern in which the effect of one modality flips with the other. PID
+cannot separate the two cases (Fig.~\ref{fig:teaser}). The reason is in its definition: BROJA PID~\cite{bertschinger2014quantifying}
+fixes the relation between each modality and the label and optimises over the rest, so for deterministic labels every
+PID term depends only on per-modality statistics, not on how answers are arranged across input pairs. That synergy and
+interaction differ has been noted in information theory~\cite{james2019unique,jansma2023higher}, and model probes such
+as EMAP~\cite{hessel2020does} show that many benchmarks can be solved additively. What multimodal evaluation lacks is a
+model-free measure of how much a task requires non-additive fusion.
+
+We bring such a measure from the classical theory of additive structure. For a task whose answer is known for every
+pair of inputs, we arrange the answers in a table with one modality indexing rows and the other columns. The best
+additive model is a \emph{rule}: one score per row and one per column, added and thresholded. The cells it gets wrong
+are \emph{exceptions}. A classical result~\cite{ducamp1969composite,ryser1957combinatorial} says a table has no
+exceptions exactly when it has no XOR square. We compute the rule exactly by integer programming, so the share of
+exceptions is the minimum error of any additive model. It also sets a floor on interaction dependence: removing a
+model's cross-modal interactions~\cite{hessel2020does} must cost at least the exception share minus the model's error.
+
+We use this measure in two ways. First, on four VLMs~\cite{bai2025qwen25vl,wang2025internvl35,an2025llavaov15,laurencon2024building}
+and 99 fully labelled answer tables from CLEVR, GQA, CLOVE and POPE~\cite{johnson2017clevr,hudson2019gqa,lei2023symbolic,li2023pope},
+we ask how much each model relies on interactions relative to what its accuracy requires. Within each benchmark and at
+fixed answer balance, the exception share ranks tables by interaction dependence and synergy adds little. An
+accuracy-matched null scorer shows that most of this relation is the requirement itself: models depend on
+interactions roughly as much as their accuracy demands, and one model (InternVL3.5) clearly more. Second, in continual
+learning, forgetting is usually averaged over all samples~\cite{lopezpaz2017gradient,delange2021continual}; because
+exceptions are a small fraction of the data, such averages cannot show whether a method keeps the knowledge that
+requires fusion. On compositional CLEVR tasks, replay methods forget exceptions faster than rule cells with the same
+answer and the same difficulty, and all methods learn new exceptions worse, while standard backward transfer shows
+neither.
+
+Our contributions are:
+\begin{itemize}
+  \item A model-free measure of how much a task requires non-additive fusion, computed exactly, with its link to
+  additive models, to EMAP and to PID made explicit (Sec.~\ref{sec:theory}). The underlying characterisation is
+  classical; the contribution is its use for multimodal evaluation.
+  \item A test on four VLM families that separates the interaction dependence a model needs from the dependence it has,
+  using structure--synergy decorrelated tables and an accuracy-matched null (Sec.~\ref{sec:vlm}).
+  \item An exception-aware evaluation of twelve continual-learning methods with answer- and difficulty-matched
+  comparisons, showing that on compositional tasks exceptions are forgotten faster and learned worse, and that standard
+  backward transfer misses this (Sec.~\ref{sec:cl}).
+\end{itemize}
+Code, pre-registrations and all results, including failed tests, are released.

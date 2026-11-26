@@ -1,0 +1,104 @@
+\section{Methods}
+\label{sec:theory}
+\subsection{Answer tables}
+
+We represent a two-modality task as an answer table $T(a,b)\in\{0,1\}$, where $a$ indexes an input from the first
+modality and $b$ an input from the second. Each cell $(a,b)$ is one pair of inputs and its binary answer, with a
+weight $w_{ab}\ge 0$; weights sum to one and are uniform over the cells of a table in all our experiments (sub-tables
+are re-weighted uniformly over their own cells). A table is \emph{complete} when every pair $(a,b)$ has an answer. For
+CLEVR, GQA and CLOVE we build complete tables by executing each question on each image's scene graph or program; for
+POPE we use COCO object annotations (Fig.~\ref{fig:teaser}a).
+
+\subsection{Additive rules and exceptions}
+
+An additive rule gives a score $u_a$ to each input of the first modality and $v_b$ to each input of the second, and
+predicts $f_{u,v}(a,b)=\mathbb{1}[u_a+v_b>0]$. The two modalities contribute independently and are combined only at
+the decision, which covers late fusion and any linear decision rule on separately computed representations. The
+\emph{additive ceiling} is the highest weighted accuracy of any additive rule,
+\begin{equation}
+C(T)=\max_{u,v}\sum_{(a,b)\in\Omega} w_{ab}\,\mathbb{1}\!\left[f_{u,v}(a,b)=T(a,b)\right],
+\label{eq:ceiling}
+\end{equation}
+and the \emph{exception share} $s(T)=1-C(T)$ is the minimum error any additive rule can achieve. For an optimal rule,
+the cells it gets wrong are its \emph{exceptions} and all other cells are \emph{rule cells}.
+
+\paragraph{Exceptions are not unique.}
+The share $s(T)$ is unique, but the set of exception cells is not: several rules can reach $C(T)$ while erring on
+different cells. Every XOR square (below) contains at least one error of any additive rule, so a minimum exception set
+is a minimum \emph{hitting set} of the table's XOR squares; it is usually much smaller than their union, and it need
+not be unique. We therefore also call a cell a \emph{stable} exception (rule cell) if it is an exception (rule cell) in
+every optimal rule found by re-solving with random tie-breaking. On our tables 3--6\% of cells are ambiguous, a lower
+bound because tie-breaking samples the optimal rules (Sec.~\ref{sup:unique}). Analyses at the level of single cells
+are reported with stable labels as well.
+
+\paragraph{Graded misfit.}
+A cell-level score that needs no choice among optimal rules is the \emph{graded misfit}
+$m(a,b)=\log_2 p(y)-\log_2 p(y\mid a)-\log_2 p(y\mid b)$ with $y=T(a,b)$, where $p(y\mid a)$ and $p(y\mid b)$ are the
+answer rates in the cell's row and column. It is high when a cell's answer is rare in both its row and its column; it
+equals the pointwise synergy-minus-redundancy of the cell and the negative log-score of a naive-Bayes additive model.
+
+\paragraph{Exact computation.}
+We compute $C(T)$ with a mixed-integer linear program with one binary error variable per cell, solved with
+HiGHS~\cite{huang2024highs}, merging columns with identical answers. The problem is closely related to editing a
+bipartite graph into a chain graph, which is NP-hard in general~\cite{yannakakis1981computing,natanzon2001complexity};
+merging makes it practical for few rows (at most $2^{R}$ distinct columns for $R$ rows), and all our tables have ten
+rows. When the solver reaches its time limit we keep the best rule and its proven bound (Sec.~\ref{sup:milp}).
+
+\subsection{Properties}
+\label{sec:properties}
+
+Two rows $a\neq a'$ and two columns $b\neq b'$ form an \emph{XOR square} when
+$T(a,b)=T(a',b')\neq T(a,b')=T(a',b)$: changing one modality reverses the effect of the other (Fig.~\ref{fig:xor}).
+Swapping its two diagonals leaves every row and column answer count unchanged. The following characterisation is
+classical; we state it because the rest of the paper builds on it.
+
+\begin{theorem}[Ferrers relations~\cite{ducamp1969composite,doignon1984realizable}; Ryser~\cite{ryser1957combinatorial}]
+\label{thm:ferrers}
+For a complete binary table the following are equivalent: (i) $s(T)=0$; (ii) $T$ has no XOR square; (iii) $T$ is the
+only binary table with its row and column answer counts.
+\end{theorem}
+
+The next two statements are short consequences of the definitions; their value is in what they connect. Proofs are
+in Sec.~\ref{sup:proofs}.
+
+\begin{proposition}[Ceiling]
+\label{prop:ceiling}
+If inputs within each row and column are drawn independently given their indices, any additive readout $g_1(x_1)+g_2(x_2)$
+has expected weighted accuracy at most $C(T)$.
+\end{proposition}
+
+\begin{proposition}[Floor]
+\label{prop:floor}
+Let $\Delta(f)$ be the accuracy a model $f$ loses when its scores are replaced by their EMAP projection (below). On a
+uniformly weighted complete table, $\Delta(f)\ge s(T)-e(f)$, where $e(f)$ is the error of $f$.
+\end{proposition}
+
+\paragraph{Interaction dependence.}
+EMAP~\cite{hessel2020does} replaces model scores $\ell_{ab}$ on a complete table by their closest additive
+approximation $\hat\ell_{ab}=\bar\ell_{a\cdot}+\bar\ell_{\cdot b}-\bar\ell_{\cdot\cdot}$ (row, column and overall
+means). We call $\Delta(f)=\mathrm{Acc}(\ell)-\mathrm{Acc}(\hat\ell)$ the \emph{EMAP drop}. Prop.~\ref{prop:floor}
+holds because the EMAP projection is itself an additive rule. It says what interaction dependence an accurate model
+\emph{must} have; it is vacuous when $e(f)\ge s(T)$, and it does not say how much interaction a model uses beyond that.
+Sec.~\ref{sec:vlm} measures both.
+
+\paragraph{Why PID cannot see the arrangement.}
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{fig/fig_pid_blind.pdf}
+\caption{\textbf{PID cannot see how answers are arranged.} AND carries 0.50 bits of BROJA synergy but has no exceptions.
+Tables 1 and 2 have the same row and column answer counts (grey), hence the same BROJA PID (0.78 bits;
+Prop.~\ref{prop:pid}), but 2 and 4 exceptions. Filled: exception whose answer is yes; outlined: exception whose answer is
+no.}
+\label{fig:pid_blind}\end{figure}
+
+\begin{proposition}[PID]
+\label{prop:pid}
+For deterministic answers, every BROJA PID term is a function of $p(a,y)$ and $p(b,y)$ only. Hence tables that differ
+by XOR swaps have identical PID. The same holds for MMI and other measures defined from the pairwise
+marginals.
+\end{proposition}
+
+This follows directly from the BROJA definition, which optimises over joint distributions with fixed $p(a,y)$ and
+$p(b,y)$, together with $I(y;a,b)=H(y)$ for deterministic answers. Fig.~\ref{fig:pid_blind} shows two tables with
+identical PID and different numbers of exceptions. The exception share depends on exactly the arrangement that PID
+ignores. Note that PID is not uninformative about structure: on natural tables the two measures are strongly
+correlated (Sec.~\ref{sec:vlm}), because both grow with how mixed the per-row and per-column answers are.

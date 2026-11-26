@@ -1,0 +1,41 @@
+Null scorer: accuracy- and answer-matched oracle + Gaussian logit noise, 20 draws, identical EMAP pipeline (Study C sub-tables).
+Check: mean |acc_null - acc| = 0.0021
+
+--- Idefics3-8B (confirmatory model of Study C) ---  mean EMAP drop: model +0.064, null +0.060
+  rho_obs    +0.416 [+0.212,+0.559]
+  rho_null   +0.374 [+0.166,+0.533]
+  rho_excess +0.174 [-0.073,+0.384]
+  rho_adj    +0.250 [+0.008,+0.441]
+  rho_slack  -0.137 [-0.321,+0.080]
+  rho_yes    +0.234 [+0.029,+0.405]
+  share of rho_obs surviving the null (rho_excess / rho_obs): 0.42
+
+--- InternVL3.5-8B ---  mean EMAP drop: model +0.086, null +0.044
+  rho_obs    +0.418 [+0.197,+0.584]
+  rho_null   +0.499 [+0.289,+0.646]
+  rho_excess +0.264 [+0.054,+0.429]
+  rho_adj    +0.197 [-0.034,+0.413]
+  rho_slack  +0.276 [+0.058,+0.449]
+  rho_yes    +0.340 [+0.135,+0.500]
+  share of rho_obs surviving the null (rho_excess / rho_obs): 0.63
+
+--- LLaVA-OV-1.5-8B ---  mean EMAP drop: model +0.081, null +0.075
+  rho_obs    +0.433 [+0.225,+0.580]
+  rho_null   +0.396 [+0.172,+0.581]
+  rho_excess +0.120 [-0.110,+0.320]
+  rho_adj    +0.226 [-0.005,+0.410]
+  rho_slack  -0.047 [-0.266,+0.183]
+  rho_yes    +0.304 [+0.096,+0.494]
+  share of rho_obs surviving the null (rho_excess / rho_obs): 0.28
+
+--- Qwen2.5-VL-7B ---  mean EMAP drop: model +0.079, null +0.070
+  rho_obs    +0.260 [+0.052,+0.441]
+  rho_null   +0.301 [+0.084,+0.476]
+  rho_excess +0.050 [-0.170,+0.246]
+  rho_adj    +0.081 [-0.107,+0.292]
+  rho_slack  -0.085 [-0.275,+0.119]
+  rho_yes    +0.319 [+0.087,+0.490]
+  share of rho_obs surviving the null (rho_excess / rho_obs): 0.19
+
+R1 PRIMARY (Idefics3): rho_excess +0.174 [-0.073,+0.384] -> FAIL (lower bound > 0)
+R1 other models (reported): internvl lower>0, llava interval includes 0, qwen interval includes 0

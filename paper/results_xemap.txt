@@ -1,0 +1,20 @@
+1. Share of flipped cells that are stable exceptions / ambiguous / stable rule cells
+  Idefics3-8B      EMAP: flip rate 0.135, exceptions 0.21 / ambiguous 0.18 / rule 0.61 | exact: flip rate 0.071, exceptions 0.34 / ambiguous 0.22 / rule 0.44 | exact, confidence-weighted: flip rate 0.076, exceptions 0.29 / ambiguous 0.20 / rule 0.52
+  InternVL3.5-8B   EMAP: flip rate 0.185, exceptions 0.17 / ambiguous 0.16 / rule 0.67 | exact: flip rate 0.092, exceptions 0.32 / ambiguous 0.20 / rule 0.48 | exact, confidence-weighted: flip rate 0.107, exceptions 0.21 / ambiguous 0.16 / rule 0.63
+  LLaVA-OV-1.5-8B  EMAP: flip rate 0.141, exceptions 0.26 / ambiguous 0.21 / rule 0.54 | exact: flip rate 0.075, exceptions 0.45 / ambiguous 0.25 / rule 0.30 | exact, confidence-weighted: flip rate 0.079, exceptions 0.38 / ambiguous 0.21 / rule 0.41
+  Qwen2.5-VL-7B    EMAP: flip rate 0.131, exceptions 0.24 / ambiguous 0.20 / rule 0.57 | exact: flip rate 0.067, exceptions 0.43 / ambiguous 0.25 / rule 0.32 | exact, confidence-weighted: flip rate 0.074, exceptions 0.34 / ambiguous 0.21 / rule 0.45
+
+2. Mean drop: exact projection / confidence-weighted / null scorer (exact); proven-optimal share; floor drop >= s - e
+  Idefics3-8B      exact 0.034 | weighted 0.035 | null 0.027 | proven 0.99 / 0.77 | floor holds 1.000
+  InternVL3.5-8B   exact 0.037 | weighted 0.048 | null 0.017 | proven 0.98 / 0.67 | floor holds 1.000
+  LLaVA-OV-1.5-8B  exact 0.047 | weighted 0.046 | null 0.039 | proven 0.99 / 0.66 | floor holds 1.000
+  Qwen2.5-VL-7B    exact 0.044 | weighted 0.045 | null 0.036 | proven 1.00 / 0.79 | floor holds 1.000
+
+3. Same tests as Study C and the null analysis, with the exact drop (controls: synergy, accuracy, yes-share)
+  Idefics3-8B      rho(drop, s) +0.530 [+0.349,+0.661] | rho(drop, PID) +0.119 [-0.119,+0.301] | rho(null drop, s) +0.684 [+0.518,+0.767] | rho(drop - null, s) -0.068 [-0.297,+0.164]
+  InternVL3.5-8B   rho(drop, s) +0.636 [+0.467,+0.741] | rho(drop, PID) +0.201 [-0.005,+0.397] | rho(null drop, s) +0.732 [+0.586,+0.797] | rho(drop - null, s) -0.053 [-0.261,+0.182]
+  LLaVA-OV-1.5-8B  rho(drop, s) +0.730 [+0.573,+0.822] | rho(drop, PID) +0.127 [-0.054,+0.278] | rho(null drop, s) +0.824 [+0.718,+0.864] | rho(drop - null, s) -0.021 [-0.223,+0.180]
+  Qwen2.5-VL-7B    rho(drop, s) +0.584 [+0.400,+0.719] | rho(drop, PID) +0.064 [-0.147,+0.241] | rho(null drop, s) +0.790 [+0.673,+0.832] | rho(drop - null, s) -0.120 [-0.340,+0.090]
+
+X1 (exact flips on exceptions or ambiguous cells >= 0.60 for every model): FAIL {'Idefics3-8B': np.float64(0.56), 'InternVL3.5-8B': np.float64(0.52), 'LLaVA-OV-1.5-8B': np.float64(0.7), 'Qwen2.5-VL-7B': np.float64(0.68)}
+X2 (exact drop beyond the null tracks structure: rho(drop - null, s) lower bound > 0) for Idefics3: FAIL; others: InternVL3.5-8B includes 0, LLaVA-OV-1.5-8B includes 0, Qwen2.5-VL-7B includes 0

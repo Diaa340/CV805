@@ -1,0 +1,11 @@
+direction,benchmark,method,saved_gap,saved_ci_low,saved_ci_high,stable_gap,stable_ci_low,stable_ci_high
+forward,tables,derpp_random_1000,-7.7,-8.5,-7.0,,,
+forward,tables,l2,-6.9,-7.5,-6.5,,,
+backward,clevr,er_random_1000,-8.7,-11.5,-5.8,-9.3,-12.6,-5.9
+backward,clevr,agem_random_1000,-11.0,-14.2,-7.2,-12.0,-15.7,-8.4
+backward,clevr,gem_random_1000,-10.0,-13.7,-5.6,-10.7,-15.2,-5.8
+backward,clevr,derpp_random_1000,-9.2,-10.6,-7.5,-10.2,-11.8,-8.3
+forward,clevr,derpp_random_1000,-25.6,-29.5,-19.8,-27.8,-31.8,-22.1
+forward,clevr,l2,-13.2,-16.1,-9.8,-14.8,-17.7,-11.0
+forward,gqa,derpp_random_1000,-7.1,-12.3,-1.5,-6.0,-12.6,1.2
+forward,gqa,l2,-7.5,-13.3,-1.9,-6.8,-13.8,0.8

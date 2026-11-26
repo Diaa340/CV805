@@ -1,0 +1,45 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Measuring multimodal interactions.}
+PID~\cite{williams2010nonnegative,bertschinger2014quantifying} splits the information two sources carry about a target
+into redundant, unique and synergistic parts; definitions include BROJA, $I_{\mathrm{ccs}}$~\cite{ince2017measuring} and
+MMI~\cite{barrett2015exploration}. Liang \etal brought PID to multimodal learning, with estimators for
+high-dimensional data~\cite{liang2023quantifying} and bounds from unlabelled data~\cite{liang2024multimodal}. PID is used
+to profile VLM benchmarks~\cite{xiu2026comprehensive,fang2026towards} and to design objectives that favour synergy or
+factorised representations~\cite{liang2023factorized,kontras2026synib,yarici2026synco,singh2026spice}, treating synergy
+as a proxy for fusion demand. Model-based interaction attribution, such as Shapley interaction
+indices~\cite{grabisch1999axiomatic} and neural interaction detection~\cite{tsang2018detecting}, measures interactions
+inside a trained model. We instead measure the interaction a task requires, from its answers, and compare it with PID.
+
+\paragraph{Probing models for interactions and shortcuts.}
+EMAP~\cite{hessel2020does} projects a model onto its closest additive version and finds that many models gain little
+from interactions. VQA models often answer from the question alone~\cite{goyal2017making,agrawal2018dont}, multimodal
+training can be dominated by one modality~\cite{wang2020makes,peng2022balanced}, and many VLM benchmark questions can be
+answered without the image~\cite{chen2024mmstar}. These probes describe a model on a dataset. Our measure describes the
+task and bounds how much any accurate model must rely on interactions; we use EMAP to measure how much models actually do.
+
+\paragraph{Additive structure.}
+Whether a two-factor table is explained by one score per row and one per column is a classical question of additive
+conjoint measurement~\cite{luce1964simultaneous,krantz1971foundations}, and Tukey's one-degree-of-freedom test detects
+non-additivity in two-way tables~\cite{tukey1949one}. Binary tables of this kind are Ferrers relations, or biorders,
+characterised by the absence of $2{\times}2$ checkerboards~\cite{ducamp1969composite,doignon1984realizable}; Ryser's
+interchange theorem relates checkerboards to tables with equal margins~\cite{ryser1957combinatorial}. Ecology measures
+departure from this staircase structure as nestedness (matrix temperature~\cite{atmar1993measure},
+NODF~\cite{almeidaneto2008consistent}), and sign-rank and margin complexity~\cite{alon1985geometrical,linial2007complexity}
+describe sign patterns realisable by low-rank or large-margin scores, of which additive rules are the simplest case.
+Psychology distinguishes removable from non-removable (crossover) interactions in the same
+way~\cite{loftus1978interpretation,wagenmakers2012interpretation}. We bring this structure to multimodal evaluation,
+compute the best additive rule exactly, and connect it to EMAP, PID and continual learning.
+
+\paragraph{Continual learning and hard examples.}
+Continual learners limit forgetting by regularising parameters~\cite{kirkpatrick2017overcoming,zenke2017continual} or
+outputs~\cite{li2017learning}, by replaying a memory~\cite{chaudhry2019tiny,lopezpaz2017gradient,chaudhry2019efficient,rebuffi2017icarl,buzzega2020dark},
+or by expanding the architecture~\cite{yan2021der}. Forgetting is usually reported as average accuracy and backward and
+forward transfer~\cite{lopezpaz2017gradient,delange2021continual}. Multimodal benchmarks extend this to
+VQA~\cite{zhang2023vqacl,lei2023symbolic,zhang2025clcrossvqa} and instruction-tuned VLMs~\cite{chen2024coin}, and answers
+shared across tasks can overstate resistance to forgetting~\cite{gao2026reevaluating}. Some examples are forgotten far
+more often than others~\cite{toneva2019empirical}; networks fit simple features first~\cite{shah2020pitfalls} and must
+memorise atypical, long-tail examples~\cite{feldman2020does,feldman2020neural}. Exceptions are atypical by construction,
+so we compare them with rule cells of the same answer \emph{and} the same difficulty, to separate structure from
+difficulty.

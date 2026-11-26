@@ -1,0 +1,8 @@
+tables,model,auc_exception_label,auc_stable_exception_label,auc_graded_misfit,auc_low_confidence
+full tables (solver's labels),Qwen2.5-VL-7B,0.675,,0.866,0.735
+full tables (solver's labels),InternVL3.5-8B,0.623,,0.783,0.672
+full tables (solver's labels),LLaVA-OV-1.5-8B,0.695,,0.88,0.639
+Study C sub-tables,Idefics3-8B,0.669,0.619,0.818,0.73
+Study C sub-tables,InternVL3.5-8B,0.644,0.597,0.776,0.666
+Study C sub-tables,LLaVA-OV-1.5-8B,0.712,0.657,0.878,0.627
+Study C sub-tables,Qwen2.5-VL-7B,0.694,0.641,0.863,0.726

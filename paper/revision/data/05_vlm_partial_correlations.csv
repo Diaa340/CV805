@@ -1,0 +1,39 @@
+study,model,quantity,rho,ci_low,ci_high
+B,Qwen2.5-VL-7B,"rho(drop, s | PID, acc)",0.325,0.102,0.501
+B,Qwen2.5-VL-7B,"rho(drop, PID | s, acc)",0.188,,
+B,InternVL3.5-8B,"rho(drop, s | PID, acc)",0.368,0.169,0.537
+B,InternVL3.5-8B,"rho(drop, PID | s, acc)",0.437,,
+B,LLaVA-OV-1.5-8B,"rho(drop, s | PID, acc)",0.317,0.091,0.503
+B,LLaVA-OV-1.5-8B,"rho(drop, PID | s, acc)",0.427,,
+C,Idefics3-8B,"rho(drop, s | PID, acc, yes)",0.416,0.212,0.559
+C,Idefics3-8B,"rho(drop, PID | s, acc, yes)",0.065,-0.167,0.285
+C,InternVL3.5-8B,"rho(drop, s | PID, acc, yes)",0.418,0.197,0.584
+C,InternVL3.5-8B,"rho(drop, PID | s, acc, yes)",0.048,-0.157,0.261
+C,LLaVA-OV-1.5-8B,"rho(drop, s | PID, acc, yes)",0.433,0.228,0.584
+C,LLaVA-OV-1.5-8B,"rho(drop, PID | s, acc, yes)",0.239,0.022,0.417
+C,Qwen2.5-VL-7B,"rho(drop, s | PID, acc, yes)",0.26,0.059,0.44
+C,Qwen2.5-VL-7B,"rho(drop, PID | s, acc, yes)",0.027,-0.181,0.252
+C + null,Idefics3-8B,"rho(drop, s | PID, acc, yes) [re-bootstrapped]",0.416,0.212,0.559
+C + null,Idefics3-8B,"rho(null drop, s | PID, acc, yes)",0.374,0.166,0.533
+C + null,Idefics3-8B,"rho(drop - null drop, s | PID, acc, yes)",0.174,-0.073,0.384
+C + null,Idefics3-8B,"rho(drop, s | PID, acc, yes, null drop)",0.25,0.008,0.441
+C + null,Idefics3-8B,"rho(drop - (s - error), s | PID, acc, yes)",-0.137,-0.321,0.08
+C + null,Idefics3-8B,"rho(drop, yes | s, PID, acc)",0.234,0.029,0.405
+C + null,InternVL3.5-8B,"rho(drop, s | PID, acc, yes) [re-bootstrapped]",0.418,0.197,0.584
+C + null,InternVL3.5-8B,"rho(null drop, s | PID, acc, yes)",0.499,0.289,0.646
+C + null,InternVL3.5-8B,"rho(drop - null drop, s | PID, acc, yes)",0.264,0.054,0.429
+C + null,InternVL3.5-8B,"rho(drop, s | PID, acc, yes, null drop)",0.197,-0.034,0.413
+C + null,InternVL3.5-8B,"rho(drop - (s - error), s | PID, acc, yes)",0.276,0.058,0.449
+C + null,InternVL3.5-8B,"rho(drop, yes | s, PID, acc)",0.34,0.135,0.5
+C + null,LLaVA-OV-1.5-8B,"rho(drop, s | PID, acc, yes) [re-bootstrapped]",0.433,0.225,0.58
+C + null,LLaVA-OV-1.5-8B,"rho(null drop, s | PID, acc, yes)",0.396,0.172,0.581
+C + null,LLaVA-OV-1.5-8B,"rho(drop - null drop, s | PID, acc, yes)",0.12,-0.11,0.32
+C + null,LLaVA-OV-1.5-8B,"rho(drop, s | PID, acc, yes, null drop)",0.226,-0.005,0.41
+C + null,LLaVA-OV-1.5-8B,"rho(drop - (s - error), s | PID, acc, yes)",-0.047,-0.266,0.183
+C + null,LLaVA-OV-1.5-8B,"rho(drop, yes | s, PID, acc)",0.304,0.096,0.494
+C + null,Qwen2.5-VL-7B,"rho(drop, s | PID, acc, yes) [re-bootstrapped]",0.26,0.052,0.441
+C + null,Qwen2.5-VL-7B,"rho(null drop, s | PID, acc, yes)",0.301,0.084,0.476
+C + null,Qwen2.5-VL-7B,"rho(drop - null drop, s | PID, acc, yes)",0.05,-0.17,0.246
+C + null,Qwen2.5-VL-7B,"rho(drop, s | PID, acc, yes, null drop)",0.081,-0.107,0.292
+C + null,Qwen2.5-VL-7B,"rho(drop - (s - error), s | PID, acc, yes)",-0.085,-0.275,0.119
+C + null,Qwen2.5-VL-7B,"rho(drop, yes | s, PID, acc)",0.319,0.087,0.49

@@ -1,0 +1,14 @@
+\begin{abstract}
+Multimodal learning commonly uses partial information decomposition (PID) synergy to quantify how much a task requires
+cross-modal fusion. For deterministic answers, however, PID depends only on per-modality answer statistics, so it
+cannot see whether answers require a non-additive interaction. For tasks with a known answer for every input pair, we
+use a model-free split of the answer table into an additive rule, which scores each modality separately, and
+exceptions, which no additive rule can answer. Computed exactly by integer programming, the exception share is the
+minimum error of any additive model and, by a classical result, is zero exactly when the table has no XOR square. It
+also sets a floor on how much an accurate model must lose when its cross-modal interactions are removed. On 99 fully
+labelled answer tables from CLEVR, GQA, CLOVE and POPE, four 7--8B VLMs lose accuracy without interactions roughly in
+proportion to this requirement: an accuracy-matched null scorer reproduces most of the relation, and only one model
+clearly relies on interactions beyond it. In twelve continual-learning methods, exceptions on compositional CLEVR tasks
+are forgotten faster and learned worse than rule cells with the same answer and the same difficulty, a loss that
+standard backward transfer does not show.
+\end{abstract}

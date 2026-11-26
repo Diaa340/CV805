@@ -1,0 +1,14 @@
+Mean exception share s by number of images n (10 questions / 5 questions):
+  clevr  n=25: 0.079 / 0.059 | n=50: 0.086 / 0.063 | n=100: 0.090 / 0.066 | n=200: 0.093 / 0.070 | n=400: 0.096 / 0.069 | n=1000: 0.099 / 0.072
+  clove  n=25: 0.059 / 0.040 | n=50: 0.060 / 0.040 | n=100: 0.061 / 0.046 | n=200: 0.062 / 0.037
+  gqa    n=25: 0.065 / 0.048 | n=50: 0.069 / 0.052 | n=100: 0.070 / 0.052 | n=200: 0.071 / 0.048
+
+Between-unit share of variance in s (intraclass correlation over draws), 10 questions:
+  clevr  n=50: 0.94, n=100: 0.97
+  clove  n=50: 0.88, n=100: 0.97
+  gqa    n=50: 0.84, n=100: 0.96
+
+Spearman correlation of unit rankings (mean s per unit) between n = 50 and the largest n, 10 questions:
+  clevr  +0.99
+  clove  +0.99
+  gqa    +0.97

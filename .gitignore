@@ -24,3 +24,6 @@ OGM_Sup.pdf
 xiu/*
 !xiu/real_replace.py
 !xiu/mm_scores.py
+
+# keep the small exported data behind the revised paper (overrides data/ above)
+!paper/revision/data/
