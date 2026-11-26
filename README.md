@@ -4,7 +4,7 @@
 
 Code, pre-registrations, results and exported data for the paper.
 
-![The same answer table, sorted by the best additive rule: one cell breaks the staircase](paper/figs/explain/fig2_rule_and_exceptions.png)
+![The same answer table, sorted by the best additive rule: one cell breaks the staircase](figures/explain/fig2_rule_and_exceptions.png)
 
 ## The idea in short
 
@@ -37,7 +37,15 @@ What s buys:
 
 ## Repository layout
 
-Everything sits in the repository root. Scripts are grouped by name prefix.
+```
+code/      all scripts (Python and shell); code/xiu/ holds two adapters for the EMAP code of Xiu et al.
+paper/     paper sources (LaTeX), pre-registrations, results text files, exported data
+figures/   figures and the small CSVs they are drawn from; figures/revision/ holds the revised paper's figures
+results/   small result tables from early exploratory runs
+```
+
+Scripts are in `code/` and grouped by name prefix. Paths below are relative to that folder for scripts, and to the
+repository root for results.
 
 | Part of the paper | Scripts | Results |
 |---|---|---|
@@ -53,7 +61,7 @@ Everything sits in the repository root. Scripts are grouped by name prefix.
 | Difficulty matching | `cl_difficulty.py`, `analyze_difficulty.py`, `run_revision.sh` | `paper/results_rev_difficulty.txt` |
 | Exception-aware buffer | `cl_bal.py`, `run_strat.sh` | `paper/results_strat.txt` |
 | VLM continual learning (Qwen2.5-VL-3B, LoRA) | `vlm_seq*.py`, `run_clove_vlm.sh`, `run_nonce*.sh` | `paper/results_clove_vlm.txt`, `results_nonce_vlm.txt` |
-| Tables and figures | `make_rev_data.py`, `make_rev_figs.py`, `make_fig_*.py`, `make_table.py` | `paper/revision/data/`, `paper/revision/fig/` |
+| Tables and figures | `make_rev_data.py`, `make_rev_figs.py`, `make_fig_*.py`, `make_table.py` | `paper/revision/data/`, `figures/revision/` |
 
 Other folders:
 
@@ -94,8 +102,17 @@ Not included: raw datasets (CLEVR, GQA, CLOVE, POPE/COCO, CREMA-D), model weight
 scripts rebuild the answer tables from the public datasets. VLM weights come from the Hugging Face Hub. Some
 scripts contain absolute paths to local data folders; edit them to point at your copies.
 
-Typical order for one study: `*_build.py` (answer tables) → scoring or training script (`run_*.sh`) →
-`analyze_*.py` (pre-registered analysis).
+Run everything from the repository root, for example `python code/analyze_vlm3.py`. Scripts read and write
+`data/`, `runs/`, `paper/` and `figures/` relative to the root, whatever the working directory is. The `run_*.sh`
+launchers expect a virtual environment at `.venv/` and set `CUDA_VISIBLE_DEVICES=2`; change both to match your
+machine.
+
+Typical order for one study: `code/*_build.py` (answer tables) → scoring or training (`code/run_*.sh`) →
+`code/analyze_*.py` (pre-registered analysis).
+
+## License
+
+MIT; see [LICENSE](LICENSE). Datasets and model weights keep their own licenses.
 
 ## Citation
 
